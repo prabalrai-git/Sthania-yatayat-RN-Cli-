@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { AsyncStorage } from "react-native"
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { AsyncStorage } from "react-native"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   userData: undefined,
@@ -27,6 +27,7 @@ const profile = createSlice({
 
 const storeData = async (value) => {
   try {
+    // console.log("slice data", value)
     const jsonValue = JSON.stringify(value)
     await AsyncStorage.setItem('@userData', jsonValue)
   } catch (e) {

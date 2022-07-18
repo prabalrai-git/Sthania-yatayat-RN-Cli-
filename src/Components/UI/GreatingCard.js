@@ -1,17 +1,17 @@
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { Icon } from 'react-native-elements'
+// import { Icon } from 'react-native-elements'
 import { GlobalStyles } from '../../../GlobalStyle'
 import { useNavigation } from '@react-navigation/native'
-// import { useDispatch } from 'react-redux'
-// import { logout } from '../../Services/store/slices/profileSlice'
-// import { useSelector } from 'react-redux'
+import { Icon } from 'react-native-elements'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../Services/store/slices/profileSlice'
+import { useSelector } from 'react-redux'
 
 const GreatingCard = () => {
   const navigation = useNavigation();
-  // const dispatch = useDispatch()
-  // const user = useSelector(state => state.storeUserData.userData);
-  // console.log(user);r
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.storeUserData.userData);
   const handleAction = () => {
     Alert.alert(
       "सतर्कता",
@@ -33,15 +33,20 @@ const GreatingCard = () => {
         }]}>Good Morning,</Text>
         <Text style={[GlobalStyles.body, {
           color: '#e6dddd'
-        }]}>admin</Text>
+        }]}>{user.UserName}</Text>
       </View>
       <Pressable onPress={() => handleAction()}>
         <Icon
           name={'user'}
-          color={'#f9f9f9'}
+          color={'red'}
           type={'antdesign'}
-          style={styles.icon}
+          style={{
+            padding: 8,
+          }}
           size={20}
+          borderRadius={50}
+          backgroundColor={'#fefefe'}
+          
         ></Icon>
       </Pressable>
 
@@ -58,9 +63,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  icon: {
-    backgroundColor: 'Fefefefe',
-    padding: 8,
-    borderRadius: 50,
-  }
+  // icon: {
+  //   backgroundColor: '#Fefefefe',
+  //   padding: 8,
+  // }
 })

@@ -1,11 +1,14 @@
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Dimensions } from 'react-native'
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
+// import { Icon } from 'react-native-vector-icons'
 
-const windowWidth = Dimensions.get('window').width
+const windowWidth = Dimensions.get('window').width;
 
 const DashboardButton = ({ title, onPress,icon, family }) => {
+
+  // const navigation = useNavi
 
   return (
     <Pressable onPress={onPress} style={styles.buttonContainer}>
@@ -25,7 +28,7 @@ export default DashboardButton
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: 152,
+    width: windowWidth * 0.43,
     height: 100,
     backgroundColor: 'red',
     borderRadius: 8,
