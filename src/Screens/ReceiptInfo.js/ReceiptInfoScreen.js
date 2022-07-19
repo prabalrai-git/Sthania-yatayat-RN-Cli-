@@ -4,24 +4,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import QRCode from 'react-native-qrcode-svg';
 import { useNavigation } from '@react-navigation/native';
 import { SecondaryBtn, PrimaryBtn } from '../../Components/UI/cButtons';
-import { CancelAssignedRouteOfVehicle, GetCompanyDetail, GetStaffDetailsByVehicleIdd, GetVehicleRouteDetailsByyReceiptId } from '../../Services/appServices/VehicleManagementService';
+import { CancelAssignedRouteOfVehicle, GetVehicleRouteDetailsByyReceiptId } from '../../Services/appServices/VehicleManagementService';
 import { GlobalStyles } from '../../../GlobalStyle';
 import { BluetoothManager, BluetoothEscposPrinter } from 'react-native-bluetooth-escpos-printer'
 import ImgToBase64 from 'react-native-image-base64';
 import ViewShot from 'react-native-view-shot';
 import Logo from '../../Assets/images/logo.png'
+import LoadingContainer from '../../Components/UI/LoadingContainer';
 
 const windowWidth = Dimensions.get('window').width;
 
 
 const ReceiptInfoScreen = ({ route }) => {
-// console.log("potapta")
   const user = useSelector(state => state.storeUserData.userData);
-  // const roleId = user.RoleId;
   const { id, isActive } = route.params
   const dispatch = useDispatch();
-  const [CompanyDetail, setCompanyDetail] = useState();
-  const [StaffContact, setStaffContact] = useState();
   const [ReceiptDetails, setReceiptDetails] = useState();
   const [Qr, setQr] = useState();
   const navigation = useNavigation();
@@ -30,26 +27,10 @@ const ReceiptInfoScreen = ({ route }) => {
   const [VehicleId, setVehicleId] = useState();
   const [errors, setErrors] = useState({});
   const [DeviceAddress, setDeviceAddress] = useState()
-  const [Temp, setTemp] = useState();
   const ref = useRef();
   const [CaptureImage, setCaptureImage] = useState('')
-  // const user = useSelector(state => state.storeUserData.userData);
 
-  // CompanyName: 'companey name',
-  //   CompanyAddress: 'CompanyAddress',
-  //   VehicleNumber: 'vehicle number',
-  //   Driver: 'driver name',
-  //   OwnerName: 'owner name',
-  //   EntryDate: 'entry date',
-  //   EntryNepaliDate: 'entry nepali data',
-  //   StaffContact: 'staff contacts',
-  //   Amount: 'amount',
-  //   remarks: 'remarks',
-  //   route: 'route from to',
-  //   IsActive: ,
-  //   counter: "counter name"
-
-
+  
   const ToSendData = {
     CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',
     CompanyAddress: ReceiptDetails !== undefined ? ReceiptDetails.CompanyAddress : '',
@@ -59,13 +40,15 @@ const ReceiptInfoScreen = ({ route }) => {
     OwnerName: ReceiptDetails !== undefined ? ReceiptDetails.OwnerName : '',
     EntryDate: ReceiptDetails !== undefined ? ReceiptDetails.RouteDate.split("T") : '',
     EntryNepaliDate: ReceiptDetails !== undefined ? ReceiptDetails.NepaliDate : '',
-    StaffContact: StaffContact !== undefined ? StaffContact.toString() : '',
+    StaffContact: ReceiptDetails !== undefined ? ReceiptDetails.DriverNumber : '',
     Amount: ReceiptDetails !== undefined ? ReceiptDetails.ReceiptAmt : '',
     remarks: ReceiptDetails !== undefined ? ReceiptDetails.Remarks : '',
     route: ReceiptDetails !== undefined ? ReceiptDetails.Route : '',
     IsActive: ReceiptDetails !== undefined && ReceiptDetails.Isactive,
     CounterName: ReceiptDetails !== undefined ? ReceiptDetails.CounterName : '',
   }
+  
+  // console.log("to send data", ReceiptDetails)
 
   useEffect(() => {
     dispatch(GetVehicleRouteDetailsByyReceiptId(id, (res) => {
@@ -125,7 +108,6 @@ const ReceiptInfoScreen = ({ route }) => {
         .catch(err => console.log("error"));
     });
   }
-
 
   const print = async () => {
     if (DeviceAddress !== undefined) {
@@ -231,6 +213,11 @@ const ReceiptInfoScreen = ({ route }) => {
 
   return (
     <View style={GlobalStyles.mainContainer}>
+      {
+        ReceiptDetails === undefined &&
+        <LoadingContainer />
+      }
+      
       <ViewShot ref={ref} options={{ fileName: "Your-File-Name", format: "jpg", quality: 0.9 }} style={{ backgroundColor: '#fefefe' }}>
         <View style={styles.PrintScreenContainer}>
           <View style={styles.contenHeadContainer}>

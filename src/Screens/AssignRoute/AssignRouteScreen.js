@@ -1,5 +1,5 @@
 import { Alert, Keyboard, Modal, Pressable, StyleSheet, Text, View, ScrollView } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GlobalStyles } from '../../../GlobalStyle'
 import { Dimensions } from 'react-native'
 import AppButton from '../../Components/UI/AppButton';
@@ -148,8 +148,9 @@ const AssignRouteScreen = () => {
   }, [isAsignedFocus])
 
   useEffect(() => {
-    dispatch(GetActiveVehicleList(2, (res) => {
+    dispatch(GetActiveVehicleList(user.companyId, (res) => {
       if (res?.ActiveVehicleList !== []) {
+        // console.log('vehicle list', res?.ActiveVehicleList)
         setVehicleList(res?.ActiveVehicleList);
         setNewVehicleList(res?.ActiveVehicleList)
       }

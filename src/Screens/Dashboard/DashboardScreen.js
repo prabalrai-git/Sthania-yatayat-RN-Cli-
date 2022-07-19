@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GreatingCard from '../../Components/UI/GreatingCard'
 import DashboardButton from '../../Components/UI/DashboardButton'
@@ -7,6 +7,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import DisplayCard from '../../Components/UI/DisplayCard';
 import { GetActiveVehicleList, GetRouteDetailsByDateWisee } from '../../Services/appServices/VehicleManagementService';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -43,6 +44,9 @@ const DashboardScreen = () => {
   const [TotalVehicle, setTotalVehicle] = useState();
   const dispatch = useDispatch();
   const isFocused = useIsFocused()
+  
+  const data = useSelector(state => state);
+  // console.log("redux data", data.storeVehicleData)
 
   useEffect(() => {
     let date = new Date();
@@ -67,6 +71,28 @@ const DashboardScreen = () => {
       isApiSubscribed = false;
     }
   }, [isFocused])
+
+  useEffect(() => {
+    // dispatch(GetActiveVehicleRoute((res) => {
+    //   if (res?.RouteDetails != []) {
+    //     // setRouteList(res?.RouteDetails);
+    //     // setNewRouteList(res?.RouteDetails);
+    //   }
+
+    // }))
+    getData()
+  }, [])
+
+  const getData = () => {
+    dispatch(GetActiveVehicleList(data.storeUserData.userData.companyId, (res) => {
+      if (res?.ActiveVehicleList.length > 0) {
+        console.log("res", res?.ActiveVehicleList)
+        // console.log('vehicle list', res?.ActiveVehicleList)
+        // setVehicleList(res?.ActiveVehicleList);
+        // setNewVehicleList(res?.ActiveVehicleList)
+      }
+    }))
+  }
   return (
     <View style={styles.mainContainer}>
     <GreatingCard />

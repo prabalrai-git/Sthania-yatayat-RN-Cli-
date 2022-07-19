@@ -23,6 +23,7 @@ const LoginScreen = () => {
   const [ShowPassword, setShowPassword] = useState(true);
   const [CounterName, setCounterName] = useState('');
   const [CounterId, setCounterId] = useState();
+  const [CompanyId, setCompanyId]= useState();
   const [IsVisible, setIsVisible] = useState(false);
   const [CounteList, setCounteList] = useState();
 
@@ -74,6 +75,7 @@ const LoginScreen = () => {
             "UserFullName": res?.UserDetails[0].UserFullName,
             "UserName": res?.UserDetails[0].UserName,
             "counterId": CounterId !== undefined ? CounterId : '',
+            "companyId": CompanyId !== undefined ? CompanyId : '',
           }
 
           // console.log('user data 2', uData)
@@ -112,18 +114,22 @@ const LoginScreen = () => {
     setIsLoading(false);
   }
 
-  const handleSelect = (cId, counterName) => {
+  const handleSelect = (cId, counterName, CompId) => {
     setCounterName(counterName)
     setCounterId(cId)
     setIsVisible(!IsVisible);
+    setCompanyId(CompId)
     // setIsInputDisable(!IsInputDisable)
   }
 
   useEffect(() => {
     let isApiSubscribed = true;
     dispatch(GetCounterDetail((res) => {
-      if (isApiSubscribed) {
-        setCounteList(res?.CounterDetails)
+      if (res?.CounterDetails.length > 0) {
+        let temp = res?.CounterDetails.filter(e => e.IsActive === true);
+        if (isApiSubscribed) {
+          setCounteList(temp)
+        }
       }
     }))
     return () => {
@@ -267,7 +273,7 @@ const LoginScreen = () => {
                 (CounteList !== undefined) &&
 
                 CounteList.map(e => (
-                  <Pressable style={styles.selectCard} onPress={() => handleSelect(e.CId, e.CounterName)} key={e.CId}>
+                  <Pressable style={styles.selectCard} onPress={() => handleSelect(e.CId, e.CounterName, e.CompanyId)} key={e.CId}>
 
                     <Text>{e.CounterName}</Text>
                   </Pressable>
