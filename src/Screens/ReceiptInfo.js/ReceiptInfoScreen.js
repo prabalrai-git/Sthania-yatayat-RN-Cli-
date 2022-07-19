@@ -15,7 +15,7 @@ const windowWidth = Dimensions.get('window').width;
 
 
 const ReceiptInfoScreen = ({ route }) => {
-
+// console.log("potapta")
   const user = useSelector(state => state.storeUserData.userData);
   // const roleId = user.RoleId;
   const { id, isActive } = route.params
