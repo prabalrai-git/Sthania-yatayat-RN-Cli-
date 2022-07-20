@@ -6,7 +6,7 @@ import AppButton from '../../Components/UI/AppButton';
 import { Input } from 'react-native-elements/dist/input/Input';
 import Filter from '../../Components/UI/Filter';
 import { useDispatch } from 'react-redux';
-import { GetActiveVehicleList, GetActiveVehicleRoute, GetCompanyDetail, InsertUpdateDayWiseVehicleRoutes } from '../../Services/appServices/VehicleManagementService';
+import {GetCompanyDetail, InsertUpdateDayWiseVehicleRoutes } from '../../Services/appServices/VehicleManagementService';
 import NepaliDate from 'nepali-date-converter';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -17,6 +17,7 @@ const windowheight = Dimensions.get('window').height;
 
 const AssignRouteScreen = () => {
 
+  const vehicle = useSelector(state => state.storeVehicleData);
   const [VehicleId, setVehicleId] = useState();
   const [VehicleNumberPlate, setVehicleNumberPlate] = useState('');
   const [RouteId, setRouteId] = useState();
@@ -27,10 +28,10 @@ const AssignRouteScreen = () => {
   const [errors, setErrors] = useState({});
   const [IsVisible, setIsVisible] = useState(false);
   const [IsRouteVisible, setIsRouteVisible] = useState(false)
-  const [VehicleList, setVehicleList] = useState();
-  const [NewVehicleList, setNewVehicleList] = useState();
-  const [RouteList, setRouteList] = useState();
-  const [NewRouteList, setNewRouteList] = useState();
+  // const [VehicleList, setVehicleList] = useState();
+  const [NewVehicleList, setNewVehicleList] = useState(vehicle.vehicleData);
+  // const [RouteList, setRouteList] = useState();
+  const [NewRouteList, setNewRouteList] = useState(vehicle.vehicleRoute);
   const [Remarks, setRemarks] = useState('');
   const dispatch = useDispatch()
   const [IsInputDisable, setIsInputDisable] = useState(false);
@@ -38,8 +39,6 @@ const AssignRouteScreen = () => {
   const navigation = useNavigation()
   const user = useSelector(state => state.storeUserData.userData);
   const [CID, setCID] = useState();
- 
-  // console.log("user", user);
 
   const handleError = (error, input) => {
     setErrors(prevState =>
@@ -96,17 +95,19 @@ const AssignRouteScreen = () => {
             id: res?.CreatedId
           })
           // console.log('gog go potaota')
-        }else{
+        } else {
           Alert.alert(
             "सतर्कता !",
             "सवारी साधनका लागि रुट पहिले नै तोकिएको छ।",
             [
-              { text: "ठिक छ" , onPress: () => {
-                setVehicleId();
-                setVehicleNumberPlate('');
-                setRouteId();
-                setRouteName('');
-              }}     
+              {
+                text: "ठिक छ", onPress: () => {
+                  setVehicleId();
+                  setVehicleNumberPlate('');
+                  setRouteId();
+                  setRouteName('');
+                }
+              }
             ]
           )
         }
@@ -148,32 +149,31 @@ const AssignRouteScreen = () => {
   }, [isAsignedFocus])
 
   useEffect(() => {
-    dispatch(GetActiveVehicleList(user.companyId, (res) => {
-      if (res?.ActiveVehicleList !== []) {
-        // console.log('vehicle list', res?.ActiveVehicleList)
-        setVehicleList(res?.ActiveVehicleList);
-        setNewVehicleList(res?.ActiveVehicleList)
-      }
-    }))
-    dispatch(GetActiveVehicleRoute((res) => {
-      if (res?.RouteDetails != []) {
-        setRouteList(res?.RouteDetails);
-        setNewRouteList(res?.RouteDetails);
-      }
-
-    }))
+    // dispatch(GetActiveVehicleList(user.companyId, (res) => {
+    //   if (res?.ActiveVehicleList !== []) {
+    //     // console.log('vehicle list', res?.ActiveVehicleList)
+    //     setVehicleList(res?.ActiveVehicleList);
+    //     setNewVehicleList(res?.ActiveVehicleList)
+    //   }
+    // }))
+    // dispatch(GetActiveVehicleRoute((res) => {
+    //   if (res?.RouteDetails != []) {
+    //     setRouteList(res?.RouteDetails);
+    //     setNewRouteList(res?.RouteDetails);
+    //   }
+    // }))
 
     dispatch(GetCompanyDetail((res) => {
-      if(res?.GetCompanyDetails.length > 0){
+      if (res?.GetCompanyDetails.length > 0) {
         setCID(res?.GetCompanyDetails[0].CId)
       }
-      
+
     }))
   }, [])
 
   const handleChangeRoute = (val) => {
     if (val === undefined || val === '') {
-      setNewRouteList(RouteList)
+      setNewRouteList(vehicle.vehicleRoute)
     } else {
       setNewRouteList(val)
     }
@@ -181,7 +181,7 @@ const AssignRouteScreen = () => {
 
   const handleChangeVehicle = (val) => {
     if (val === undefined || val === '') {
-      setNewVehicleList(VehicleList)
+      setNewVehicleList(vehicle.vehicleData)
     } else {
       setNewVehicleList(val)
     }
@@ -223,9 +223,7 @@ const AssignRouteScreen = () => {
               color: 'red'
             }}>{errors.VehicleNumberPlate}</Text>
           }
-
         </View>
-
         <View style={styles.dummyInputContainer}>
           <Text style={styles.dummyTitle}>रुट:</Text>
           {/* <BottomSheet hasDraggableIcon ref={bottomSheet} height={300} >
@@ -245,10 +243,8 @@ const AssignRouteScreen = () => {
               fontSize: 12,
               color: 'red'
             }}>{errors.RouteName}</Text>
-
           }
         </View>
-
         <Input
           value={Remarks}
           placeholder='Remarks'
@@ -276,9 +272,7 @@ const AssignRouteScreen = () => {
           <Text style={styles.dummyTitle}>मिति:</Text>
           <Text style={styles.dummyInput}>{NepDate}</Text>
         </View>
-
         <AppButton title='पेश' onPress={() => handleProceed()} />
-
         <View style={styles.centeredView}>
           <Modal
             animationType="slide"
@@ -291,7 +285,7 @@ const AssignRouteScreen = () => {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Filter data={VehicleList} returnData={handleChangeVehicle} forVehicleList />
+                <Filter data={vehicle.vehicleData} returnData={handleChangeVehicle} forVehicleList />
                 <ScrollView>
                   {
                     (NewVehicleList !== undefined) &&
@@ -306,7 +300,6 @@ const AssignRouteScreen = () => {
               </View>
             </View>
           </Modal>
-
           <Modal
             animationType="slide"
             transparent={true}
@@ -318,7 +311,7 @@ const AssignRouteScreen = () => {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Filter data={RouteList} returnData={handleChangeRoute} forRouteList />
+                <Filter data={vehicle.vehicleRoute} returnData={handleChangeRoute} forRouteList />
                 <ScrollView>
                   {
                     (NewRouteList !== undefined) &&

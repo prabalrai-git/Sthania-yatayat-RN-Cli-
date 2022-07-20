@@ -5,11 +5,14 @@ const initialState ={
   vehicleRoute: undefined,
 }
 
+
+
 const vehicle = createSlice({
   name: 'vehicle',
   initialState,
   reducers: {
     storeVehicleData: (state, action)=> {
+      // console.log("action", action)
       state.vehicleData = action.payload
     },
     storeVehicleRoute : (state, action) => {

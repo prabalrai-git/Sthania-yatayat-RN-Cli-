@@ -8,8 +8,7 @@ const QrScanner = () => {
   const navigation = useNavigation()
   useEffect(() => {
   }, [])
-
-
+  
   const onBarcodeScan = (data) => {
     console.log("bar code", data.data)
     navigation.navigate('ReceiptInfoScreen', {

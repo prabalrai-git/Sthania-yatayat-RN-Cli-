@@ -23,7 +23,7 @@ const LoginScreen = () => {
   const [ShowPassword, setShowPassword] = useState(true);
   const [CounterName, setCounterName] = useState('');
   const [CounterId, setCounterId] = useState();
-  const [CompanyId, setCompanyId]= useState();
+  const [CompanyId, setCompanyId] = useState();
   const [IsVisible, setIsVisible] = useState(false);
   const [CounteList, setCounteList] = useState();
 
@@ -42,7 +42,6 @@ const LoginScreen = () => {
       handleError('please enter Counter Name', 'CounterName')
       isOpValid = false
     }
-
     return isOpValid;
   }
 
@@ -55,18 +54,13 @@ const LoginScreen = () => {
     let isValidated = validate();
     setIsDisabled(true);
     setIsLoading(true);
-    // return
     let data = {
       'username': UserName,
       'password': Password,
     }
-    // return
     if (isValidated) {
       dispatch(getLoginApi(data, (res, status) => {
-
         if (status === 200) {
-          // console.log("user response", res?.UserDetails[0]);
-
           let uData = {
             "Role": res?.UserDetails[0].Role,
             "RoleId": res?.UserDetails[0].RoleId,
@@ -77,10 +71,7 @@ const LoginScreen = () => {
             "counterId": CounterId !== undefined ? CounterId : '',
             "companyId": CompanyId !== undefined ? CompanyId : '',
           }
-
-          // console.log('user data 2', uData)
           dispatch(storeUserData(uData));
-
         } else {
           Alert.alert(
             'त्रुटि!',
@@ -143,8 +134,6 @@ const LoginScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform === 'ios' ? 'padding' : 'height'}
       style={styles.logincontainer}>
-
-      {/* <View > */}
       <View style={{
         alignItems: 'center'
       }}>
@@ -156,7 +145,6 @@ const LoginScreen = () => {
           setIsVisible(!IsVisible)
           handleError(null, 'CounterName')
         }}
-          // disabled={IsInputDisable}
           style={styles.dummyInput}
         >
           <Icon
@@ -232,7 +220,6 @@ const LoginScreen = () => {
               name={'eyeo'}
               color={'#c9c0c0'}
               type={'antdesign'}
-              // style={styles.icon}
               size={20}
             ></Icon>
           </Pressable>
@@ -249,8 +236,6 @@ const LoginScreen = () => {
           borderRadius: 4,
           backgroundColor: '#faf4f4',
           marginTop: 4,
-          // color: 'red';
-          // marginBottom: -12,
         }}
       />
 
@@ -262,16 +247,13 @@ const LoginScreen = () => {
         visible={IsVisible}
         onRequestClose={() => {
           setIsVisible(!IsVisible);
-          // setIsInputDisable(!IsInputDisable)
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {/* <Filter data={CounteList} returnData={handleChangeVehicle} forVehicleList /> */}
             <ScrollView>
               {
                 (CounteList !== undefined) &&
-
                 CounteList.map(e => (
                   <Pressable style={styles.selectCard} onPress={() => handleSelect(e.CId, e.CounterName, e.CompanyId)} key={e.CId}>
 
@@ -283,8 +265,6 @@ const LoginScreen = () => {
           </View>
         </View>
       </Modal>
-
-      {/* </View> */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -305,11 +285,8 @@ export default LoginScreen
 
 const styles = StyleSheet.create({
   logincontainer: {
-    // width: width - 20,
     flex: 1,
     justifyContent: 'center'
-    // paddingTop: 40,
-    // backgroundColor: '#fefefe'
   },
   logo: {
     width: 100,
@@ -324,7 +301,6 @@ const styles = StyleSheet.create({
   dummyInputContainer: {
     width: windowWidth - 16,
     marginLeft: 8,
-    // borderWidth: 1,
     marginBottom: 10,
   },
   dummyTitle: {
@@ -334,10 +310,8 @@ const styles = StyleSheet.create({
   },
   dummyInput: {
     backgroundColor: '#f8f7f7',
-    // fontSize: 14,
     paddingHorizontal: 4,
     paddingVertical: 4,
-    // color: "#5c5656",
     borderRadius: 4,
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -357,7 +331,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flex: 1,
-    // height: 300,
     alignItems: 'center',
     borderTopEndRadius: 16,
     borderTopStartRadius: 16,

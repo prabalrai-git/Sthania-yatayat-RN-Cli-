@@ -5,15 +5,15 @@ import DashboardButton from '../../Components/UI/DashboardButton'
 import { Dimensions } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import DisplayCard from '../../Components/UI/DisplayCard';
-import { GetActiveVehicleList, GetRouteDetailsByDateWisee } from '../../Services/appServices/VehicleManagementService';
+import { GetActiveVehicleList, GetActiveVehicleRoute, GetRouteDetailsByDateWisee } from '../../Services/appServices/VehicleManagementService';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { storeVehicleData, storeVehicleRoute } from '../../Services/store/slices/vehicleSlice';
 
 
 const windowWidth = Dimensions.get('window').width;
 
 const navdata = [
-
   {
     id: 1,
     title: "रुट तोक्ने",
@@ -46,7 +46,6 @@ const DashboardScreen = () => {
   const isFocused = useIsFocused()
   
   const data = useSelector(state => state);
-  // console.log("redux data", data.storeVehicleData)
 
   useEffect(() => {
     let date = new Date();
@@ -59,37 +58,33 @@ const DashboardScreen = () => {
         }
       }
     }))
-    dispatch(GetActiveVehicleList(2, (res) => {
-      // console.log('res', res?.ActiveVehicleList)
-      if (res?.ActiveVehicleList.length > 0) {
-        if (isApiSubscribed) {
-          setTotalVehicle(res?.ActiveVehicleList.length);
-        }
-      }
-    }))
+    // dispatch(GetActiveVehicleList(2, (res) => {
+    //   if (res?.ActiveVehicleList.length > 0) {
+    //     if (isApiSubscribed) {
+    //       setTotalVehicle(res?.ActiveVehicleList.length);
+    //     }
+    //   }
+    // }))
+    getData()
     return () => {
       isApiSubscribed = false;
     }
   }, [isFocused])
 
   useEffect(() => {
-    // dispatch(GetActiveVehicleRoute((res) => {
-    //   if (res?.RouteDetails != []) {
-    //     // setRouteList(res?.RouteDetails);
-    //     // setNewRouteList(res?.RouteDetails);
-    //   }
-
-    // }))
     getData()
   }, [])
 
   const getData = () => {
     dispatch(GetActiveVehicleList(data.storeUserData.userData.companyId, (res) => {
       if (res?.ActiveVehicleList.length > 0) {
-        console.log("res", res?.ActiveVehicleList)
-        // console.log('vehicle list', res?.ActiveVehicleList)
-        // setVehicleList(res?.ActiveVehicleList);
-        // setNewVehicleList(res?.ActiveVehicleList)
+        setTotalVehicle(res?.ActiveVehicleList.length);
+        dispatch(storeVehicleData(res?.ActiveVehicleList))
+      }
+    }))
+    dispatch(GetActiveVehicleRoute((res) => {
+      if (res?.RouteDetails.length > 0) {
+        dispatch(storeVehicleRoute(res?.RouteDetails))
       }
     }))
   }
@@ -142,6 +137,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
     flexWrap: 'wrap',
-    // paddingTop: 80,
   }
 })

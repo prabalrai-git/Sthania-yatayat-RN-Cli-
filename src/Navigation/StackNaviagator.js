@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import DashboardScreen from '../Screens/Dashboard/DashboardScreen';
 import AssignRouteScreen from '../Screens/AssignRoute/AssignRouteScreen';
 import ReceiptInfoScreen from '../Screens/ReceiptInfo.js/ReceiptInfoScreen';
@@ -9,21 +9,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import SearchVehicle from '../Screens/Search.js/SearchVehicle';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import QrScanner from '../Screens/CameraScreen.js/QrScanner';
+import { storeUserData } from '../Services/store/slices/profileSlice';
 const StackNaviagator = () => {
   const Stack = createNativeStackNavigator();
   const dispatch = useDispatch();
   const user = useSelector(state => state.storeUserData.userData);
 
-  useEffect(() => {
-    getData()
-  }, [])
-
   const getData = async () => {
-
-    // console.log("potatop pota");
     try {
       const jsonValue = await AsyncStorage.getItem('@userData')
-      // console.log("json 1St value", jsonValue)
+      temp = JSON.parse(jsonValue)
       if (jsonValue !== null) {
         dispatch(storeUserData(JSON.parse(jsonValue)))
       }
@@ -32,6 +27,10 @@ const StackNaviagator = () => {
     } catch (e) {
     }
   }
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -40,12 +39,11 @@ const StackNaviagator = () => {
         headerStyle: {
           backgroundColor: 'red',
         },
-
       }}
     >
       {
         user === undefined ?
-        // IsSignedIn === false ?
+          // IsSignedIn === false ?
           <Stack.Screen
             name='LoginScreen'
             component={LoginScreen}
@@ -83,7 +81,7 @@ const StackNaviagator = () => {
             //   headerShown: false
             // }}
             />
-             <Stack.Screen
+            <Stack.Screen
               name='ScanScreen'
               component={QrScanner}
             // options={{
