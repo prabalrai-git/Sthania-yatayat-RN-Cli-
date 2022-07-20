@@ -15,36 +15,38 @@ const Filter = ({ data, returnData, DailyRouteVehicleFilter, forVehicleList, for
 
   const handlSearch = (val) => {
     const pushArr = [];
-    {
-      DailyRouteVehicleFilter &&
-        data.map(e => {
-          if(e.DId.toString().includes(val) || e.VehicleNumber.toString().includes(val)){
+    if (data !== undefined && data !== '') {
+      {
+        DailyRouteVehicleFilter &&
+          data.map(e => {
+            if (e.DId.toString().includes(val) || e.VehicleNumber.toString().includes(val)) {
               pushArr.push(e)
             }
-            
-        })
-    }
 
-    {
-      forVehicleList &&
-        data.map(e => {
-          e.VehicleNumber.toString().includes(val)
-            &&
-            pushArr.push(e)
-        })
-    }
-    {
-      forRouteList &&
-        data.map(e => {
-          e.RouteName.toString().includes(val)
-            &&
-            pushArr.push(e)
-        })
+          })
+      }
+
+      {
+        forVehicleList &&
+          data.map(e => {
+            e.VehicleNumber.toString().includes(val)
+              &&
+              pushArr.push(e)
+          })
+      }
+      {
+        forRouteList &&
+          data.map(e => {
+            e.RouteName.toString().includes(val)
+              &&
+              pushArr.push(e)
+          })
+      }
     }
     returnData(pushArr)
   };
 
-  
+
 
 
   const [mode, setMode] = useState('date');
@@ -60,7 +62,7 @@ const Filter = ({ data, returnData, DailyRouteVehicleFilter, forVehicleList, for
       retDate(currentDate)
     } else {
     }
-   
+
   };
   const showDatepicker = () => {
     // setToShow(true);
@@ -103,7 +105,7 @@ const Filter = ({ data, returnData, DailyRouteVehicleFilter, forVehicleList, for
           maximumDate={new Date()}
 
         />
-        
+
         // <Text>Potato</Text>
       }
     </View >
