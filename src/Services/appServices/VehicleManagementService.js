@@ -153,10 +153,10 @@ export const GetCounterDetail = (successCallback) => {
 }
 
 // GetReservationDetailsByDate
-export const GetReservationDetailsByDatee = (successCallback) => {
+export const GetReservationDetailsByDatee = (data, successCallback) => {
   return async dispatch => {
     try{
-      const response = await fetch(`${GetReservationDetailsByDate}`);
+      const response = await fetch(`${GetReservationDetailsByDate}?fromdate=${data.fromdate}&todate=${data.todate}`);
       if(response?.status === 200){
         successCallback(response?.data)
       }else{
