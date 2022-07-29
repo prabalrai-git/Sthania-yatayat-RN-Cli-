@@ -6,13 +6,17 @@ import { useDispatch } from 'react-redux'
 import Filter from '../../Components/UI/Filter'
 import DailyRouteCard from '../../Components/UI/DailyRouteCard'
 import { GetReservationDetailsByDatee } from '../../Services/appServices/VehicleManagementService'
+import ReservationCard from '../../Components/UI/ReservationCard'
 
 const ReservationScreen = () => {
 
   const dispatch = useDispatch()
   const [TodayRouteList, setTodayRouteList] = useState();
-  const [NewTodayRouteList, setNewTodayRouteList] = useState();
+  const [ReservedVehicle, setReservedVehicle] = useState();
   const IsSearchFocused = useIsFocused()
+
+  // console.log("reserved vehicle",ReservedVehicle)
+
 
   const handleChange = () => [
 
@@ -23,20 +27,8 @@ const ReservationScreen = () => {
   }
   const renderItem = ({ item }) =>
   (
-    <DailyRouteCard data={item} />
+    <ReservationCard data={item}/>
   )
-
-  const daa = {
-    "Charge": 360,
-    "RId": 18,
-    "ReservationDate": "2022-07-29T16:23:49",
-    "ReserveNepalidate": "2079-4-13",
-    "ReserverLocation": "Kama",
-    "UserId": 2,
-    "UserName": "anib",
-    "VehicleNumber": "ग १ ख ८५३६",
-    "vehicleId": 271
-  }
 
   useEffect(() => {
     const date = {
@@ -44,7 +36,8 @@ const ReservationScreen = () => {
       todate: '2022-7-29'
     }
     dispatch(GetReservationDetailsByDatee(date, (res) => {
-      console.log("res", res?.GetReservationDetails)
+      // console.log("res", res?.GetReservationDetails)
+      setReservedVehicle(res?.GetReservationDetails)
     }))
   }, [])
 
@@ -62,10 +55,10 @@ const ReservationScreen = () => {
         flex: 1
       }}>
         {
-          NewTodayRouteList !== [] ?
+          ReservedVehicle !== [] ?
             <FlatList
-              data={NewTodayRouteList}
-              keyExtractor={item => item.DId}
+              data={ReservedVehicle}
+              keyExtractor={item => item.RId}
               renderItem={renderItem}
             ></FlatList>
             :
