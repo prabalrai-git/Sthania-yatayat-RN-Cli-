@@ -14,19 +14,32 @@ import { useNavigation } from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
 
-const AddEditReservation = () => {
-  // console.log("route", route.params.forEdit)
+// {
+//   "Charge": 58, 
+// "RId": 3, 
+// "ReservationDate": "2022-07-29T16:10:50", 
+// "ReserveNepalidate": "2079-4-13", 
+// "ReserverLocation": "Vbb", 
+// "UserId": 2, 
+// "UserName": "anib", 
+// "VehicleNumber": "ग १ ख ५५२७", 
+// "vehicleId": 268
+// }
+
+const EditReservation = ({route}) => {
+  console.log("route", route.params.data.Charge)
+  const Temp = route.params.data
   const vehicle = useSelector(state => state.storeVehicleData);
   const user = useSelector(state => state.storeUserData.userData)
-  const [VehicleId, setVehicleId] = useState();
-  const [VehicleNumberPlate, setVehicleNumberPlate] = useState('');
+  const [VehicleId, setVehicleId] = useState(Temp.vehicleId);
+  const [VehicleNumberPlate, setVehicleNumberPlate] = useState(Temp.VehicleNumber);
   const [NewVehicleList, setNewVehicleList] = useState(vehicle.vehicleData);
   const [IsInputDisable, setIsInputDisable] = useState(false);
   const [IsVisible, setIsVisible] = useState(false);
-  const [Price, setPrice] = useState();
-  const [Loocation, setLoocation] = useState();
-  const [NDate, setNDate] = useState();
-  const [NepDate, setNepDate] = useState();
+  const [Price, setPrice] = useState(Temp.Charge);
+  const [Loocation, setLoocation] = useState(Temp.ReserverLocation);
+  const [NDate, setNDate] = useState(Temp.ReservationDate);
+  const [NepDate, setNepDate] = useState(Temp.ReserveNepalidate);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch()
   const [mode, setMode] = useState('date');
@@ -109,7 +122,7 @@ const AddEditReservation = () => {
     // console.log("user", user)
     let isValidated = validate();
     const data = {
-      "RId": 0,
+      "RId": Temp.RId,
       "VehicleId": VehicleId !== undefined ? VehicleId : 'n/a',
       "ReserverLocation": Loocation !== undefined ? Loocation : 'n/a',
       "ReservationDate": NDate !== undefined ? NDate : 'n/a',
@@ -119,18 +132,20 @@ const AddEditReservation = () => {
       "IsActive": true
     }
     // console.log("data", data);
-    if(isValidated) {
+    if (isValidated) {
       dispatch(InsertUpdateReserveDetail(data, (res) => {
         // console.log('res', res)
-        if(res.SuccessMsg === true){
+        if (res.SuccessMsg === true) {
           Alert.alert(
             "Sucessfull",
             "sucess",
             [
-              {text: 'होइन'},
-              {text: "हो", onPress: () => {
-                navigation.pop(1)
-              }}
+              { text: 'होइन' },
+              {
+                text: "हो", onPress: () => {
+                  navigation.pop(1)
+                }
+              }
             ]
           )
         }
@@ -142,6 +157,7 @@ const AddEditReservation = () => {
   return (
     <View style={GlobalStyles.mainContainer}>
       <View style={styles.container}>
+        <Text style={styles.dummyTitle}>Reservation Id:{Temp.RId}</Text>
         <View style={styles.dummyInputContainer}>
           <Text style={styles.dummyTitle}>सवारी नं:</Text>
           <Pressable onPress={() => {
@@ -297,7 +313,7 @@ const AddEditReservation = () => {
   )
 }
 
-export default AddEditReservation
+export default EditReservation
 
 const styles = StyleSheet.create({
   container: {

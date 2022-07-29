@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native'
 import React from 'react'
 import { GlobalStyles } from '../../../GlobalStyle'
 import DateTimeBadge from './DateTimeBadge';
+import { useNavigation } from '@react-navigation/native';
 
 const daa = {
   "Charge": 360,
@@ -17,13 +18,13 @@ const daa = {
 const windowWidth = Dimensions.get('window').width;
 
 const ReservationCard = ({ data }) => {
-  console.log("data", data)
+  // console.log("data", data)
+  const navigation = useNavigation()
   return (
     <>
       <Pressable onPress={() => {
-        navigation.navigate('ReceiptInfoScreen', {
-          id: data.RId,
-          // isActive: data.IsActive,
+        navigation.navigate('EditReservation', {
+          data: data
         })
       }}
         style={[styles.cardCotnainer, GlobalStyles.boxShadow]}

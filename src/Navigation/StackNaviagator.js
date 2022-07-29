@@ -12,6 +12,7 @@ import QrScanner from '../Screens/CameraScreen.js/QrScanner';
 import { storeUserData } from '../Services/store/slices/profileSlice';
 import ReservationScreen from '../Screens/Reservation/ReservationScreen';
 import AddEditReservationScreen from '../Screens/Reservation/AddEditReservationScreen';
+import EditReservation from '../Screens/Reservation/EditReservation';
 const StackNaviagator = () => {
   const Stack = createNativeStackNavigator();
   const dispatch = useDispatch();
@@ -108,6 +109,15 @@ const StackNaviagator = () => {
               options={{
                 // headerShown: false
                 title: 'add रिजर्व'
+              }}
+            />
+            {/* EditReservation */}
+            <Stack.Screen
+              name='EditReservation'
+              component={EditReservation}
+              options={{
+                // headerShown: false
+                title: 'edit रिजर्व'
               }}
             />
           </>
