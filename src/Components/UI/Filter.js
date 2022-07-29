@@ -3,13 +3,15 @@ import React, { useEffect, useState } from 'react'
 import { Icon, Input, SearchBar } from 'react-native-elements'
 import SearchButton from './SearchButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
 
 
 const windowWidth = Dimensions.get('window').width;
 
-const Filter = ({ data, returnData, DailyRouteVehicleFilter, forVehicleList, forRouteList, datePicker, retDate }) => {
+const Filter = ({ data, returnData, DailyRouteVehicleFilter, forVehicleList, forRouteList, datePicker, retDate, forSearch, forReservation }) => {
   const [search, setSearch] = useState("");
   const [SearchKeyWord, setSearchKeyWord] = useState('');
+  const navigation = useNavigation()
 
   // console.log("data to filetr", data);
 
@@ -68,6 +70,11 @@ const Filter = ({ data, returnData, DailyRouteVehicleFilter, forVehicleList, for
     // setToShow(true);
     setShow(true);
   };
+  const handleNavigation = () => {
+    console.log("pressed")
+    navigation.navigate('AddEditReservationScreen')
+  }
+
 
   return (
     <View style={styles.filterContainer}>
@@ -83,15 +90,37 @@ const Filter = ({ data, returnData, DailyRouteVehicleFilter, forVehicleList, for
           ></Icon>
         </TouchableOpacity>
       }
+      {
+        forSearch &&
+        <>
+          <TextInput
+            value={SearchKeyWord}
+            placeholder='search'
+            onChangeText={(e) => setSearchKeyWord(e)}
+            style={styles.inputContainerStylse}
+          >
+          </TextInput>
+          <SearchButton title={"खोज"} onPress={() => handlSearch(SearchKeyWord)} width={windowWidth * 0.3}></SearchButton>
+        </>
+      }
+      {
+        forReservation &&
+        <>
+          <TouchableOpacity onPress={() => showDatepicker()}>
+            
+            <Icon
+              name={'calendar'}
+              color={'#fefefe'}
+              type={'antdesign'}
+              style={styles.icon}
+              size={28}
+            ></Icon>
+          </TouchableOpacity>
+          <SearchButton title={"add"} onPress={() => handleNavigation()} width={windowWidth * 0.3}></SearchButton>
+        </>
+      }
 
-      <TextInput
-        value={SearchKeyWord}
-        placeholder='search'
-        onChangeText={(e) => setSearchKeyWord(e)}
-        style={styles.inputContainerStylse}
-      >
-      </TextInput>
-      <SearchButton title={"खोज"} onPress={() => handlSearch(SearchKeyWord)} width={windowWidth * 0.3}></SearchButton>
+
 
       {show &&
         <DateTimePicker

@@ -54,6 +54,8 @@ const LoginScreen = () => {
     let isValidated = validate();
     setIsDisabled(true);
     setIsLoading(true);
+
+    // return
     let data = {
       'username': UserName,
       'password': Password,
@@ -149,7 +151,7 @@ const LoginScreen = () => {
         >
           <Icon
             name={'shopping-store'}
-            color={'#c9c0c0'}
+            color={'#dad8d8'}
             type={'fontisto'}
             style={styles.icon}
             size={20}
@@ -175,7 +177,7 @@ const LoginScreen = () => {
         leftIcon={
           <Icon
             name={'user'}
-            color={'#c9c0c0'}
+            color={'#dad8d8'}
             type={'antdesign'}
             style={styles.icon}
             size={20}
@@ -202,7 +204,7 @@ const LoginScreen = () => {
         leftIcon={
           <Icon
             name={'key'}
-            color={'#c9c0c0'}
+            color={'#dad8d8'}
             type={'antdesign'}
             style={styles.icon}
             size={20}
@@ -218,7 +220,7 @@ const LoginScreen = () => {
           >
             <Icon
               name={'eyeo'}
-              color={'#c9c0c0'}
+              color={'#dad8d8'}
               type={'antdesign'}
               size={20}
             ></Icon>
@@ -239,7 +241,7 @@ const LoginScreen = () => {
         }}
       />
 
-      <LoginBtn title={"लग - इन"} onPress={() => handleProceed()} IsDisabled={IsDisabled}></LoginBtn>
+      <LoginBtn title={"लग - इन"} onPress={() => handleProceed()} disabled={IsDisabled}></LoginBtn>
 
       <Modal
         animationType="slide"
@@ -296,7 +298,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     borderRadius: 4,
-    borderColor: '#c9c0c0'
+    borderColor: '#dad8d8'
   },
   dummyInputContainer: {
     width: windowWidth - 16,
@@ -309,7 +311,7 @@ const styles = StyleSheet.create({
     color: "#878991",
   },
   dummyInput: {
-    backgroundColor: '#f8f7f7',
+    backgroundColor: '#faf4f4',
     paddingHorizontal: 4,
     paddingVertical: 4,
     borderRadius: 4,
@@ -317,7 +319,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#c9c0c0'
+    borderColor: '#dad8d8'
   },
   dummyInputTxt: {
     fontSize: 14,

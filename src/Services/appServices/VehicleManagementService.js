@@ -1,4 +1,4 @@
-import { CancelAssignedRouteOfVehicleByAdmin, GetActiveVehicleListByCompanyId, GetCompanyDetails, GetCounterDetails, GetRouteDetailsByDateWise, GetStaffDetailsByVehicleId, GetVehicleDetailsByVId, GetVehicleRouteDetailsByReceiptId, InsertUpdateDayWiseVehicleRoute } from '../constants/url';
+import { CancelAssignedRouteOfVehicleByAdmin, GetActiveVehicleListByCompanyId, GetCompanyDetails, GetCounterDetails, GetReservationDetailsByDate, GetRouteDetailsByDateWise, GetStaffDetailsByVehicleId, GetVehicleDetailsByVId, GetVehicleRouteDetailsByReceiptId, InsertUpdateDayWiseVehicleRoute, InsertUpdateReserveDetails } from '../constants/url';
 import { generateUrlEncodedData } from '../utils/generateUrlEncodedData';
 import { store, fetch } from '../utils/httpUtil'
 
@@ -147,6 +147,40 @@ export const GetCounterDetail = (successCallback) => {
         successCallback([])
       }
     }catch (error){
+
+    }
+  }
+}
+
+// GetReservationDetailsByDate
+export const GetReservationDetailsByDatee = (successCallback) => {
+  return async dispatch => {
+    try{
+      const response = await fetch(`${GetReservationDetailsByDate}`);
+      if(response?.status === 200){
+        successCallback(response?.data)
+      }else{
+        successCallback([])
+      }
+    }catch (error){
+
+    }
+  }
+}
+
+// InsertUpdateReserveDetails
+
+export const InsertUpdateReserveDetail = (data, successCallback) => {
+  return async dispatch => {
+    let formData = generateUrlEncodedData(data)
+    try{
+      const response = await store (`${InsertUpdateReserveDetails}`, formData);
+      if(response?.status === 200){
+        successCallback(response?.data)
+      }else{
+        successCallback([])
+      }
+    }catch(error){
 
     }
   }

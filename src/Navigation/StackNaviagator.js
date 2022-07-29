@@ -10,6 +10,8 @@ import SearchVehicle from '../Screens/Search.js/SearchVehicle';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import QrScanner from '../Screens/CameraScreen.js/QrScanner';
 import { storeUserData } from '../Services/store/slices/profileSlice';
+import ReservationScreen from '../Screens/Reservation/ReservationScreen';
+import AddEditReservationScreen from '../Screens/Reservation/AddEditReservationScreen';
 const StackNaviagator = () => {
   const Stack = createNativeStackNavigator();
   const dispatch = useDispatch();
@@ -63,30 +65,50 @@ const StackNaviagator = () => {
             <Stack.Screen
               name='AssignRouteScreen'
               component={AssignRouteScreen}
-            // options={{
-            //   headerShown: false
-            // }}
+              options={{
+                title: 'रूट असाइन गर्नुहोस्'
+              }}
             />
             <Stack.Screen
               name='ReceiptInfoScreen'
               component={ReceiptInfoScreen}
-            // options={{
-            //   headerShown: false
-            // }}
+              options={{
+                // headerShown: false
+                title: 'रसिद जानकारी',
+
+              }}
             />
             <Stack.Screen
               name='SearchScreen'
               component={SearchVehicle}
-            // options={{
-            //   headerShown: false
-            // }}
+              options={{
+                // headerShown: false
+                title: 'खोज गर्नुहोस्'
+              }}
             />
             <Stack.Screen
               name='ScanScreen'
               component={QrScanner}
-            // options={{
-            //   headerShown: false
-            // }}
+              options={{
+                // headerShown: false
+                title: 'QR स्क्यान'
+              }}
+            />
+            <Stack.Screen
+              name='ReservationScreen'
+              component={ReservationScreen}
+              options={{
+                // headerShown: false
+                title: 'रिजर्व'
+              }}
+            />
+            <Stack.Screen
+              name='AddEditReservationScreen'
+              component={AddEditReservationScreen}
+              options={{
+                // headerShown: false
+                title: 'add रिजर्व'
+              }}
             />
           </>
       }

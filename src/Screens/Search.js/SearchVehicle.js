@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { GlobalStyles } from '../../../GlobalStyle'
 import DailyRouteCard from '../../Components/UI/DailyRouteCard'
 import { useIsFocused } from '@react-navigation/native'
+import LoadingContainer from '../../Components/UI/LoadingContainer'
 
 const SearchVehicle = () => {
   const dispatch = useDispatch()
@@ -20,7 +21,7 @@ const SearchVehicle = () => {
       if (res?.DatewiseRouteDetails !== undefined) {
         setTodayRouteList(res?.DatewiseRouteDetails)
         setNewTodayRouteList(res?.DatewiseRouteDetails)
-      }else{
+      } else {
         setTodayRouteList([])
         setNewTodayRouteList([])
       }
@@ -35,25 +36,26 @@ const SearchVehicle = () => {
       setNewTodayRouteList(TodayRouteList)
     } else {
       setNewTodayRouteList(e)
-    }}
+    }
+  }
 
   const renderItem = ({ item }) =>
   (
     <DailyRouteCard data={item} />
   )
   const handleDateChange = (e) => {
-    let temp =JSON.stringify(e).split('T');
+    let temp = JSON.stringify(e).split('T');
     let newDate = temp[0].replace('"', '')
     dispatch(GetRouteDetailsByDateWisee(newDate, (res) => {
       // console.log("res?.DatewiseRouteDetails", res?.DatewiseRouteDetails);
       if (res?.DatewiseRouteDetails !== undefined) {
         setTodayRouteList(res?.DatewiseRouteDetails)
         setNewTodayRouteList(res?.DatewiseRouteDetails)
-      }else{
+      } else {
         setTodayRouteList([])
         setNewTodayRouteList([])
       }
-      
+
     }))
   }
 
@@ -61,7 +63,14 @@ const SearchVehicle = () => {
 
   return (
     <View style={GlobalStyles.mainContainer}>
-      <Filter data={TodayRouteList !== undefined ? TodayRouteList : ''} returnData={handleChange} DailyRouteVehicleFilter datePicker retDate={handleDateChange}></Filter>
+      <Filter 
+      data={TodayRouteList !== undefined ? TodayRouteList : ''} 
+      returnData={handleChange} 
+      DailyRouteVehicleFilter 
+      datePicker 
+      retDate={handleDateChange}
+      forSearch
+      ></Filter>
       <SafeAreaView style={{
         flex: 1
       }}>
@@ -71,9 +80,12 @@ const SearchVehicle = () => {
               data={NewTodayRouteList}
               keyExtractor={item => item.DId}
               renderItem={renderItem}
-            ></FlatList> 
+            ></FlatList>
             :
-            <Text> No Data Found</Text>
+            <>
+              <LoadingContainer></LoadingContainer>
+            </>
+
         }
 
       </SafeAreaView>

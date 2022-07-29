@@ -220,3 +220,30 @@ export const CancelAssignedRouteOfVehicleByAdmin = 'CancelAssignedRouteOfVehicle
 * @desc: Cancel Assigned Route of vehicle by Admin
 * @param: ?vehicleid={vehicleid}&receiptid={receiptid}&remarks={remarks}
 */
+
+
+// GetReservationDetailsByDate?fromdate={fromdate}&todate={todate}
+export const GetReservationDetailsByDate = `GetReservationDetailsByDate`
+
+/**
+* @desc: Get reservation details by data
+* @param: ?fromdate={fromdate}&todate={todate}
+*/
+
+// InsertUpdateReserveDetails
+export const InsertUpdateReserveDetails = `InsertUpdateReserveDetails`
+
+/**
+* @desc: Insert Update Reserve Details
+* @param: {
+          "RId": 1,
+          "VehicleId": 2,
+          "ReserverLocation": "sample string 3",
+          "ReservationDate": "2022-07-29T13:05:34.1919474+05:45",
+          "ReserveNepaliDate": "sample string 5",
+          "Charge": 6.0,
+          "UserId": 7,
+          "IsActive": true
+        }
+*/
+

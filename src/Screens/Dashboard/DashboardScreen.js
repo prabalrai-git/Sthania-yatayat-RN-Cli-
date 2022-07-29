@@ -35,6 +35,14 @@ const navdata = [
     icon: "qr-code-scanner",
     iconsFamily: 'MaterialIcons'
   },
+  ,
+  {
+    id: 4,
+    title: "रिजर्व",
+    route: "ReservationScreen",
+    icon: "calendar-check",
+    iconsFamily: 'font-awesome-5'
+  },
 ]
 
 

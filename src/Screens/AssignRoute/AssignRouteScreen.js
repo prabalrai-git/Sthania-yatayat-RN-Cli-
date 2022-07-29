@@ -285,7 +285,7 @@ const AssignRouteScreen = () => {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Filter data={vehicle.vehicleData} returnData={handleChangeVehicle} forVehicleList />
+                <Filter data={vehicle.vehicleData} returnData={handleChangeVehicle} forVehicleList forSearch/>
                 <ScrollView>
                   {
                     (NewVehicleList !== undefined) &&
@@ -311,7 +311,7 @@ const AssignRouteScreen = () => {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Filter data={vehicle.vehicleRoute} returnData={handleChangeRoute} forRouteList />
+                <Filter data={vehicle.vehicleRoute} returnData={handleChangeRoute} forRouteList forSearch/>
                 <ScrollView>
                   {
                     (NewRouteList !== undefined) &&
