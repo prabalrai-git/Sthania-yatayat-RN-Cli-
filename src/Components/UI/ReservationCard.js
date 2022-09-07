@@ -1,51 +1,62 @@
-import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native'
-import React from 'react'
-import { GlobalStyles } from '../../../GlobalStyle'
+import {View, Text, StyleSheet, Dimensions, Pressable} from 'react-native';
+import React from 'react';
+import {GlobalStyles} from '../../../GlobalStyle';
 import DateTimeBadge from './DateTimeBadge';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const daa = {
-  "Charge": 360,
-  "RId": 18,
-  "ReservationDate": "2022-07-29T16:23:49",
-  "ReserveNepalidate": "2079-4-13",
-  "ReserverLocation": "Kama",
-  "UserId": 2,
-  "UserName": "anib",
-  "VehicleNumber": "ग १ ख ८५३६",
-  "vehicleId": 271
-}
+  Charge: 360,
+  RId: 18,
+  ReservationDate: '2022-07-29T16:23:49',
+  ReserveNepalidate: '2079-4-13',
+  ReserverLocation: 'Kama',
+  UserId: 2,
+  UserName: 'anib',
+  VehicleNumber: 'ग १ ख ८५३६',
+  vehicleId: 271,
+};
 const windowWidth = Dimensions.get('window').width;
 
-const ReservationCard = ({ data }) => {
-  // console.log("data", data)
-  const navigation = useNavigation()
+const ReservationCard = ({data}) => {
+  // console.log('data', data);
+  const navigation = useNavigation();
   return (
     <>
-      <Pressable onPress={() => {
-        navigation.navigate('EditReservation', {
-          data: data
-        })
-      }}
-        style={[styles.cardCotnainer, GlobalStyles.boxShadow]}
-      >
+      <Pressable
+        onPress={() => {
+          navigation.navigate('EditReservation', {
+            data: data,
+          });
+        }}
+        style={[styles.cardCotnainer, GlobalStyles.boxShadow]}>
         <View style={styles.leftcontainer}>
-          <Text style={[GlobalStyles.heading, { color: 'red' }]}>सवारी नं: {data.VehicleNumber}</Text>
-          <Text style={[GlobalStyles.body, {
-            color: secondary
-          }]}>{`रसिद नं: ${data.RId}`}</Text>
-          <Text style={[GlobalStyles.body, { color: "#525866" }]}>रुट: {data.ReserverLocation}</Text>
+          <Text style={[GlobalStyles.heading, {color: 'red'}]}>
+            सवारी नं: {data.VehicleNumber}
+          </Text>
+          <Text
+            style={[
+              GlobalStyles.body,
+              {
+                color: secondary,
+              },
+            ]}>{`रसिद नं: ${data.RId}`}</Text>
+          <Text style={[GlobalStyles.body, {color: '#525866'}]}>
+            रुट: {data.ReserverLocation}
+          </Text>
         </View>
 
         <DateTimeBadge
-          data={data.ReservationDate} nepaliDate={data.ReserveNepalidate} isActive={true} />
+          data={data.ReservationDate}
+          nepaliDate={data.ReserveNepalidate}
+          ReserveDays={data.ReserveDays}
+          isActive={true}
+        />
       </Pressable>
-
     </>
-  )
-}
+  );
+};
 
-export default ReservationCard
+export default ReservationCard;
 
 const styles = StyleSheet.create({
   cardCotnainer: {
@@ -57,12 +68,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   cardTitle: {
     color: 'red',
   },
   leftcontainer: {
     width: windowWidth * 0.65,
-  }
-})
+  },
+});
