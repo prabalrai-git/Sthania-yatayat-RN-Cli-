@@ -29,7 +29,7 @@ const ReservationScreen = () => {
   var yyyy = today.getFullYear();
 
   today = yyyy + '-' + mm + '-' + dd;
-  console.log(today);
+  // console.log(today);
 
   useEffect(() => {
     const date = {
