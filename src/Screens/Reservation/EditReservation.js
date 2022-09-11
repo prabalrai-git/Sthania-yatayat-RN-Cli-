@@ -261,7 +261,7 @@ const EditReservation = ({route}) => {
           )}
 
           <Input
-            value={Price.toString()}
+            value={Price !== null && Price.toString()}
             placeholder="Price"
             onChangeText={e => setPrice(e)}
             label="Price"
@@ -293,7 +293,7 @@ const EditReservation = ({route}) => {
             </Text>
           )}
           <Input
-            value={ReserveDays.toString()}
+            value={ReserveDays !== null && ReserveDays.toString()}
             placeholder="Reserve Days"
             onChangeText={e => setReserveDays(e)}
             label="Reserve Days"
