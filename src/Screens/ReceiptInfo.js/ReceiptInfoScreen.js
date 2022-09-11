@@ -1,23 +1,39 @@
-import { Alert, DeviceEventEmitter, Dimensions, Image, Keyboard, Modal, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  Alert,
+  DeviceEventEmitter,
+  Dimensions,
+  Image,
+  Keyboard,
+  Modal,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import QRCode from 'react-native-qrcode-svg';
-import { useNavigation } from '@react-navigation/native';
-import { SecondaryBtn, PrimaryBtn } from '../../Components/UI/cButtons';
-import { CancelAssignedRouteOfVehicle, GetVehicleRouteDetailsByyReceiptId } from '../../Services/appServices/VehicleManagementService';
-import { GlobalStyles } from '../../../GlobalStyle';
-import { BluetoothManager, BluetoothEscposPrinter } from 'react-native-bluetooth-escpos-printer'
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {SecondaryBtn, PrimaryBtn} from '../../Components/UI/cButtons';
+import {
+  CancelAssignedRouteOfVehicle,
+  GetVehicleRouteDetailsByyReceiptId,
+} from '../../Services/appServices/VehicleManagementService';
+import {GlobalStyles} from '../../../GlobalStyle';
+import {
+  BluetoothManager,
+  BluetoothEscposPrinter,
+} from 'react-native-bluetooth-escpos-printer';
 import ImgToBase64 from 'react-native-image-base64';
 import ViewShot from 'react-native-view-shot';
-import Logo from '../../Assets/images/logo.png'
+import Logo from '../../Assets/images/logo.png';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
 
 const windowWidth = Dimensions.get('window').width;
 
-
-const ReceiptInfoScreen = ({ route }) => {
+const ReceiptInfoScreen = ({route}) => {
   const user = useSelector(state => state.storeUserData.userData);
-  const { id, isActive } = route.params
+  const {id, isActive} = route.params;
   const dispatch = useDispatch();
   const [ReceiptDetails, setReceiptDetails] = useState();
   const [Qr, setQr] = useState();
@@ -26,55 +42,63 @@ const ReceiptInfoScreen = ({ route }) => {
   const [Remarks, setREmarks] = useState('');
   const [VehicleId, setVehicleId] = useState();
   const [errors, setErrors] = useState({});
-  const [DeviceAddress, setDeviceAddress] = useState()
+  const [DeviceAddress, setDeviceAddress] = useState();
   const ref = useRef();
-  const [CaptureImage, setCaptureImage] = useState('')
+  const [CaptureImage, setCaptureImage] = useState('');
 
-  
   const ToSendData = {
     CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',
-    CompanyAddress: ReceiptDetails !== undefined ? ReceiptDetails.CompanyAddress : '',
-    CompanyPhoneNumber: ReceiptDetails !== undefined ? ReceiptDetails.CompanyPhoneNumber : '',
-    VehicleNumber: ReceiptDetails !== undefined ? ReceiptDetails.VehicleNumber : '',
+    CompanyAddress:
+      ReceiptDetails !== undefined ? ReceiptDetails.CompanyAddress : '',
+    CompanyPhoneNumber:
+      ReceiptDetails !== undefined ? ReceiptDetails.CompanyPhoneNumber : '',
+    VehicleNumber:
+      ReceiptDetails !== undefined ? ReceiptDetails.VehicleNumber : '',
     Driver: ReceiptDetails !== undefined ? ReceiptDetails.Driver : '',
     OwnerName: ReceiptDetails !== undefined ? ReceiptDetails.OwnerName : '',
-    EntryDate: ReceiptDetails !== undefined ? ReceiptDetails.RouteDate.split("T") : '',
-    EntryNepaliDate: ReceiptDetails !== undefined ? ReceiptDetails.NepaliDate : '',
-    StaffContact: ReceiptDetails !== undefined ? ReceiptDetails.DriverNumber : '',
+    EntryDate:
+      ReceiptDetails !== undefined ? ReceiptDetails.RouteDate.split('T') : '',
+    EntryNepaliDate:
+      ReceiptDetails !== undefined ? ReceiptDetails.NepaliDate : '',
+    StaffContact:
+      ReceiptDetails !== undefined ? ReceiptDetails.DriverNumber : '',
     Amount: ReceiptDetails !== undefined ? ReceiptDetails.ReceiptAmt : '',
     remarks: ReceiptDetails !== undefined ? ReceiptDetails.Remarks : '',
     route: ReceiptDetails !== undefined ? ReceiptDetails.Route : '',
     IsActive: ReceiptDetails !== undefined && ReceiptDetails.Isactive,
     CounterName: ReceiptDetails !== undefined ? ReceiptDetails.CounterName : '',
-  }
-  
+  };
+
   // console.log("to send data", ReceiptDetails)
 
   useEffect(() => {
-    dispatch(GetVehicleRouteDetailsByyReceiptId(id, (res) => {
-      // console.log("res", res)
-      if (res?.VechileRouteByReceiptId.length > 0) {
-        setReceiptDetails(res?.VechileRouteByReceiptId[0])
+    dispatch(
+      GetVehicleRouteDetailsByyReceiptId(id, res => {
+        // console.log("res", res)
+        if (res?.VechileRouteByReceiptId.length > 0) {
+          setReceiptDetails(res?.VechileRouteByReceiptId[0]);
 
-        handleCapture()
-      }
-    }))
-
-  }, [])
+          handleCapture();
+        }
+      }),
+    );
+  }, []);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-      DeviceEventEmitter.addListener(BluetoothManager.EVENT_DEVICE_ALREADY_PAIRED, rsp => {
-        // deviceAlreadPaired(rsp);
-        // console.log("resp", rsp)
-        if (rsp !== undefined) {
-          setDeviceAddress(rsp)
-        }
-
-      });
+      DeviceEventEmitter.addListener(
+        BluetoothManager.EVENT_DEVICE_ALREADY_PAIRED,
+        rsp => {
+          // deviceAlreadPaired(rsp);
+          // console.log("resp", rsp)
+          if (rsp !== undefined) {
+            setDeviceAddress(rsp);
+          }
+        },
+      );
     }
-    scanDevices()
-  }, [])
+    scanDevices();
+  }, []);
 
   const scanDevices = useCallback(() => {
     // setLoading(true);
@@ -105,31 +129,33 @@ const ReceiptInfoScreen = ({ route }) => {
     ref.current.capture().then(uri => {
       let img = ImgToBase64.getBase64String(uri)
         .then(base64String => setCaptureImage(base64String))
-        .catch(err => console.log("error"));
+        .catch(err => console.log('error'));
     });
-  }
+  };
 
   const print = async () => {
     if (DeviceAddress !== undefined) {
-      let address = JSON.parse(DeviceAddress.devices)[0].address
+      let address = JSON.parse(DeviceAddress.devices)[0].address;
       // console.log(address)
       // console.log(JSON.parse(DeviceAddress))
       if (CaptureImage !== '') {
         BluetoothManager.connect(address).then(
           s => {
-            BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
+            BluetoothEscposPrinter.printerAlign(
+              BluetoothEscposPrinter.ALIGN.CENTER,
+            );
             BluetoothEscposPrinter.setBlob(0);
-            BluetoothEscposPrinter.printText("\n\r", {
+            BluetoothEscposPrinter.printText('\n\r', {
               encoding: 'utf-8',
               codepage: 0,
               widthtimes: 3,
               heigthtimes: 2,
-              fonttype: 1
+              fonttype: 1,
             });
             BluetoothEscposPrinter.printPic(CaptureImage, {
               height: 550,
               width: 375,
-            })
+            });
           },
           e => {
             // setLoading(false);
@@ -137,28 +163,34 @@ const ReceiptInfoScreen = ({ route }) => {
           },
         );
       }
-
-
     }
-  }
+  };
+
+  // print when route assigned
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => print();
+    }, []),
+  );
+
   useEffect(() => {
-    getDataURL()
-  }, [])
+    getDataURL();
+  }, []);
 
   const handleError = (error, input) => {
-    setErrors(prevState =>
-      ({ ...prevState, [input]: error }));
+    setErrors(prevState => ({...prevState, [input]: error}));
   };
 
   const validate = () => {
     Keyboard.dismiss();
-    let isOpValid = true
+    let isOpValid = true;
     if (Remarks === '' || Remarks === undefined) {
-      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'Remarks')
-      isOpValid = false
+      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'Remarks');
+      isOpValid = false;
     }
     return isOpValid;
-  }
+  };
 
   let svg = useRef(null);
   const getDataURL = () => {
@@ -166,7 +198,7 @@ const ReceiptInfoScreen = ({ route }) => {
   };
 
   function callback(dataURL) {
-    setQr(dataURL)
+    setQr(dataURL);
   }
   const htmlData = `${id}`;
 
@@ -176,55 +208,43 @@ const ReceiptInfoScreen = ({ route }) => {
       vehicleid: VehicleId,
       receiptid: id,
       remarks: Remarks,
-    }
+    };
     // console.log('Data', data)
     // return
     if (isValidate) {
-      dispatch(CancelAssignedRouteOfVehicle(data, (res) => {
-
-        if (res?.SuccessMsg === true) {
-          Alert.alert(
-            "सफलता !",
-            "रसिद सफलतापूर्वक रद्द गरियो",
-            [
-              { text: 'ok', onPress: () => navigation.pop(1) }
-            ]
-          )
-        } else {
-          Alert.alert(
-            "असफलता !",
-            "फेरी प्रयास गर्नु होला",
-            [
-              { text: 'ok' }
-            ]
-          )
-        }
-      }))
+      dispatch(
+        CancelAssignedRouteOfVehicle(data, res => {
+          if (res?.SuccessMsg === true) {
+            Alert.alert('सफलता !', 'रसिद सफलतापूर्वक रद्द गरियो', [
+              {text: 'ok', onPress: () => navigation.pop(1)},
+            ]);
+          } else {
+            Alert.alert('असफलता !', 'फेरी प्रयास गर्नु होला', [{text: 'ok'}]);
+          }
+        }),
+      );
     } else {
-      Alert.alert(
-        "अलर्ट !",
-        " कृपया टिप्पणीहरू प्रविष्ट गर्नुहोस्",
-        [
-          { text: 'ok' }
-        ]
-      )
+      Alert.alert('अलर्ट !', ' कृपया टिप्पणीहरू प्रविष्ट गर्नुहोस्', [
+        {text: 'ok'},
+      ]);
     }
-  }
+  };
 
   return (
     <View style={GlobalStyles.mainContainer}>
-      {
-        ReceiptDetails === undefined &&
-        <LoadingContainer />
-      }
-      
-      <ViewShot ref={ref} options={{ fileName: "Your-File-Name", format: "jpg", quality: 0.9 }} style={{ backgroundColor: '#fefefe' }}>
+      {ReceiptDetails === undefined && <LoadingContainer />}
+
+      <ViewShot
+        ref={ref}
+        options={{fileName: 'Your-File-Name', format: 'jpg', quality: 0.9}}
+        style={{backgroundColor: '#fefefe'}}>
         <View style={styles.PrintScreenContainer}>
           <View style={styles.contenHeadContainer}>
             <Text style={styles.CTitle}>{ToSendData.CompanyName}</Text>
-            <Text style={styles.CAddress}>{ToSendData.CompanyAddress}, {ToSendData.CompanyPhoneNumber}</Text>
+            <Text style={styles.CAddress}>
+              {ToSendData.CompanyAddress}, {ToSendData.CompanyPhoneNumber}
+            </Text>
           </View>
-
 
           <View style={styles.spaceBetween}>
             <View style={styles.contentCol}>
@@ -233,8 +253,9 @@ const ReceiptInfoScreen = ({ route }) => {
             </View>
             <View style={styles.contentCol}>
               <Text style={styles.subTitle}>मिति:</Text>
-              <Text style={styles.subContent}>{ToSendData.EntryNepaliDate}</Text>
-
+              <Text style={styles.subContent}>
+                {ToSendData.EntryNepaliDate}
+              </Text>
             </View>
             <View style={styles.contentCol}>
               <Text style={styles.subTitle}>समय:</Text>
@@ -275,17 +296,13 @@ const ReceiptInfoScreen = ({ route }) => {
             <Text style={styles.subContent}>{ToSendData.remarks}</Text>
           </View>
 
-
           <View class={styles.contentContainer} style={styles.spaceBetween}>
-            <Image
-              style={styles.tinyLogo}
-              source={Logo}
-            />
+            <Image style={styles.tinyLogo} source={Logo} />
             <QRCode
               value={htmlData}
               size={120}
-              getRef={(e) => {
-                (svg = e)
+              getRef={e => {
+                svg = e;
               }}
             />
           </View>
@@ -302,40 +319,41 @@ const ReceiptInfoScreen = ({ route }) => {
         </View>
       </ViewShot>
 
-      <View style={[styles.BtnContainerStyle, {
-        width: windowWidth - 16,
-      }]}>
-
-        {
-          ToSendData.route !== '' &&
+      <View
+        style={[
+          styles.BtnContainerStyle,
+          {
+            width: windowWidth - 16,
+          },
+        ]}>
+        {ToSendData.route !== '' && (
           <>
-            {
-              ToSendData.IsActive
-                ?
-                <>
-                  {
-                    (user.RoleId === 1 || user.RoleId === 2) ?
-                      <>
-                        <SecondaryBtn title='रद्द गर्नुहोस्' onPress={() => setIsModalVisible(!IsModalVisible)} />
-                        <PrimaryBtn title='पुन-प्रिन्ट' onPress={print} />
-                      </>
-                      :
-                      <AppButton title='पुन-प्रिन्ट' onPress={print}></AppButton>
-                  }
-                </>
-                :
-                <Text style={{
+            {ToSendData.IsActive ? (
+              <>
+                {user.RoleId === 1 || user.RoleId === 2 ? (
+                  <>
+                    <SecondaryBtn
+                      title="रद्द गर्नुहोस्"
+                      onPress={() => setIsModalVisible(!IsModalVisible)}
+                    />
+                    <PrimaryBtn title="पुन-प्रिन्ट" onPress={print} />
+                  </>
+                ) : (
+                  <AppButton title="पुन-प्रिन्ट" onPress={print}></AppButton>
+                )}
+              </>
+            ) : (
+              <Text
+                style={{
                   color: '#e78a8a',
                   fontSize: 24,
-                  fontWeight: 'bold'
-                }}>रसिद रद्द गरिएको छ।</Text>
-
-            }
+                  fontWeight: 'bold',
+                }}>
+                रसिद रद्द गरिएको छ।
+              </Text>
+            )}
           </>
-        }
-
-
-
+        )}
       </View>
 
       <Modal
@@ -344,8 +362,7 @@ const ReceiptInfoScreen = ({ route }) => {
         visible={IsModalVisible}
         onRequestClose={() => {
           setIsModalVisible(!IsModalVisible);
-        }}
-      >
+        }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text>के तपाइँ रद्द गर्न चाहनुहुन्छ?</Text>
@@ -356,34 +373,34 @@ const ReceiptInfoScreen = ({ route }) => {
               multiline
               numberOfLines={4}
               placeholder={'remarks'}
-              onFocus={() => handleError(null, 'Remarks')}
-            ></TextInput>
-            {
-              errors.Remarks &&
-              <Text style={{
-                fontSize: 12,
-                color: 'red'
-              }}>{errors.Remarks}</Text>
-            }
+              onFocus={() => handleError(null, 'Remarks')}></TextInput>
+            {errors.Remarks && (
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: 'red',
+                }}>
+                {errors.Remarks}
+              </Text>
+            )}
             <View style={[styles.BtnContainerStyle]}>
-              <SecondaryBtn title='होइन' onPress={() => {
-                setIsModalVisible(!IsModalVisible)
-                setREmarks('')
-              }} />
-              <PrimaryBtn title='हो' onPress={() => handleCancel()} />
+              <SecondaryBtn
+                title="होइन"
+                onPress={() => {
+                  setIsModalVisible(!IsModalVisible);
+                  setREmarks('');
+                }}
+              />
+              <PrimaryBtn title="हो" onPress={() => handleCancel()} />
             </View>
-
-
           </View>
         </View>
       </Modal>
+    </View>
+  );
+};
 
-    </View >
-
-  )
-}
-
-export default ReceiptInfoScreen
+export default ReceiptInfoScreen;
 
 const styles = StyleSheet.create({
   PrintScreenContainer: {
@@ -391,13 +408,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   contenHeadContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
-
   },
   contentCol: {
     flexDirection: 'column',
@@ -408,9 +424,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   spaceBetween: {
-    width: "100%",
+    width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   CTitle: {
     fontSize: 20,
@@ -433,7 +449,7 @@ const styles = StyleSheet.create({
     width: windowWidth,
     backgroundColor: '#47333399',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   modalView: {
     width: windowWidth - 16,
@@ -449,10 +465,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingHorizontal: 4,
     paddingVertical: 12,
-    color: "#5c5656",
+    color: '#5c5656',
     borderRadius: 4,
     marginVertical: 8,
-
   },
 
   BtnContainerStyle: {
@@ -460,11 +475,11 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
     // alignItems: 'stretch'
   },
   tinyLogo: {
     width: 120,
     height: 120,
-  }
-})
+  },
+});

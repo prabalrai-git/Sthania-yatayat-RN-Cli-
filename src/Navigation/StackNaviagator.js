@@ -121,7 +121,7 @@ const StackNaviagator = () => {
             component={EditReservation}
             options={{
               // headerShown: false
-              title: 'Edit रिजर्व',
+              title: 'रिजर्व सम्पादन',
             }}
           />
         </>

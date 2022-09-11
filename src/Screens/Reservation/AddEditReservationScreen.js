@@ -58,7 +58,7 @@ const AddEditReservation = () => {
         '-' +
         currentDate.getDate();
       const newTime = currentDate.toLocaleTimeString();
-      const fialEntryDate = newDate + 'T' + newTime;
+      const fialEntryDate = newDate; /*+ 'T' + newTime;*/
       setNDate(fialEntryDate);
 
       let daa = new NepaliDate(currentDate).getBS();
@@ -143,7 +143,7 @@ const AddEditReservation = () => {
         InsertUpdateReserveDetail(data, res => {
           // console.log('res', res)
           if (res.SuccessMsg === true) {
-            Alert.alert('Sucessfull', 'sucess', [
+            Alert.alert('सफलता', 'थप्नुहोस्', [
               {text: 'होइन'},
               {
                 text: 'हो',
@@ -185,14 +185,14 @@ const AddEditReservation = () => {
           </View>
 
           <View style={styles.dummyInputContainer}>
-            <Text style={styles.dummyTitle}>Date(AD):</Text>
+            <Text style={styles.dummyTitle}>मिति(A.D):</Text>
             <Pressable
               onPress={() => {
                 setShow(!show);
                 handleError(null, 'NDate');
               }}>
               <Text style={styles.dummyInput}>{`${
-                NDate !== undefined ? NDate : 'date'
+                NDate !== undefined ? NDate : 'मिति'
               }`}</Text>
             </Pressable>
             {errors.NDate && (
@@ -207,17 +207,17 @@ const AddEditReservation = () => {
           </View>
 
           <View style={styles.dummyInputContainer}>
-            <Text style={styles.dummyTitle}>Date(B.S):</Text>
+            <Text style={styles.dummyTitle}>मिति(B.S):</Text>
             <Text style={styles.dummyInput}>{`${
-              NepDate !== undefined ? NepDate : 'date'
+              NepDate !== undefined ? NepDate : 'मिति'
             }`}</Text>
           </View>
 
           <Input
             value={Loocation}
-            placeholder="Location"
+            placeholder="स्थान"
             onChangeText={e => setLoocation(e)}
-            label="Location"
+            label="स्थान"
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -247,9 +247,9 @@ const AddEditReservation = () => {
 
           <Input
             value={Price}
-            placeholder="Price"
+            placeholder="मूल्य"
             onChangeText={e => setPrice(e)}
-            label="Price"
+            label="मूल्य"
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -279,9 +279,9 @@ const AddEditReservation = () => {
           )}
           <Input
             value={ReserveDays}
-            placeholder="Reserve Days"
+            placeholder="रिजर्व दिन"
             onChangeText={e => setReserveDays(e)}
-            label="Reserve Days"
+            label="रिजर्व दिन"
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',

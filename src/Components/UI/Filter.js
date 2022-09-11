@@ -122,7 +122,7 @@ const Filter = ({
               size={28}></Icon>
           </TouchableOpacity>
           <SearchButton
-            title={'Add'}
+            title={'थप्नुहोस्'}
             onPress={() => handleNavigation()}
             width={windowWidth * 0.3}></SearchButton>
         </>

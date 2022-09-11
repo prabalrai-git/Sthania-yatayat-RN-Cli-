@@ -1,7 +1,7 @@
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {GlobalStyles} from '../../../GlobalStyle';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import Filter from '../../Components/UI/Filter';
 import DailyRouteCard from '../../Components/UI/DailyRouteCard';
@@ -14,13 +14,6 @@ const ReservationScreen = () => {
   const [ReservedVehicle, setReservedVehicle] = useState();
   const IsSearchFocused = useIsFocused();
 
-  // console.log("reserved vehicle",ReservedVehicle)
-
-  const handleChange = () => [];
-
-  const handleDateChange = () => {};
-  const renderItem = ({item}) => <ReservationCard data={item} />;
-
   // today date
 
   var today = new Date();
@@ -30,6 +23,30 @@ const ReservationScreen = () => {
 
   today = yyyy + '-' + mm + '-' + dd;
   // console.log(today);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // const unsubscribe = API.subscribe(userId, user => setUser(data));
+      // return () => unsubscribe();
+      const date = {
+        fromdate: '2022-7-29',
+        todate: today,
+      };
+      dispatch(
+        GetReservationDetailsByDatee(date, res => {
+          // console.log("res", res?.GetReservationDetails)
+          setReservedVehicle(res?.GetReservationDetails);
+        }),
+      );
+    }, []),
+  );
+
+  // console.log("reserved vehicle",ReservedVehicle)
+
+  const handleChange = () => [];
+
+  const handleDateChange = () => {};
+  const renderItem = ({item}) => <ReservationCard data={item} />;
 
   useEffect(() => {
     const date = {

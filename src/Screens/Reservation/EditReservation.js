@@ -20,6 +20,7 @@ import AppButton from '../../Components/UI/AppButton';
 import {InsertUpdateReserveDetail} from '../../Services/appServices/VehicleManagementService';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import {executeReducerBuilderCallback} from '@reduxjs/toolkit/dist/mapBuilders';
 
 const windowWidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
@@ -37,7 +38,7 @@ const windowheight = Dimensions.get('window').height;
 // }
 
 const EditReservation = ({route}) => {
-  console.log('route', route.params.data);
+  // console.log('route', route.params.data);
   const Temp = route.params.data;
   const vehicle = useSelector(state => state.storeVehicleData);
   const user = useSelector(state => state.storeUserData.userData);
@@ -72,7 +73,7 @@ const EditReservation = ({route}) => {
         '-' +
         currentDate.getDate();
       const newTime = currentDate.toLocaleTimeString();
-      const fialEntryDate = newDate + 'T' + newTime;
+      const fialEntryDate = newDate; /*+ 'T' + newTime;*/
       setNDate(fialEntryDate);
 
       let daa = new NepaliDate(currentDate).getBS();
@@ -176,7 +177,7 @@ const EditReservation = ({route}) => {
     <ScrollView>
       <View style={GlobalStyles.mainContainer}>
         <View style={styles.container}>
-          <Text style={styles.dummyTitle}>Reservation Id:{Temp.RId}</Text>
+          <Text style={styles.dummyTitle}>रेसेर्वेशन आइडी: {Temp.RId}</Text>
           <View style={styles.dummyInputContainer}>
             <Text style={styles.dummyTitle}>सवारी नं:</Text>
             <Pressable
@@ -200,7 +201,7 @@ const EditReservation = ({route}) => {
           </View>
 
           <View style={styles.dummyInputContainer}>
-            <Text style={styles.dummyTitle}>date:</Text>
+            <Text style={styles.dummyTitle}>मिति(A.D):</Text>
             <Pressable
               onPress={() => {
                 setShow(!show);
@@ -222,7 +223,7 @@ const EditReservation = ({route}) => {
           </View>
 
           <View style={styles.dummyInputContainer}>
-            <Text style={styles.dummyTitle}>date:</Text>
+            <Text style={styles.dummyTitle}>मिति(B.S):</Text>
             <Text style={styles.dummyInput}>{`${
               NepDate !== undefined ? NepDate : 'date'
             }`}</Text>
@@ -232,7 +233,7 @@ const EditReservation = ({route}) => {
             value={Loocation}
             placeholder="Location"
             onChangeText={e => setLoocation(e)}
-            label="Location"
+            label="स्थान"
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -264,7 +265,7 @@ const EditReservation = ({route}) => {
             value={Price !== null && Price.toString()}
             placeholder="Price"
             onChangeText={e => setPrice(e)}
-            label="Price"
+            label="मूल्य"
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -296,7 +297,7 @@ const EditReservation = ({route}) => {
             value={ReserveDays !== null && ReserveDays.toString()}
             placeholder="Reserve Days"
             onChangeText={e => setReserveDays(e)}
-            label="Reserve Days"
+            label="रिजर्व दिन"
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -397,6 +398,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   dummyTitle: {
+    paddingBottom: 10,
     fontSize: 16,
     fontWeight: 'bold',
     color: '#1d1a1a',
@@ -443,5 +445,8 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     borderRadius: 4,
     borderColor: '#c7c2c2',
+  },
+  NepaliDateInput: {
+    backgroundColor: '#858585',
   },
 });

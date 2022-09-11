@@ -22,7 +22,7 @@ const DateTimeBadge = ({data, nepaliDate, isActive, ReserveDays}) => {
               backgroundColor: '#fc7b03',
             },
           ]}>
-          {ReserveDays} Days
+          {ReserveDays} दिन
         </Text>
       ) : null}
 
