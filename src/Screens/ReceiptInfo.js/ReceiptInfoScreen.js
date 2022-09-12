@@ -136,11 +136,11 @@ const ReceiptInfoScreen = ({route}) => {
   };
 
   const print = () => {
-    console.log('inseide the function', DeviceAddress);
+    // console.log('inseide the function', DeviceAddress);
     if (DeviceAddress !== undefined) {
       let address = JSON.parse(DeviceAddress.devices)[0].address;
       // console.log(address)
-      console.log('CaptureImage', CaptureImage);
+      // console.log('CaptureImage', CaptureImage);
 
       // console.log(JSON.parse(DeviceAddress))
       if (CaptureImage !== '') {
@@ -172,40 +172,15 @@ const ReceiptInfoScreen = ({route}) => {
     dispatch(storeprintOnceData({}));
   };
 
-  // print when route assigned
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     // print();
-  //     let a = '';
-  //     if (Platform.OS === 'android') {
-  //       DeviceEventEmitter.addListener(
-  //         BluetoothManager.EVENT_DEVICE_ALREADY_PAIRED,
-  //         rsp => {
-  //           // deviceAlreadPaired(rsp);
-  //           // console.log("resp", rsp)
-  //           if (rsp !== undefined) {
-  //             a = rsp;
-  //             setDeviceAddress(rsp);
-  //             // console.log(rsp);
-  //           }
-  //         },
-  //       );
-  //     }
-  //     scanDevices();
-  //     console.log(a, 'vbjjhhjk');
-  //   }, []),
-  // );
-  //
   useEffect(() => {
     if (AutoPrint) {
-      console.log('device address', DeviceAddress);
+      // console.log('device address', DeviceAddress);
       if (DeviceAddress !== null && CaptureImage !== '') {
         setTimeout(() => {
-          console.log('inininininiiniin');
+          // console.log('inininininiiniin');
 
           print();
-        }, 2000);
+        }, 3000);
       }
     }
   }, [DeviceAddress, CaptureImage]);
