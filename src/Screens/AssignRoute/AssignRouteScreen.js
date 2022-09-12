@@ -14,19 +14,21 @@ import {Dimensions} from 'react-native';
 import AppButton from '../../Components/UI/AppButton';
 import {Input} from 'react-native-elements/dist/input/Input';
 import Filter from '../../Components/UI/Filter';
-import {useDispatch} from 'react-redux';
 import {
   GetCompanyDetail,
   InsertUpdateDayWiseVehicleRoutes,
 } from '../../Services/appServices/VehicleManagementService';
 import NepaliDate from 'nepali-date-converter';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {storeprintOnceData} from '../../Services/store/slices/printOnce';
 
 const windowWidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
 
 const AssignRouteScreen = () => {
+  //AutoPrint
+
   const vehicle = useSelector(state => state.storeVehicleData);
   const [VehicleId, setVehicleId] = useState();
   const [VehicleNumberPlate, setVehicleNumberPlate] = useState('');
@@ -128,6 +130,7 @@ const AssignRouteScreen = () => {
         {text: 'ठिक छ'},
       ]);
     }
+    // dispatch(storeprintOnceData());
   };
   // NepaliDate
 
@@ -149,6 +152,8 @@ const AssignRouteScreen = () => {
     setNDate(fialEntryDate);
     setNepDate(newNepaliDate);
   }, [isAsignedFocus]);
+
+  // autoprint
 
   useEffect(() => {
     setVehicleId();

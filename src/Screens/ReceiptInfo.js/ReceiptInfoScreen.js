@@ -28,6 +28,7 @@ import ImgToBase64 from 'react-native-image-base64';
 import ViewShot from 'react-native-view-shot';
 import Logo from '../../Assets/images/logo.png';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
+import {storeprintOnceData} from '../../Services/store/slices/printOnce';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -42,9 +43,10 @@ const ReceiptInfoScreen = ({route}) => {
   const [Remarks, setREmarks] = useState('');
   const [VehicleId, setVehicleId] = useState();
   const [errors, setErrors] = useState({});
-  const [DeviceAddress, setDeviceAddress] = useState();
+  const [DeviceAddress, setDeviceAddress] = useState(null);
   const ref = useRef();
   const [CaptureImage, setCaptureImage] = useState('');
+  const AutoPrint = useSelector(state => state.storePrintOnce.printOnce);
 
   const ToSendData = {
     CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',
@@ -133,10 +135,13 @@ const ReceiptInfoScreen = ({route}) => {
     });
   };
 
-  const print = async () => {
+  const print = () => {
+    console.log('inseide the function', DeviceAddress);
     if (DeviceAddress !== undefined) {
       let address = JSON.parse(DeviceAddress.devices)[0].address;
       // console.log(address)
+      console.log('CaptureImage', CaptureImage);
+
       // console.log(JSON.parse(DeviceAddress))
       if (CaptureImage !== '') {
         BluetoothManager.connect(address).then(
@@ -164,15 +169,46 @@ const ReceiptInfoScreen = ({route}) => {
         );
       }
     }
+    dispatch(storeprintOnceData({}));
   };
 
   // print when route assigned
 
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => print();
-    }, []),
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     // print();
+  //     let a = '';
+  //     if (Platform.OS === 'android') {
+  //       DeviceEventEmitter.addListener(
+  //         BluetoothManager.EVENT_DEVICE_ALREADY_PAIRED,
+  //         rsp => {
+  //           // deviceAlreadPaired(rsp);
+  //           // console.log("resp", rsp)
+  //           if (rsp !== undefined) {
+  //             a = rsp;
+  //             setDeviceAddress(rsp);
+  //             // console.log(rsp);
+  //           }
+  //         },
+  //       );
+  //     }
+  //     scanDevices();
+  //     console.log(a, 'vbjjhhjk');
+  //   }, []),
+  // );
+  //
+  useEffect(() => {
+    if (AutoPrint) {
+      console.log('device address', DeviceAddress);
+      if (DeviceAddress !== null && CaptureImage !== '') {
+        setTimeout(() => {
+          console.log('inininininiiniin');
+
+          print();
+        }, 2000);
+      }
+    }
+  }, [DeviceAddress, CaptureImage]);
 
   useEffect(() => {
     getDataURL();
