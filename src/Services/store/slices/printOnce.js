@@ -9,9 +9,9 @@ const printOnce = createSlice({
   initialState,
   reducers: {
     storeprintOnceData: (state, action) => {
-      // console.log("action", action)
+      console.log('action', action.payload);
       // console.log(state, action);
-      state.printOnce = !state.printOnce;
+      state.printOnce = action.payload;
     },
   },
 });

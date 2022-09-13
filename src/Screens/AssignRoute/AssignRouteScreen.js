@@ -77,6 +77,8 @@ const AssignRouteScreen = () => {
     //   id: 2
     // })
     // return
+    dispatch(storeprintOnceData(true));
+
     let isValidated = validate();
     let data = {
       DId: 0,
@@ -130,7 +132,6 @@ const AssignRouteScreen = () => {
         {text: 'ठिक छ'},
       ]);
     }
-    // dispatch(storeprintOnceData());
   };
   // NepaliDate
 

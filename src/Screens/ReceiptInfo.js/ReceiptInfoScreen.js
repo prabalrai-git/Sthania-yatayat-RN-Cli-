@@ -47,6 +47,7 @@ const ReceiptInfoScreen = ({route}) => {
   const ref = useRef();
   const [CaptureImage, setCaptureImage] = useState('');
   const AutoPrint = useSelector(state => state.storePrintOnce.printOnce);
+  console.log(AutoPrint, 'dfksdlfjsdklfjsdlkfjsdlkfjsdlfkdjsfkldsf');
 
   const ToSendData = {
     CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',
@@ -169,18 +170,19 @@ const ReceiptInfoScreen = ({route}) => {
         );
       }
     }
-    dispatch(storeprintOnceData({}));
   };
 
   useEffect(() => {
     if (AutoPrint) {
       // console.log('device address', DeviceAddress);
-      if (DeviceAddress !== null && CaptureImage !== '') {
+      if (DeviceAddress !== null) {
         setTimeout(() => {
           // console.log('inininininiiniin');
 
           print();
-        }, 3000);
+          dispatch(storeprintOnceData(false));
+          console.log(AutoPrint, 'print at last');
+        }, 1000);
       }
     }
   }, [DeviceAddress, CaptureImage]);

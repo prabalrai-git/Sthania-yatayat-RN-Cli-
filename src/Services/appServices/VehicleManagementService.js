@@ -50,7 +50,6 @@ export const InsertUpdateDayWiseVehicleRoutes = (data, successCallback) => {
       if (response?.status === 200) {
         // fghgfghjgfghj
         successCallback(response?.data);
-        dispatch(storeprintOnceData(response));
       } else successCallback([]);
     } catch (error) {}
   };
