@@ -1,51 +1,66 @@
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { GlobalStyles } from '../../../GlobalStyle'
-import { useDispatch } from 'react-redux';
-import { GetVehicleRouteDetailsByyReceiptId } from '../../Services/appServices/VehicleManagementService';
+import {Dimensions, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {GlobalStyles} from '../../../GlobalStyle';
+import {useDispatch} from 'react-redux';
+import {GetVehicleRouteDetailsByyReceiptId} from '../../Services/appServices/VehicleManagementService';
 import DateTimeBadge from './DateTimeBadge';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 
-const DailyRouteCard = ({ data }) => {
+const DailyRouteCard = ({data}) => {
   // console.log('data', data)
   const dispatch = useDispatch();
   const [VehicleNumber, setVehicleNumber] = useState();
   const navigation = useNavigation();
 
   useEffect(() => {
-    dispatch(GetVehicleRouteDetailsByyReceiptId(data.DId, (res) => {
-      // console.log('res', res?.VechileRouteByReceiptId[0]);
-      if (res?.VechileRouteByReceiptId.length > 0) {
-        setVehicleNumber(res?.VechileRouteByReceiptId[0])
-      }
-    }))
-  }, [])
+    dispatch(
+      GetVehicleRouteDetailsByyReceiptId(data.DId, res => {
+        // console.log('res', res?.VechileRouteByReceiptId[0]);
+        if (res?.VechileRouteByReceiptId.length > 0) {
+          setVehicleNumber(res?.VechileRouteByReceiptId[0]);
+        }
+      }),
+    );
+  }, []);
 
   return (
-    <Pressable onPress={() => {
-      navigation.navigate('ReceiptInfoScreen', {
-        id: data.DId,
-        isActive: data.IsActive,
-      })
-    }}
-      style={[styles.cardCotnainer, GlobalStyles.boxShadow]}
-    >
+    <Pressable
+      onPress={() => {
+        navigation.navigate('ReceiptInfoScreen', {
+          id: data.DId,
+          isActive: data.IsActive,
+          VId: data.VehicleId,
+        });
+      }}
+      style={[styles.cardCotnainer, GlobalStyles.boxShadow]}>
       <View style={styles.leftcontainer}>
-        <Text style={[GlobalStyles.heading, { color: 'red' }]}>सवारी नं: {data.VehicleNumber}</Text>
-        <Text style={[GlobalStyles.body, {
-          color: secondary
-        }]}>{`रसिद नं: ${data.DId}`}</Text>
-        <Text style={[GlobalStyles.body, { color: "#525866" }]}>रुट: {VehicleNumber !== undefined ? VehicleNumber.Route : ''}</Text>
+        <Text style={[GlobalStyles.heading, {color: 'red'}]}>
+          सवारी नं: {data.VehicleNumber}
+        </Text>
+        <Text
+          style={[
+            GlobalStyles.body,
+            {
+              color: secondary,
+            },
+          ]}>{`रसिद नं: ${data.DId}`}</Text>
+        <Text style={[GlobalStyles.body, {color: '#525866'}]}>
+          रुट: {VehicleNumber !== undefined ? VehicleNumber.Route : ''}
+        </Text>
       </View>
 
-      <DateTimeBadge data={data.RouteDate} nepaliDate={VehicleNumber !== undefined ? VehicleNumber.NepaliDate: ''} isActive={data.IsActive}/>
+      <DateTimeBadge
+        data={data.RouteDate}
+        nepaliDate={VehicleNumber !== undefined ? VehicleNumber.NepaliDate : ''}
+        isActive={data.IsActive}
+      />
     </Pressable>
-  )
-}
+  );
+};
 
-export default DailyRouteCard
+export default DailyRouteCard;
 
 const styles = StyleSheet.create({
   cardCotnainer: {
@@ -57,12 +72,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   cardTitle: {
     color: 'red',
   },
   leftcontainer: {
     width: windowWidth * 0.65,
-  }
-})
+  },
+});

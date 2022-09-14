@@ -34,20 +34,20 @@ const windowWidth = Dimensions.get('window').width;
 
 const ReceiptInfoScreen = ({route}) => {
   const user = useSelector(state => state.storeUserData.userData);
-  const {id, isActive} = route.params;
+  const {id, isActive, VId} = route.params;
   const dispatch = useDispatch();
   const [ReceiptDetails, setReceiptDetails] = useState();
   const [Qr, setQr] = useState();
   const navigation = useNavigation();
   const [IsModalVisible, setIsModalVisible] = useState(false);
   const [Remarks, setREmarks] = useState('');
-  const [VehicleId, setVehicleId] = useState();
   const [errors, setErrors] = useState({});
   const [DeviceAddress, setDeviceAddress] = useState(null);
   const ref = useRef();
   const [CaptureImage, setCaptureImage] = useState('');
   const AutoPrint = useSelector(state => state.storePrintOnce.printOnce);
   // console.log(AutoPrint, 'dfksdlfjsdklfjsdlkfjsdlkfjsdlfkdjsfkldsf');
+  console.log(route, 'hello world');
 
   const ToSendData = {
     CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',
@@ -177,7 +177,7 @@ const ReceiptInfoScreen = ({route}) => {
   useEffect(() => {
     if (AutoPrint) {
       // console.log('device address', DeviceAddress);
-      if (DeviceAddress !== null && undefined && CaptureImage !== '') {
+      if (DeviceAddress && CaptureImage !== '') {
         setTimeout(() => {
           // console.log('inininininiiniin');
 
@@ -186,8 +186,6 @@ const ReceiptInfoScreen = ({route}) => {
           // console.log(AutoPrint, 'print at last');
         }, 1000);
       }
-    } else {
-      popup();
     }
   }, [DeviceAddress, CaptureImage]);
 
@@ -222,7 +220,7 @@ const ReceiptInfoScreen = ({route}) => {
   const handleCancel = () => {
     let isValidate = validate();
     let data = {
-      vehicleid: VehicleId,
+      vehicleid: VId,
       receiptid: id,
       remarks: Remarks,
     };
@@ -389,7 +387,7 @@ const ReceiptInfoScreen = ({route}) => {
               style={styles.inputStyleContainer}
               multiline
               numberOfLines={4}
-              placeholder={'remarks'}
+              placeholder={'टिप्पणीहरू'}
               onFocus={() => handleError(null, 'Remarks')}></TextInput>
             {errors.Remarks && (
               <Text
@@ -481,7 +479,7 @@ const styles = StyleSheet.create({
     width: windowWidth - 32,
     fontSize: 14,
     paddingHorizontal: 4,
-    paddingVertical: 12,
+    paddingVertical: 4,
     color: '#5c5656',
     borderRadius: 4,
     marginVertical: 8,

@@ -112,7 +112,7 @@ const StackNaviagator = () => {
             component={AddEditReservationScreen}
             options={{
               // headerShown: false
-              title: 'Add रिजर्व',
+              title: ' रिजर्व थप्नुहोस्',
             }}
           />
           {/* EditReservation */}

@@ -106,6 +106,7 @@ const AssignRouteScreen = () => {
           if (res?.SuccessMsg === true) {
             navigation.navigate('ReceiptInfoScreen', {
               id: res?.CreatedId,
+              VId: VehicleId,
             });
             // console.log('gog go potaota')
           } else {

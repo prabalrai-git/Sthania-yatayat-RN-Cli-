@@ -121,6 +121,7 @@ export const GetVehicleRouteDetailsByyReceiptId = (data, successCallback) => {
 };
 
 export const CancelAssignedRouteOfVehicle = (data, successCallback) => {
+  console.log('cancel route', data);
   return async dispatch => {
     try {
       const response = await store(
@@ -131,7 +132,9 @@ export const CancelAssignedRouteOfVehicle = (data, successCallback) => {
       } else {
         successCallback([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
