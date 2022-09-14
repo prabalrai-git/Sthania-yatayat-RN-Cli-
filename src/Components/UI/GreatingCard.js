@@ -10,7 +10,7 @@ import {useSelector} from 'react-redux';
 import GreetingType from './GreetingType';
 
 const GreatingCard = () => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector(state => state.storeUserData.userData);
   const handleAction = () => {

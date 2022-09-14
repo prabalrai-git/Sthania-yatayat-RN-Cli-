@@ -1,10 +1,10 @@
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {GlobalStyles} from '../../../GlobalStyle';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import Filter from '../../Components/UI/Filter';
-import DailyRouteCard from '../../Components/UI/DailyRouteCard';
+// import DailyRouteCard from '../../Components/UI/DailyRouteCard';
 import {GetReservationDetailsByDatee} from '../../Services/appServices/VehicleManagementService';
 import ReservationCard from '../../Components/UI/ReservationCard';
 
@@ -12,7 +12,7 @@ const ReservationScreen = () => {
   const dispatch = useDispatch();
   const [TodayRouteList, setTodayRouteList] = useState();
   const [ReservedVehicle, setReservedVehicle] = useState();
-  const IsSearchFocused = useIsFocused();
+  // const IsSearchFocused = useIsFocused();
 
   // today date
 
@@ -91,4 +91,4 @@ const ReservationScreen = () => {
 
 export default ReservationScreen;
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});

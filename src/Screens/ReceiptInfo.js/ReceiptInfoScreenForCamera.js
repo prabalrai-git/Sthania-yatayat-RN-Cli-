@@ -4,17 +4,14 @@ import {
   Dimensions,
   Image,
   Keyboard,
-  Modal,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import QRCode from 'react-native-qrcode-svg';
 import {useNavigation} from '@react-navigation/native';
-import {SecondaryBtn, PrimaryBtn} from '../../Components/UI/cButtons';
 import {
   CancelAssignedRouteOfVehicle,
   GetVehicleRouteDetailsByyReceiptId,
@@ -38,7 +35,7 @@ const ReceiptInfoScreenForCamera = ({route}) => {
   const [ReceiptDetails, setReceiptDetails] = useState();
   const [Qr, setQr] = useState();
   const navigation = useNavigation();
-  const [IsModalVisible, setIsModalVisible] = useState(false);
+  // const [IsModalVisible, setIsModalVisible] = useState(false);
   const [Remarks, setREmarks] = useState('');
   const [VehicleId, setVehicleId] = useState();
   const [errors, setErrors] = useState({});

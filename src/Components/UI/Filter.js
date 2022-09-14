@@ -1,14 +1,12 @@
 import {
-  Button,
   Dimensions,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {Icon, Input, SearchBar} from 'react-native-elements';
+import React, {useState} from 'react';
+import {Icon} from 'react-native-elements';
 import SearchButton from './SearchButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useNavigation} from '@react-navigation/native';
@@ -26,7 +24,7 @@ const Filter = ({
   forSearch,
   forReservation,
 }) => {
-  const [search, setSearch] = useState('');
+  // const [search, setSearch] = useState('');
   const [SearchKeyWord, setSearchKeyWord] = useState('');
   const navigation = useNavigation();
 
@@ -82,7 +80,7 @@ const Filter = ({
     setShow(true);
   };
   const handleNavigation = () => {
-    console.log('pressed');
+    // console.log('pressed');
     navigation.navigate('AddEditReservationScreen');
   };
 

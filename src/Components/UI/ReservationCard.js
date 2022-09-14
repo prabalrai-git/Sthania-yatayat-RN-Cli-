@@ -4,17 +4,17 @@ import {GlobalStyles} from '../../../GlobalStyle';
 import DateTimeBadge from './DateTimeBadge';
 import {useNavigation} from '@react-navigation/native';
 
-const daa = {
-  Charge: 360,
-  RId: 18,
-  ReservationDate: '2022-07-29T16:23:49',
-  ReserveNepalidate: '2079-4-13',
-  ReserverLocation: 'Kama',
-  UserId: 2,
-  UserName: 'anib',
-  VehicleNumber: 'ग १ ख ८५३६',
-  vehicleId: 271,
-};
+// const daa = {
+//   Charge: 360,
+//   RId: 18,
+//   ReservationDate: '2022-07-29T16:23:49',
+//   ReserveNepalidate: '2079-4-13',
+//   ReserverLocation: 'Kama',
+//   UserId: 2,
+//   UserName: 'anib',
+//   VehicleNumber: 'ग १ ख ८५३६',
+//   vehicleId: 271,
+// };
 const windowWidth = Dimensions.get('window').width;
 
 const ReservationCard = ({data}) => {

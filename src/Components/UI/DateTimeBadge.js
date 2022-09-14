@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 8,
     fontSize: 14,
-    // marginRight: 8,
     marginBottom: 4,
     textAlign: 'center',
   },

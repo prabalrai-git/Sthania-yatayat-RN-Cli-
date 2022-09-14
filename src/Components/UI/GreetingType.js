@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {Text} from 'react-native';
 import React from 'react';
 import {GlobalStyles} from '../../../GlobalStyle';
 import {useEffect} from 'react';
@@ -22,7 +22,7 @@ export default function GreetingType() {
 
   useEffect(() => {
     returnGreeting(Hour);
-    console.log(Hour);
+    // console.log(Hour);
   }, [Hour]);
 
   return (

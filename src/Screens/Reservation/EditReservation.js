@@ -20,7 +20,7 @@ import AppButton from '../../Components/UI/AppButton';
 import {InsertUpdateReserveDetail} from '../../Services/appServices/VehicleManagementService';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {executeReducerBuilderCallback} from '@reduxjs/toolkit/dist/mapBuilders';
+// import {executeReducerBuilderCallback} from '@reduxjs/toolkit/dist/mapBuilders';
 
 const windowWidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
@@ -72,7 +72,7 @@ const EditReservation = ({route}) => {
         (currentDate.getMonth() + 1) +
         '-' +
         currentDate.getDate();
-      const newTime = currentDate.toLocaleTimeString();
+      // const newTime = currentDate.toLocaleTimeString();
       const fialEntryDate = newDate; /*+ 'T' + newTime;*/
       setNDate(fialEntryDate);
 
@@ -82,10 +82,10 @@ const EditReservation = ({route}) => {
     } else {
     }
   };
-  const showDatepicker = () => {
-    // setToShow(true);
-    setShow(true);
-  };
+  // const showDatepicker = () => {
+  //   // setToShow(true);
+  //   setShow(true);
+  // };
 
   const handleError = (error, input) => {
     setErrors(prevState => ({...prevState, [input]: error}));

@@ -67,10 +67,10 @@ const AddEditReservation = () => {
     } else {
     }
   };
-  const showDatepicker = () => {
-    // setToShow(true);
-    setShow(true);
-  };
+  // const showDatepicker = () => {
+  //   // setToShow(true);
+  //   setShow(true);
+  // };
 
   const handleError = (error, input) => {
     setErrors(prevState => ({...prevState, [input]: error}));

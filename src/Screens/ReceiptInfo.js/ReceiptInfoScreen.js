@@ -13,7 +13,7 @@ import {
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import QRCode from 'react-native-qrcode-svg';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {SecondaryBtn, PrimaryBtn} from '../../Components/UI/cButtons';
 import {
   CancelAssignedRouteOfVehicle,
@@ -47,7 +47,7 @@ const ReceiptInfoScreen = ({route}) => {
   const ref = useRef();
   const [CaptureImage, setCaptureImage] = useState('');
   const AutoPrint = useSelector(state => state.storePrintOnce.printOnce);
-  console.log(AutoPrint, 'dfksdlfjsdklfjsdlkfjsdlkfjsdlfkdjsfkldsf');
+  // console.log(AutoPrint, 'dfksdlfjsdklfjsdlkfjsdlkfjsdlfkdjsfkldsf');
 
   const ToSendData = {
     CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',
@@ -73,6 +73,8 @@ const ReceiptInfoScreen = ({route}) => {
   };
 
   // console.log("to send data", ReceiptDetails)
+
+  // popup
 
   useEffect(() => {
     dispatch(
@@ -175,15 +177,17 @@ const ReceiptInfoScreen = ({route}) => {
   useEffect(() => {
     if (AutoPrint) {
       // console.log('device address', DeviceAddress);
-      if (DeviceAddress !== null) {
+      if (DeviceAddress !== null && undefined && CaptureImage !== '') {
         setTimeout(() => {
           // console.log('inininininiiniin');
 
           print();
           dispatch(storeprintOnceData(false));
-          console.log(AutoPrint, 'print at last');
+          // console.log(AutoPrint, 'print at last');
         }, 1000);
       }
+    } else {
+      popup();
     }
   }, [DeviceAddress, CaptureImage]);
 

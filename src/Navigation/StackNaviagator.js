@@ -132,4 +132,4 @@ const StackNaviagator = () => {
 
 export default StackNaviagator;
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});

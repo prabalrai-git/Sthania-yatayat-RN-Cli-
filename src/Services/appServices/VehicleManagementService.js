@@ -11,7 +11,6 @@ import {
   InsertUpdateDayWiseVehicleRoute,
   InsertUpdateReserveDetails,
 } from '../constants/url';
-import {storeprintOnceData} from '../store/slices/printOnce';
 import {generateUrlEncodedData} from '../utils/generateUrlEncodedData';
 import {store, fetch} from '../utils/httpUtil';
 
