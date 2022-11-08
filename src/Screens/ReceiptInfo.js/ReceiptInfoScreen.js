@@ -47,7 +47,7 @@ const ReceiptInfoScreen = ({route}) => {
   const [CaptureImage, setCaptureImage] = useState('');
   const AutoPrint = useSelector(state => state.storePrintOnce.printOnce);
   // console.log(AutoPrint, 'dfksdlfjsdklfjsdlkfjsdlkfjsdlfkdjsfkldsf');
-  console.log(route, 'hello world');
+  // console.log(route, 'hello world');
 
   const ToSendData = {
     CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',

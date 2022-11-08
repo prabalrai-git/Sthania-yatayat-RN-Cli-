@@ -22,6 +22,9 @@ import NepaliDate from 'nepali-date-converter';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeprintOnceData} from '../../Services/store/slices/printOnce';
+import {Chip} from 'react-native-paper';
+import Chips from '../../Components/UI/Chips';
+import {TextInput} from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
@@ -36,7 +39,7 @@ const AssignRouteScreen = () => {
   const [RouteName, setRouteName] = useState('');
   const [NDate, setNDate] = useState('');
   const [NepDate, setNepDate] = useState('');
-  const [ReceiptAmount, setReceiptAmount] = useState();
+  const [ReceiptAmount, setReceiptAmount] = useState(null);
   const [errors, setErrors] = useState({});
   const [IsVisible, setIsVisible] = useState(false);
   const [IsRouteVisible, setIsRouteVisible] = useState(false);
@@ -91,11 +94,11 @@ const AssignRouteScreen = () => {
       IsActive: true,
       Remarks: Remarks !== '' ? Remarks : 'n/a',
       CompanyId: CID,
-      ReceiptAmt: ReceiptAmount,
+      ReceiptAmt: parseInt(ReceiptAmount),
       NepaliDate: NepDate,
     };
 
-    // console.log(data);
+    console.log(data);
     // return
     if (isValidated) {
       dispatch(
@@ -212,18 +215,23 @@ const AssignRouteScreen = () => {
   };
 
   const handleSelectRoute = (RId, RouteName, Charge) => {
-    setReceiptAmount(Charge);
     setRouteId(RId);
     setRouteName(RouteName);
     setIsRouteVisible(!IsRouteVisible);
     setIsInputDisable(!IsInputDisable);
   };
 
+  const onChipClick = e => {
+    // console.log(e._dispatchInstances.memoizedProps.children, 'hellohello');
+    const num = e._dispatchInstances.memoizedProps.children[1];
+    setReceiptAmount(num.toString());
+  };
+
   return (
     <View style={GlobalStyles.mainContainer}>
       <View style={styles.container}>
         <View style={styles.dummyInputContainer}>
-          <Text style={styles.dummyTitle}>सवारी नं:</Text>
+          <Text style={[styles.dummyTitle]}>सवारी नं:</Text>
           <Pressable
             onPress={() => {
               setIsVisible(!IsVisible);
@@ -274,6 +282,26 @@ const AssignRouteScreen = () => {
           label="टिप्पणीहरू:"
           inputStyle={{
             fontSize: 14,
+            color: 'black',
+          }}
+          inputContainerStyle={{
+            borderWidth: 1,
+            borderColor: '#dad8d8',
+            paddingHorizontal: 3,
+            borderRadius: 4,
+            backgroundColor: '#dad8d8',
+            color: 'black',
+            marginBottom: -12,
+          }}
+        />
+        <View style={styles.dummyInputContainer}>
+          <Text style={styles.dummyTitle}>रकम:</Text>
+          {/* <Text style={styles.dummyInput}>{ReceiptAmount}</Text> */}
+        </View>
+        <Input
+          onChangeText={e => setReceiptAmount(e)}
+          inputStyle={{
+            fontSize: 14,
             color: '#5c5656',
           }}
           inputContainerStyle={{
@@ -285,11 +313,10 @@ const AssignRouteScreen = () => {
             // color: 'red';
             marginBottom: -12,
           }}
+          keyboardType="numeric"
+          value={ReceiptAmount}
         />
-        <View style={styles.dummyInputContainer}>
-          <Text style={styles.dummyTitle}>रकम:</Text>
-          <Text style={styles.dummyInput}>{ReceiptAmount}</Text>
-        </View>
+        <Chips onChipClick={onChipClick} />
         <View style={styles.dummyInputContainer}>
           <Text style={styles.dummyTitle}>मिति:</Text>
           <Text style={styles.dummyInput}>{NepDate}</Text>
@@ -319,7 +346,7 @@ const AssignRouteScreen = () => {
                         style={styles.selectCard}
                         onPress={() => handleSelect(e.VId, e.VehicleNumber)}
                         key={e.VId}>
-                        <Text>{e.VehicleNumber}</Text>
+                        <Text style={{color: 'black'}}>{e.VehicleNumber}</Text>
                       </Pressable>
                     ))}
                 </ScrollView>
@@ -351,7 +378,7 @@ const AssignRouteScreen = () => {
                           handleSelectRoute(e.RId, e.RouteName, e.Charge)
                         }
                         key={e.RId}>
-                        <Text>{e.RouteName}</Text>
+                        <Text style={{color: 'black'}}>{e.RouteName}</Text>
                       </Pressable>
                     ))}
                 </ScrollView>
