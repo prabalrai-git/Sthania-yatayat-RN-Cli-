@@ -23,7 +23,7 @@ import {
 } from 'react-native-bluetooth-escpos-printer';
 import ImgToBase64 from 'react-native-image-base64';
 import ViewShot from 'react-native-view-shot';
-import Logo from '../../Assets/images/logo.png';
+import Logo from '../../Assets/images/logo2.png';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
 
 const windowWidth = Dimensions.get('window').width;

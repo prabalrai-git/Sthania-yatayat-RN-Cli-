@@ -1,13 +1,18 @@
 /**
  * @desc: api url
  */
-const API_URL = `http://lunivacare.ddns.net/LunivaRouteAPI/`
+
+//sthania yatayat
+// const API_URL = `http://lunivacare.ddns.net/LunivaRouteAPI/`;
+
+// pokhara yatayat
+const API_URL = `http://lunivacare.ddns.net/LunivaRouteAPIUAT/`;
 
 /**
  * @desc: api base url with route
- * 
+ *
  */
-export const BASE_URL = `${API_URL}LunivarouteManagementApi/`
+export const BASE_URL = `${API_URL}LunivarouteManagementApi/`;
 
 // Counter Service
 /**
@@ -21,12 +26,12 @@ export const BASE_URL = `${API_URL}LunivarouteManagementApi/`
   "CompanyId": 6
   }
  */
-export const InsertUpdateCounterDetails = 'InsertUpdateCounterDetails'
+export const InsertUpdateCounterDetails = 'InsertUpdateCounterDetails';
 
 /**
  * @desc: get counter details
  */
-export const GetCounterDetails = 'GetCounterDetails'
+export const GetCounterDetails = 'GetCounterDetails';
 // Counter Service
 
 //Vehicles Service
@@ -42,26 +47,28 @@ export const GetCounterDetails = 'GetCounterDetails'
   "IsActive": true
   }
  */
-export const InsertUpdateVehicleDetails = 'InsertUpdateVehicleDetails'
+export const InsertUpdateVehicleDetails = 'InsertUpdateVehicleDetails';
 
 /**
  * @desc: Get Vehicle Details By VId
  * @param: ?vehicleId=0 (in url)
  */
-export const GetVehicleDetailsByVId = 'GetVehicleDetailsByVId'
+export const GetVehicleDetailsByVId = 'GetVehicleDetailsByVId';
 //Vehicles Service
 
 /**
-* @desc: Get Vehicle Details by Vehicle id
-* @param: ?vehicleId=1
-*/
-export const InsertUpdateVehicleOwnerDetails = 'InsertUpdateVehicleOwnerDetails'
+ * @desc: Get Vehicle Details by Vehicle id
+ * @param: ?vehicleId=1
+ */
+export const InsertUpdateVehicleOwnerDetails =
+  'InsertUpdateVehicleOwnerDetails';
 
 /**
  * @desc: Get Vehicle Owner Details By Vehicle Id
  * @param: ?vehicleId=0 (in url)
  */
-export const GetVehicleOwnerDetailsByVehicleId = 'GetVehicleOwnerDetailsByVehicleId'
+export const GetVehicleOwnerDetailsByVehicleId =
+  'GetVehicleOwnerDetailsByVehicleId';
 //Vehicle Owner Details
 
 //Vehicle Staff Details
@@ -80,13 +87,14 @@ export const GetVehicleOwnerDetailsByVehicleId = 'GetVehicleOwnerDetailsByVehicl
   "Remarks": "sample string 10"
   }
  */
-export const InsertUpdateVehicleStaffDetails = 'InsertUpdateVehicleStaffDetails'
+export const InsertUpdateVehicleStaffDetails =
+  'InsertUpdateVehicleStaffDetails';
 
 /**
  * @desc: Get Staff Details By VehicleId
  * @param: ?vehicleId=0 (in url)
  */
-export const GetStaffDetailsByVehicleId = 'GetStaffDetailsByVehicleId'
+export const GetStaffDetailsByVehicleId = 'GetStaffDetailsByVehicleId';
 //Vehicle Staff Details
 
 //Route Details
@@ -106,19 +114,20 @@ export const GetStaffDetailsByVehicleId = 'GetStaffDetailsByVehicleId'
   "ReceiptAmt": 11.0
   }
  */
-export const InsertUpdateRouteDetails = 'InsertUpdateRouteDetails'
+export const InsertUpdateRouteDetails = 'InsertUpdateRouteDetails';
 
 /**
  * @desc: get route details by datewise
  * @param:?routeday= //
  */
-export const GetRouteDetailsByDateWise = 'GetRouteDetailsByDateWise'
+export const GetRouteDetailsByDateWise = 'GetRouteDetailsByDateWise';
 
 /**
- * @desc: Get Vehiclewise Route Details By RouteId 
+ * @desc: Get Vehiclewise Route Details By RouteId
  * @param: ?routeId=0 (in url)
  */
-export const GetVehiclewiseRouteDetailsByRouteId = 'GetVehiclewiseRouteDetailsByRouteId'
+export const GetVehiclewiseRouteDetailsByRouteId =
+  'GetVehiclewiseRouteDetailsByRouteId';
 //Route Details
 
 //User Details
@@ -138,39 +147,38 @@ export const GetVehiclewiseRouteDetailsByRouteId = 'GetVehiclewiseRouteDetailsBy
   "CompanyId": 11
   }
  */
-export const InsertUpdateUserDetails = 'InsertUpdateUserDetails'
+export const InsertUpdateUserDetails = 'InsertUpdateUserDetails';
 
 /**
  * @desc: Get User Details
  */
-export const GetUserDetails = 'GetUserDetails'
+export const GetUserDetails = 'GetUserDetails';
 //User Details
 
 //Misc Service
 /**
  * @desc: Get Staff Type
  */
-export const GetStaffType = 'GetStaffType'
+export const GetStaffType = 'GetStaffType';
 
 /**
  * @desc: Get Role Details
  */
-export const GetRoleDetails = 'GetRoleDetails'
+export const GetRoleDetails = 'GetRoleDetails';
 
 /**
  * @desc: Get Company Details
  */
-export const GetCompanyDetails = 'GetCompanyDetails'
+export const GetCompanyDetails = 'GetCompanyDetails';
 
 /**
  * @desc: Get Datewise Collection Details
  * @param: ?fromdate={fromdate}&todate={todate} (in url)
  */
-export const GetDatewiseCollectionDetails = 'GetDatewiseCollectionDetails'
+export const GetDatewiseCollectionDetails = 'GetDatewiseCollectionDetails';
 //Misc Service
 
-
-export const GetActiveVehicleListByCompanyId = `GetActiveVehicleListByCompanyId`
+export const GetActiveVehicleListByCompanyId = `GetActiveVehicleListByCompanyId`;
 
 /**
  * GetRouteDetailsByCompanyId?companyid={companyid}
@@ -178,7 +186,7 @@ export const GetActiveVehicleListByCompanyId = `GetActiveVehicleListByCompanyId`
  * @param: ?companyid={companyid}
  */
 
-export const InsertUpdateDayWiseVehicleRoute = `InsertUpdateDayWiseVehicleRoute`
+export const InsertUpdateDayWiseVehicleRoute = `InsertUpdateDayWiseVehicleRoute`;
 
 /**
 * @desc: Insert Update Daywise Vehicle Route
@@ -198,40 +206,38 @@ export const InsertUpdateDayWiseVehicleRoute = `InsertUpdateDayWiseVehicleRoute`
 }
 */
 
-
-export const GetVehicleRouteDetailsByReceiptId = `GetVehicleRouteDetailsByReceiptId`
-
-/**
-* @desc: Get Vehicle Route Details By Receipt Id
-* @param: ?receiptId={receiptId}
-*/
-
-export const CheckValidLogin = 'CheckValidLogin'
+export const GetVehicleRouteDetailsByReceiptId = `GetVehicleRouteDetailsByReceiptId`;
 
 /**
-* @desc: Get valid login
-* @param: ?username={username}&password={password}
-*/
+ * @desc: Get Vehicle Route Details By Receipt Id
+ * @param: ?receiptId={receiptId}
+ */
 
-
-export const CancelAssignedRouteOfVehicleByAdmin = 'CancelAssignedRouteOfVehicleByAdmin'
+export const CheckValidLogin = 'CheckValidLogin';
 
 /**
-* @desc: Cancel Assigned Route of vehicle by Admin
-* @param: ?vehicleid={vehicleid}&receiptid={receiptid}&remarks={remarks}
-*/
+ * @desc: Get valid login
+ * @param: ?username={username}&password={password}
+ */
 
+export const CancelAssignedRouteOfVehicleByAdmin =
+  'CancelAssignedRouteOfVehicleByAdmin';
+
+/**
+ * @desc: Cancel Assigned Route of vehicle by Admin
+ * @param: ?vehicleid={vehicleid}&receiptid={receiptid}&remarks={remarks}
+ */
 
 // GetReservationDetailsByDate?fromdate={fromdate}&todate={todate}
-export const GetReservationDetailsByDate = `GetReservationDetailsByDate`
+export const GetReservationDetailsByDate = `GetReservationDetailsByDate`;
 
 /**
-* @desc: Get reservation details by data
-* @param: ?fromdate={fromdate}&todate={todate}
-*/
+ * @desc: Get reservation details by data
+ * @param: ?fromdate={fromdate}&todate={todate}
+ */
 
 // InsertUpdateReserveDetails
-export const InsertUpdateReserveDetails = `InsertUpdateReserveDetails`
+export const InsertUpdateReserveDetails = `InsertUpdateReserveDetails`;
 
 /**
 * @desc: Insert Update Reserve Details
@@ -246,4 +252,3 @@ export const InsertUpdateReserveDetails = `InsertUpdateReserveDetails`
           "IsActive": true
         }
 */
-

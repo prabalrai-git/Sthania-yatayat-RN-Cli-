@@ -89,6 +89,7 @@ const DashboardScreen = () => {
 
   useEffect(() => {
     getData();
+    console.log(data, 'data');
   }, []);
 
   const getData = () => {

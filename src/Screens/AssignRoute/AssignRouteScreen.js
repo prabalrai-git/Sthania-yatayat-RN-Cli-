@@ -33,6 +33,7 @@ const AssignRouteScreen = () => {
   //AutoPrint
 
   const vehicle = useSelector(state => state.storeVehicleData);
+
   const [VehicleId, setVehicleId] = useState();
   const [VehicleNumberPlate, setVehicleNumberPlate] = useState('');
   const [RouteId, setRouteId] = useState();
@@ -80,6 +81,7 @@ const AssignRouteScreen = () => {
     //   id: 2
     // })
     // return
+    console.log(vehicle, 'vehiclehjkhhhhhhhhhhh');
     dispatch(storeprintOnceData(true));
 
     let isValidated = validate();

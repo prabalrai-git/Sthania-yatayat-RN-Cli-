@@ -1,17 +1,29 @@
-import { Alert, Image, Keyboard, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Icon, Input } from 'react-native-elements';
-import { GlobalStyles } from '../../../GlobalStyle';
-import { Dimensions } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { storeUserData } from '../../Services/store/slices/profileSlice';
+import {
+  Alert,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Icon, Input} from 'react-native-elements';
+import {GlobalStyles} from '../../../GlobalStyle';
+import {Dimensions} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {storeUserData} from '../../Services/store/slices/profileSlice';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
-import { GetCounterDetail } from '../../Services/appServices/VehicleManagementService';
-import { LoginBtn } from '../../Components/UI/cButtons';
-import { getLoginApi } from '../../Services/appServices/loginService';
+import {GetCounterDetail} from '../../Services/appServices/VehicleManagementService';
+import {LoginBtn} from '../../Components/UI/cButtons';
+import {getLoginApi} from '../../Services/appServices/loginService';
 
 const windowWidth = Dimensions.get('window').width;
-const windowheight = Dimensions.get('window').height
+const windowheight = Dimensions.get('window').height;
 
 const LoginScreen = () => {
   const [errors, setErrors] = useState({});
@@ -29,25 +41,24 @@ const LoginScreen = () => {
 
   const validate = () => {
     Keyboard.dismiss();
-    let isOpValid = true
+    let isOpValid = true;
     if (UserName === '' || UserName === undefined) {
-      handleError('please enter Username', 'UserName')
-      isOpValid = false
+      handleError('please enter Username', 'UserName');
+      isOpValid = false;
     }
     if (Password === '' || Password === undefined) {
-      handleError('please enter Password', 'Password')
-      isOpValid = false
+      handleError('please enter Password', 'Password');
+      isOpValid = false;
     }
     if (CounterName === '' || CounterName === undefined) {
-      handleError('please enter Counter Name', 'CounterName')
-      isOpValid = false
+      handleError('please enter Counter Name', 'CounterName');
+      isOpValid = false;
     }
     return isOpValid;
-  }
+  };
 
   const handleError = (error, input) => {
-    setErrors(prevState =>
-      ({ ...prevState, [input]: error }));
+    setErrors(prevState => ({...prevState, [input]: error}));
   };
 
   const handleProceed = () => {
@@ -57,116 +68,118 @@ const LoginScreen = () => {
 
     // return
     let data = {
-      'username': UserName,
-      'password': Password,
-    }
+      username: UserName,
+      password: Password,
+    };
     if (isValidated) {
-      dispatch(getLoginApi(data, (res, status) => {
-        if (status === 200) {
-          let uData = {
-            "Role": res?.UserDetails[0].Role,
-            "RoleId": res?.UserDetails[0].RoleId,
-            "UId": res?.UserDetails[0].UId,
-            "UserContactNumber": res?.UserDetails[0].UserContactNumber,
-            "UserFullName": res?.UserDetails[0].UserFullName,
-            "UserName": res?.UserDetails[0].UserName,
-            "counterId": CounterId !== undefined ? CounterId : '',
-            "companyId": CompanyId !== undefined ? CompanyId : '',
-          }
-          dispatch(storeUserData(uData));
-        } else {
-          Alert.alert(
-            'त्रुटि!',
-            "प्रयोगकर्ता नाम र पासवर्ड मिलेन।",
-            [
+      dispatch(
+        getLoginApi(data, (res, status) => {
+          if (status === 200) {
+            let uData = {
+              Role: res?.UserDetails[0].Role,
+              RoleId: res?.UserDetails[0].RoleId,
+              UId: res?.UserDetails[0].UId,
+              UserContactNumber: res?.UserDetails[0].UserContactNumber,
+              UserFullName: res?.UserDetails[0].UserFullName,
+              UserName: res?.UserDetails[0].UserName,
+              counterId: CounterId !== undefined ? CounterId : '',
+              companyId: CompanyId !== undefined ? CompanyId : '',
+            };
+            dispatch(storeUserData(uData));
+          } else {
+            Alert.alert('त्रुटि!', 'प्रयोगकर्ता नाम र पासवर्ड मिलेन।', [
               {
-                text: 'ठिक छ', onPress: () => {
+                text: 'ठिक छ',
+                onPress: () => {
                   setIsDisabled(false);
                   setIsLoading(false);
-                }
-              }
-            ]
-          )
-        }
-      }))
-    } else {
-      Alert.alert(
-        "सतर्कता !",
-        "कृपया आवश्यक डाटा भर्नुहोस्।",
-        [
-          {
-            text: 'ठिक छ', onPress: () => {
-              setIsDisabled(false);
-              setIsLoading(false);
-            }
+                },
+              },
+            ]);
           }
-        ]
-      )
+        }),
+      );
+    } else {
+      Alert.alert('सतर्कता !', 'कृपया आवश्यक डाटा भर्नुहोस्।', [
+        {
+          text: 'ठिक छ',
+          onPress: () => {
+            setIsDisabled(false);
+            setIsLoading(false);
+          },
+        },
+      ]);
     }
     setIsDisabled(false);
     setIsLoading(false);
-  }
+  };
 
   const handleSelect = (cId, counterName, CompId) => {
-    setCounterName(counterName)
-    setCounterId(cId)
+    setCounterName(counterName);
+    setCounterId(cId);
     setIsVisible(!IsVisible);
-    setCompanyId(CompId)
+    setCompanyId(CompId);
     // setIsInputDisable(!IsInputDisable)
-  }
+  };
 
   useEffect(() => {
     let isApiSubscribed = true;
-    dispatch(GetCounterDetail((res) => {
-      if (res?.CounterDetails.length > 0) {
-        let temp = res?.CounterDetails.filter(e => e.IsActive === true);
-        if (isApiSubscribed) {
-          setCounteList(temp)
+    dispatch(
+      GetCounterDetail(res => {
+        if (res?.CounterDetails.length > 0) {
+          let temp = res?.CounterDetails.filter(e => e.IsActive === true);
+          if (isApiSubscribed) {
+            setCounteList(temp);
+          }
         }
-      }
-    }))
+      }),
+    );
     return () => {
-      isApiSubscribed = false
+      isApiSubscribed = false;
     };
-  }, [])
-
+  }, []);
 
   return (
-
     <KeyboardAvoidingView
       behavior={Platform === 'ios' ? 'padding' : 'height'}
       style={styles.logincontainer}>
-      <View style={{
-        alignItems: 'center'
-      }}>
-        <Image source={require('../../Assets/images/logo.png')} style={styles.logo}></Image>
+      <View
+        style={{
+          alignItems: 'center',
+        }}>
+        <Image
+          source={require('../../Assets/images/logo2.png')}
+          style={styles.logo}></Image>
       </View>
       <View style={styles.dummyInputContainer}>
         <Text style={styles.dummyTitle}>Counter:</Text>
-        <Pressable onPress={() => {
-          setIsVisible(!IsVisible)
-          handleError(null, 'CounterName')
-        }}
-          style={styles.dummyInput}
-        >
+        <Pressable
+          onPress={() => {
+            setIsVisible(!IsVisible);
+            handleError(null, 'CounterName');
+          }}
+          style={styles.dummyInput}>
           <Icon
             name={'shopping-store'}
             color={'#dad8d8'}
             type={'fontisto'}
             style={styles.icon}
-            size={20}
-          ></Icon>
+            size={20}></Icon>
           <Text style={styles.dummyInputTxt}>{CounterName}</Text>
         </Pressable>
-        <Text style={{
-          fontSize: 12,
-          color: 'red'
-        }}> {errors.CounterName ? errors.CounterName : ""}</Text>
+        <Text
+          style={{
+            fontSize: 12,
+            color: 'red',
+          }}>
+          {' '}
+          {errors.CounterName ? errors.CounterName : ''}
+        </Text>
       </View>
       <Input
         value={UserName}
-        placeholder='User Name'
-        onChangeText={(e) => setUserName(e)}
+        placeholder="User Name"
+        onChangeText={e => setUserName(e)}
         onFocus={() => handleError(null, 'UserName')}
         label="User Name"
         errorMessage={errors.UserName}
@@ -180,8 +193,7 @@ const LoginScreen = () => {
             color={'#dad8d8'}
             type={'antdesign'}
             style={styles.icon}
-            size={20}
-          ></Icon>
+            size={20}></Icon>
         }
         inputContainerStyle={{
           borderWidth: 1,
@@ -195,8 +207,8 @@ const LoginScreen = () => {
 
       <Input
         value={Password}
-        placeholder='Password'
-        onChangeText={(e) => setPassword(e)}
+        placeholder="Password"
+        onChangeText={e => setPassword(e)}
         onFocus={() => handleError(null, 'Password')}
         label="Password"
         errorMessage={errors.Password}
@@ -207,25 +219,22 @@ const LoginScreen = () => {
             color={'#dad8d8'}
             type={'antdesign'}
             style={styles.icon}
-            size={20}
-          ></Icon>
+            size={20}></Icon>
         }
         rightIcon={
-          <Pressable onPressIn={() => {
-            setShowPassword(!ShowPassword)
-          }}
-            onPressOut={() => {
-              setShowPassword(!ShowPassword)
+          <Pressable
+            onPressIn={() => {
+              setShowPassword(!ShowPassword);
             }}
-          >
+            onPressOut={() => {
+              setShowPassword(!ShowPassword);
+            }}>
             <Icon
               name={'eyeo'}
               color={'#dad8d8'}
               type={'antdesign'}
-              size={20}
-            ></Icon>
+              size={20}></Icon>
           </Pressable>
-
         }
         inputStyle={{
           fontSize: 14,
@@ -241,7 +250,10 @@ const LoginScreen = () => {
         }}
       />
 
-      <LoginBtn title={"लग - इन"} onPress={() => handleProceed()} disabled={IsDisabled}></LoginBtn>
+      <LoginBtn
+        title={'लग - इन'}
+        onPress={() => handleProceed()}
+        disabled={IsDisabled}></LoginBtn>
 
       <Modal
         animationType="slide"
@@ -249,56 +261,50 @@ const LoginScreen = () => {
         visible={IsVisible}
         onRequestClose={() => {
           setIsVisible(!IsVisible);
-        }}
-      >
+        }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <ScrollView>
-              {
-                (CounteList !== undefined) &&
+              {CounteList !== undefined &&
                 CounteList.map(e => (
-                  <Pressable style={styles.selectCard} onPress={() => handleSelect(e.CId, e.CounterName, e.CompanyId)} key={e.CId}>
-
+                  <Pressable
+                    style={styles.selectCard}
+                    onPress={() =>
+                      handleSelect(e.CId, e.CounterName, e.CompanyId)
+                    }
+                    key={e.CId}>
                     <Text>{e.CounterName}</Text>
                   </Pressable>
-                ))
-              }
+                ))}
             </ScrollView>
           </View>
         </View>
       </Modal>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={IsLoading}
-      >
+      <Modal animationType="slide" transparent={true} visible={IsLoading}>
         <View style={GlobalStyles.mainContainer}>
           <LoadingContainer />
         </View>
       </Modal>
     </KeyboardAvoidingView>
+  );
+};
 
-
-
-  )
-}
-
-export default LoginScreen
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   logincontainer: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
   },
   icon: {
     borderWidth: 1,
     padding: 8,
     borderRadius: 4,
-    borderColor: '#dad8d8'
+    borderColor: '#dad8d8',
   },
   dummyInputContainer: {
     width: windowWidth - 16,
@@ -308,7 +314,7 @@ const styles = StyleSheet.create({
   dummyTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: "#878991",
+    color: '#878991',
   },
   dummyInput: {
     backgroundColor: '#faf4f4',
@@ -319,15 +325,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#dad8d8'
+    borderColor: '#dad8d8',
   },
   dummyInputTxt: {
     fontSize: 14,
-    color: "#8d8686",
+    color: '#8d8686',
     marginLeft: 4,
   },
   centeredView: {
-    backgroundColor: "#fefefe",
+    backgroundColor: '#fefefe',
     bottom: 0,
     position: 'absolute',
     left: 0,
@@ -336,13 +342,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopEndRadius: 16,
     borderTopStartRadius: 16,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 12,
     },
     shadowOpacity: 0.58,
-    shadowRadius: 16.00,
+    shadowRadius: 16.0,
 
     elevation: 24,
   },
@@ -357,6 +363,6 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     marginTop: 4,
     borderRadius: 4,
-    borderColor: '#c7c2c2'
-  }
-})
+    borderColor: '#c7c2c2',
+  },
+});
