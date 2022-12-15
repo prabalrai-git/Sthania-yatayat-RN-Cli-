@@ -9,17 +9,20 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
-import {GlobalStyles} from '../../../GlobalStyle';
+import React, { useState } from 'react';
+import { GlobalStyles } from '../../../GlobalStyle';
 import Filter from '../../Components/UI/Filter';
-import {useSelector} from 'react-redux';
-import {Input} from 'react-native-elements/dist/input/Input';
+import { useSelector } from 'react-redux';
+import { Input } from 'react-native-elements/dist/input/Input';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import NepaliDate from 'nepali-date-converter';
 import AppButton from '../../Components/UI/AppButton';
-import {InsertUpdateReserveDetail} from '../../Services/appServices/VehicleManagementService';
-import {useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import { InsertUpdateReserveDetail } from '../../Services/appServices/VehicleManagementService';
+import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { PrimaryBtn, SecondaryBtn } from '../../Components/UI/cButtons';
+import { TouchableOpacity } from 'react-native';
+import { TextInput } from 'react-native';
 // import {executeReducerBuilderCallback} from '@reduxjs/toolkit/dist/mapBuilders';
 
 const windowWidth = Dimensions.get('window').width;
@@ -37,7 +40,7 @@ const windowheight = Dimensions.get('window').height;
 // "vehicleId": 268
 // }
 
-const EditReservation = ({route}) => {
+const EditReservation = ({ route }) => {
   // console.log('route', route.params.data);
   const Temp = route.params.data;
   const vehicle = useSelector(state => state.storeVehicleData);
@@ -54,11 +57,16 @@ const EditReservation = ({route}) => {
   const [NDate, setNDate] = useState(Temp.ReservationDate);
   const [NepDate, setNepDate] = useState(Temp.ReserveNepalidate);
   const [ReserveDays, setReserveDays] = useState(Temp.ReserveDays);
+  const [reserveRemarks, setReserveRemarks] = useState(Temp.ReserveRemarks);
+  const [IsModalVisible, setIsModalVisible] = useState(false);
+  const [Remarks, setREmarks] = useState('');
+
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
+
   const navigation = useNavigation();
 
   const onChangeData = (event, selectedValue) => {
@@ -88,7 +96,7 @@ const EditReservation = ({route}) => {
   // };
 
   const handleError = (error, input) => {
-    setErrors(prevState => ({...prevState, [input]: error}));
+    setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
   const validate = () => {
@@ -104,19 +112,27 @@ const EditReservation = ({route}) => {
     //   isOpValid = false
     // }
     if (Loocation === '' || Loocation === undefined) {
-      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'Loocation');
+      handleError('कृपया स्थान प्रविष्ट गर्नुहोस्', 'Loocation');
       isOpValid = false;
     }
     if (Price === '' || Price === undefined) {
-      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'Price');
+      handleError('कृपया मूल्य प्रविष्ट गर्नुहोस्', 'Price');
       isOpValid = false;
     }
     if (NDate === '' || NDate === undefined) {
-      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'NDate');
+      handleError('कृपया मिति प्रविष्ट गर्नुहोस्', 'NDate');
       isOpValid = false;
     }
     if (ReserveDays === '' || ReserveDays === undefined) {
-      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'ReserveDays');
+      handleError('कृपया आरक्षित दिनहरू प्रविष्ट गर्नुहोस्', 'ReserveDays');
+      isOpValid = false;
+    }
+    if (reserveRemarks === '' || reserveRemarks === undefined) {
+      handleError("कृपया टिप्पणी प्रविष्ट गर्नुहोस्", 'reserveRemarks')
+      isOpValid = false;
+    }
+    if (Remarks === '' || Remarks === undefined) {
+      handleError("कृपया टिप्पणी प्रविष्ट गर्नुहोस्", 'Remarks')
       isOpValid = false;
     }
 
@@ -151,6 +167,8 @@ const EditReservation = ({route}) => {
       UserId: user.UId,
       IsActive: true,
       ReserveDays: ReserveDays !== undefined ? ReserveDays : 'n/a',
+      ReserveRemarks: reserveRemarks !== undefined || null ? reserveRemarks : 'n/a'
+
     };
     // console.log("data", data);
     if (isValidated) {
@@ -158,10 +176,45 @@ const EditReservation = ({route}) => {
         InsertUpdateReserveDetail(data, res => {
           // console.log('res', res)
           if (res.SuccessMsg === true) {
-            Alert.alert('Sucessfull', 'sucess', [
-              {text: 'होइन'},
+            Alert.alert('सफलता', 'सफलतापूर्वक सम्पादन गरियो', [
+
               {
-                text: 'हो',
+                text: 'ठिक छ',
+                onPress: () => {
+                  navigation.pop(1);
+                },
+              },
+            ]);
+          }
+        }),
+      );
+    }
+  };
+  const handleCancel = () => {
+    // console.log("user", user)
+    let isValidated = validate();
+    const data = {
+      RId: Temp.RId,
+      VehicleId: VehicleId !== undefined ? VehicleId : 'n/a',
+      ReserverLocation: Loocation !== undefined ? Loocation : 'n/a',
+      ReservationDate: NDate !== undefined ? NDate : 'n/a',
+      ReserveNepaliDate: NepDate !== undefined ? NepDate : 'n/a',
+      Charge: Price !== undefined ? Price : 'n/a',
+      UserId: user.UId,
+      IsActive: 0,
+      ReserveDays: ReserveDays !== undefined ? ReserveDays : 'n/a',
+      ReserveRemarks: reserveRemarks !== undefined || null ? reserveRemarks : 'n/a'
+
+    };
+    // console.log("data", data);
+    if (isValidated) {
+      dispatch(
+        InsertUpdateReserveDetail(data, res => {
+          // console.log('res', res)
+          if (res.SuccessMsg === true) {
+            Alert.alert('सफलता', 'सफलतापूर्वक रद्द गरियो', [
+              {
+                text: 'ठिक छ',
                 onPress: () => {
                   navigation.pop(1);
                 },
@@ -207,9 +260,8 @@ const EditReservation = ({route}) => {
                 setShow(!show);
                 handleError(null, 'NDate');
               }}>
-              <Text style={styles.dummyInput}>{`${
-                NDate !== undefined ? NDate : 'date'
-              }`}</Text>
+              <Text style={styles.dummyInput}>{`${NDate !== undefined ? NDate : 'date'
+                }`}</Text>
             </Pressable>
             {errors.NDate && (
               <Text
@@ -224,16 +276,17 @@ const EditReservation = ({route}) => {
 
           <View style={styles.dummyInputContainer}>
             <Text style={styles.dummyTitle}>मिति(B.S):</Text>
-            <Text style={styles.dummyInput}>{`${
-              NepDate !== undefined ? NepDate : 'date'
-            }`}</Text>
+            <Text style={styles.dummyInput}>{`${NepDate !== undefined ? NepDate : 'date'
+              }`}</Text>
           </View>
 
           <Input
             value={Loocation}
             placeholder="Location"
+            placeholderTextColor={'black'}
             onChangeText={e => setLoocation(e)}
             label="स्थान"
+            labelStyle={{ color: 'black' }}
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -264,8 +317,10 @@ const EditReservation = ({route}) => {
           <Input
             value={Price !== null && Price.toString()}
             placeholder="Price"
+            placeholderTextColor={'black'}
             onChangeText={e => setPrice(e)}
             label="मूल्य"
+            labelStyle={{ color: 'black' }}
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -296,8 +351,10 @@ const EditReservation = ({route}) => {
           <Input
             value={ReserveDays !== null && ReserveDays.toString()}
             placeholder="Reserve Days"
+            placeholderTextColor={'black'}
             onChangeText={e => setReserveDays(e)}
             label="रिजर्व दिन"
+            labelStyle={{ color: 'black' }}
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -325,7 +382,90 @@ const EditReservation = ({route}) => {
               {errors.ReserveDays}
             </Text>
           )}
+          <Input
+            value={reserveRemarks}
+            placeholder="टिप्पणीहरू"
+            placeholderTextColor={'black'}
+            onChangeText={e => setReserveRemarks(e)}
+            label="टिप्पणीहरू"
+            labelStyle={{ color: 'black' }}
+            inputStyle={{
+              fontSize: 14,
+              color: '#5c5656',
+            }}
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: '#dad8d8',
+              paddingHorizontal: 3,
+              borderRadius: 4,
+              backgroundColor: '#dad8d8',
+              marginBottom: -12,
+            }}
+            onFocus={() => handleError(null, 'टिप्पणीहरू')}
+          />
+          {errors.ReserveDays && (
+            <Text
+              style={{
+                fontSize: 12,
+                marginLeft: 10,
+                marginTop: -10,
+                marginBottom: 10,
+                color: 'red',
+              }}>
+              {errors.ReserveDays}
+            </Text>
+          )}
           <AppButton title="पेश" onPress={() => handleProceed()} />
+          <TouchableOpacity style={{ width: windowWidth * 0.88, backgroundColor: 'red', marginLeft: 'auto', marginRight: 'auto', marginTop: 15, padding: 10, borderRadius: 4 }} onPress={() => setIsModalVisible(!IsModalVisible)}
+          >
+            <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>रद्द गर्नुहोस्</Text>
+          </TouchableOpacity>
+
+          {/* start of modal for cancellation  */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={IsModalVisible}
+            onRequestClose={() => {
+              setIsModalVisible(!IsModalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text>के तपाइँ रद्द गर्न चाहनुहुन्छ?</Text>
+                <TextInput
+                  style={styles.inputStyleContainer}
+                  value={Remarks}
+                  onChangeText={e => setREmarks(e)}
+                  multiline
+                  numberOfLines={4}
+                  placeholder={'टिप्पणीहरू'}
+                  onFocus={() => handleError(null, 'Remarks')}></TextInput>
+                {errors.Remarks && (
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: 'red',
+                    }}>
+                    {errors.Remarks}
+                  </Text>
+                )}
+                <View style={[styles.BtnContainerStyle]}>
+                  <SecondaryBtn
+                    title="होइन"
+                    onPress={() => {
+                      setIsModalVisible(!IsModalVisible);
+                      setREmarks('');
+
+                    }}
+
+                  />
+                  <PrimaryBtn title="हो" onPress={() => handleCancel()} />
+                </View>
+              </View>
+            </View>
+          </Modal>
+
+          {/* endo fo modal for cancellation */}
 
           <View style={styles.centeredView}>
             <Modal
@@ -448,5 +588,38 @@ const styles = StyleSheet.create({
   },
   NepaliDateInput: {
     backgroundColor: '#858585',
+  },
+  BtnContainerStyle: {
+    // width: windowWidth - 16,
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // alignItems: 'stretch'
+  },
+  inputStyleContainer: {
+    backgroundColor: '#ece7e7',
+    width: windowWidth - 32,
+    fontSize: 14,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    color: '#5c5656',
+    borderRadius: 4,
+    marginVertical: 8,
+  },
+  modalView: {
+    width: windowWidth - 16,
+    // height: 300,
+    backgroundColor: '#fefefe',
+    paddingHorizontal: 8,
+    borderRadius: 8,
+    paddingVertical: 16,
+  },
+  centeredView: {
+    flex: 1,
+    width: windowWidth,
+    backgroundColor: '#47333399',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

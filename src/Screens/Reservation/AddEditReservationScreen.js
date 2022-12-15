@@ -9,17 +9,17 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
-import {GlobalStyles} from '../../../GlobalStyle';
+import React, { useState } from 'react';
+import { GlobalStyles } from '../../../GlobalStyle';
 import Filter from '../../Components/UI/Filter';
-import {useSelector} from 'react-redux';
-import {Input} from 'react-native-elements/dist/input/Input';
+import { useSelector } from 'react-redux';
+import { Input } from 'react-native-elements/dist/input/Input';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import NepaliDate from 'nepali-date-converter';
 import AppButton from '../../Components/UI/AppButton';
-import {InsertUpdateReserveDetail} from '../../Services/appServices/VehicleManagementService';
-import {useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import { InsertUpdateReserveDetail } from '../../Services/appServices/VehicleManagementService';
+import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
@@ -38,6 +38,7 @@ const AddEditReservation = () => {
   const [NDate, setNDate] = useState();
   const [NepDate, setNepDate] = useState();
   const [ReserveDays, setReserveDays] = useState();
+  const [reserveRemarks, setReserveRemarks] = useState();
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
@@ -73,7 +74,7 @@ const AddEditReservation = () => {
   // };
 
   const handleError = (error, input) => {
-    setErrors(prevState => ({...prevState, [input]: error}));
+    setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
   const validate = () => {
@@ -89,19 +90,23 @@ const AddEditReservation = () => {
     //   isOpValid = false
     // }
     if (Loocation === '' || Loocation === undefined) {
-      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'Loocation');
+      handleError('कृपया स्थान प्रविष्ट गर्नुहोस्', 'Loocation');
       isOpValid = false;
     }
     if (Price === '' || Price === undefined) {
-      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'Price');
+      handleError('कृपया मूल्य प्रविष्ट गर्नुहोस्', 'Price');
       isOpValid = false;
     }
     if (NDate === '' || NDate === undefined) {
-      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'NDate');
+      handleError('कृपया मिति प्रविष्ट गर्नुहोस्', 'NDate');
       isOpValid = false;
     }
     if (ReserveDays === '' || ReserveDays === undefined) {
-      handleError('कृपया गाडीको आईडी प्रविष्ट गर्नुहोस्', 'ReserveDays');
+      handleError('कृपया आरक्षित दिनहरू प्रविष्ट गर्नुहोस्', 'ReserveDays');
+      isOpValid = false;
+    }
+    if (reserveRemarks === '' || reserveRemarks === undefined) {
+      handleError('कृपया टिप्पणी प्रविष्ट गर्नुहोस्', 'Remarks');
       isOpValid = false;
     }
 
@@ -136,6 +141,7 @@ const AddEditReservation = () => {
       UserId: user.UId,
       IsActive: true,
       ReserveDays: ReserveDays !== undefined ? ReserveDays : 'n/a',
+      ReserveRemarks: reserveRemarks !== undefined || null ? reserveRemarks : 'n/a'
     };
     // console.log("data", data);
     if (isValidated) {
@@ -144,7 +150,7 @@ const AddEditReservation = () => {
           // console.log('res', res)
           if (res.SuccessMsg === true) {
             Alert.alert('सफलता', 'थप्नुहोस्', [
-              {text: 'होइन'},
+              { text: 'होइन' },
               {
                 text: 'हो',
                 onPress: () => {
@@ -191,9 +197,8 @@ const AddEditReservation = () => {
                 setShow(!show);
                 handleError(null, 'NDate');
               }}>
-              <Text style={styles.dummyInput}>{`${
-                NDate !== undefined ? NDate : 'मिति'
-              }`}</Text>
+              <Text style={styles.dummyInput}>{`${NDate !== undefined ? NDate : 'मिति'
+                }`}</Text>
             </Pressable>
             {errors.NDate && (
               <Text
@@ -208,16 +213,17 @@ const AddEditReservation = () => {
 
           <View style={styles.dummyInputContainer}>
             <Text style={styles.dummyTitle}>मिति(B.S):</Text>
-            <Text style={styles.dummyInput}>{`${
-              NepDate !== undefined ? NepDate : 'मिति'
-            }`}</Text>
+            <Text style={styles.dummyInput}>{`${NepDate !== undefined ? NepDate : 'मिति'
+              }`}</Text>
           </View>
 
           <Input
             value={Loocation}
             placeholder="स्थान"
+            placeholderTextColor={'black'}
             onChangeText={e => setLoocation(e)}
             label="स्थान"
+            labelStyle={{ color: 'black' }}
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -248,8 +254,10 @@ const AddEditReservation = () => {
           <Input
             value={Price}
             placeholder="मूल्य"
+            placeholderTextColor={'black'}
             onChangeText={e => setPrice(e)}
             label="मूल्य"
+            labelStyle={{ color: 'black' }}
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -280,8 +288,10 @@ const AddEditReservation = () => {
           <Input
             value={ReserveDays}
             placeholder="रिजर्व दिन"
+            placeholderTextColor={'black'}
             onChangeText={e => setReserveDays(e)}
             label="रिजर्व दिन"
+            labelStyle={{ color: 'black' }}
             inputStyle={{
               fontSize: 14,
               color: '#5c5656',
@@ -307,6 +317,39 @@ const AddEditReservation = () => {
                 color: 'red',
               }}>
               {errors.ReserveDays}
+            </Text>
+          )}
+          <Input
+            value={reserveRemarks}
+            placeholder="टिप्पणीहरू"
+            placeholderTextColor={'black'}
+            onChangeText={e => setReserveRemarks(e)}
+            label="टिप्पणीहरू"
+            labelStyle={{ color: 'black' }}
+            inputStyle={{
+              fontSize: 14,
+              color: '#5c5656',
+            }}
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: '#dad8d8',
+              paddingHorizontal: 3,
+              borderRadius: 4,
+              backgroundColor: '#dad8d8',
+              marginBottom: -12,
+            }}
+            onFocus={() => handleError(null, 'टिप्पणीहरू')}
+          />
+          {errors.reserveRemarks && (
+            <Text
+              style={{
+                fontSize: 12,
+                marginLeft: 10,
+                marginTop: -10,
+                marginBottom: 10,
+                color: 'red',
+              }}>
+              {errors.reserveRemarks}
             </Text>
           )}
           <AppButton title="पेश" onPress={() => handleProceed()} />
@@ -335,7 +378,7 @@ const AddEditReservation = () => {
                           style={styles.selectCard}
                           onPress={() => handleSelect(e.VId, e.VehicleNumber)}
                           key={e.VId}>
-                          <Text>{e.VehicleNumber}</Text>
+                          <Text style={{ color: 'black' }}>{e.VehicleNumber}</Text>
                         </Pressable>
                       ))}
                   </ScrollView>
@@ -393,6 +436,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     color: '#5c5656',
     borderRadius: 4,
+
   },
   centeredView: {
     backgroundColor: '#fefefe',

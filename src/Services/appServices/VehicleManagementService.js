@@ -4,6 +4,7 @@ import {
   GetCompanyDetails,
   GetCounterDetails,
   GetReservationDetailsByDate,
+  GetRouteDetailsByCompanyIds,
   GetRouteDetailsByDateWise,
   GetStaffDetailsByVehicleId,
   GetVehicleDetailsByVId,
@@ -11,8 +12,8 @@ import {
   InsertUpdateDayWiseVehicleRoute,
   InsertUpdateReserveDetails,
 } from '../constants/url';
-import {generateUrlEncodedData} from '../utils/generateUrlEncodedData';
-import {store, fetch} from '../utils/httpUtil';
+import { generateUrlEncodedData } from '../utils/generateUrlEncodedData';
+import { store, fetch } from '../utils/httpUtil';
 
 export const GetActiveVehicleList = (data, successCallback) => {
   return async dispatch => {
@@ -23,18 +24,18 @@ export const GetActiveVehicleList = (data, successCallback) => {
       if (response?.status === 200) {
         successCallback(response?.data);
       } else successCallback([]);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
-export const GetActiveVehicleRoute = successCallback => {
+export const GetActiveVehicleRoute = (data, successCallback) => {
   return async dispatch => {
     try {
-      const response = await fetch(`GetRouteDetailsByCompanyId?companyid=2`);
+      const response = await fetch(`${GetRouteDetailsByCompanyIds}?companyid=${data}`);
       if (response?.status === 200) {
         successCallback(response?.data);
       } else successCallback([]);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -50,7 +51,7 @@ export const InsertUpdateDayWiseVehicleRoutes = (data, successCallback) => {
         // fghgfghjgfghj
         successCallback(response?.data);
       } else successCallback([]);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -63,7 +64,7 @@ export const GetVehicleDetailsByyVId = (data, successCallback) => {
       if (response?.status === 200) {
         successCallback(response?.data);
       } else successCallback([]);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -74,7 +75,7 @@ export const GetCompanyDetail = successCallback => {
       if (response?.status === 200) {
         successCallback(response?.data);
       } else successCallback([]);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -87,7 +88,7 @@ export const GetStaffDetailsByVehicleIdd = (data, successCallback) => {
       if (response?.status === 200) {
         successCallback(response?.data);
       } else successCallback([]);
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -102,7 +103,7 @@ export const GetRouteDetailsByDateWisee = (data, successCallback) => {
       } else {
         successCallback([]);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 export const GetVehicleRouteDetailsByyReceiptId = (data, successCallback) => {
@@ -116,7 +117,7 @@ export const GetVehicleRouteDetailsByyReceiptId = (data, successCallback) => {
       } else {
         successCallback([]);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -147,7 +148,7 @@ export const GetCounterDetail = successCallback => {
       } else {
         successCallback([]);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -163,7 +164,7 @@ export const GetReservationDetailsByDatee = (data, successCallback) => {
       } else {
         successCallback([]);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -179,6 +180,6 @@ export const InsertUpdateReserveDetail = (data, successCallback) => {
       } else {
         successCallback([]);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 };

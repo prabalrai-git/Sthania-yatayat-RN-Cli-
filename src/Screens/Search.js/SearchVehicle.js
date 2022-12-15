@@ -1,11 +1,11 @@
-import {View, SafeAreaView, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, SafeAreaView, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Filter from '../../Components/UI/Filter';
-import {GetRouteDetailsByDateWisee} from '../../Services/appServices/VehicleManagementService';
-import {useDispatch} from 'react-redux';
-import {GlobalStyles} from '../../../GlobalStyle';
+import { GetRouteDetailsByDateWisee } from '../../Services/appServices/VehicleManagementService';
+import { useDispatch } from 'react-redux';
+import { GlobalStyles } from '../../../GlobalStyle';
 import DailyRouteCard from '../../Components/UI/DailyRouteCard';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
 
 const SearchVehicle = () => {
@@ -41,10 +41,11 @@ const SearchVehicle = () => {
     }
   };
 
-  const renderItem = ({item}) => <DailyRouteCard data={item} />;
+  const renderItem = ({ item }) => <DailyRouteCard data={item} />;
   const handleDateChange = e => {
     let temp = JSON.stringify(e).split('T');
     let newDate = temp[0].replace('"', '');
+    // console.log(temp, newDate);
     dispatch(
       GetRouteDetailsByDateWisee(newDate, res => {
         // console.log("res?.DatewiseRouteDetails", res?.DatewiseRouteDetails);

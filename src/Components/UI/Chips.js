@@ -1,14 +1,19 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {Dimensions} from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { Dimensions } from 'react-native';
 
 const WIDTH = Dimensions.get('window').width;
 
 // 325 / 525 / 725 / 825 / 1025;
+// data for sthaniya yatayat
 const data = [325, 525, 725, 825, 1025];
 
-const Chips = ({onChipClick}) => {
+// data for pokhara yatatat
+
+// const data = [1000];
+
+const Chips = ({ onChipClick }) => {
   return (
     <View
       style={{
@@ -19,6 +24,7 @@ const Chips = ({onChipClick}) => {
         marginBottom: 8,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        flexWrap: 'wrap'
       }}>
       {data.map(item => {
         return (
@@ -27,7 +33,7 @@ const Chips = ({onChipClick}) => {
               borderColor: '#4051f5',
               borderWidth: 1.5,
               borderRadius: 10,
-              width: 67,
+              width: 63,
               padding: 4,
               paddingTop: 11,
               paddingBottom: 11,
@@ -35,7 +41,7 @@ const Chips = ({onChipClick}) => {
             }}>
             <Text
               onPress={onChipClick}
-              style={{color: 'black', textAlign: 'center'}}>
+              style={{ color: 'black', textAlign: 'center' }}>
               Rs.{item}
             </Text>
           </TouchableOpacity>

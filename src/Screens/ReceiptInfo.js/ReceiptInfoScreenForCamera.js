@@ -8,29 +8,30 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import QRCode from 'react-native-qrcode-svg';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import {
   CancelAssignedRouteOfVehicle,
   GetVehicleRouteDetailsByyReceiptId,
 } from '../../Services/appServices/VehicleManagementService';
-import {GlobalStyles} from '../../../GlobalStyle';
+import { GlobalStyles } from '../../../GlobalStyle';
 import {
   BluetoothManager,
   BluetoothEscposPrinter,
 } from 'react-native-bluetooth-escpos-printer';
 import ImgToBase64 from 'react-native-image-base64';
 import ViewShot from 'react-native-view-shot';
-import Logo from '../../Assets/images/logo2.png';
+import Logo from '../../Assets/images/logo.png';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
+import { ScrollView } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 
-const ReceiptInfoScreenForCamera = ({route}) => {
+const ReceiptInfoScreenForCamera = ({ route }) => {
   const user = useSelector(state => state.storeUserData.userData);
-  const {id, isActive} = route.params;
+  const { id, isActive } = route.params;
   const dispatch = useDispatch();
   const [ReceiptDetails, setReceiptDetails] = useState();
   const [Qr, setQr] = useState();
@@ -167,7 +168,7 @@ const ReceiptInfoScreenForCamera = ({route}) => {
   }, []);
 
   const handleError = (error, input) => {
-    setErrors(prevState => ({...prevState, [input]: error}));
+    setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
   const validate = () => {
@@ -204,16 +205,16 @@ const ReceiptInfoScreenForCamera = ({route}) => {
         CancelAssignedRouteOfVehicle(data, res => {
           if (res?.SuccessMsg === true) {
             Alert.alert('सफलता !', 'रसिद सफलतापूर्वक रद्द गरियो', [
-              {text: 'ok', onPress: () => navigation.pop(1)},
+              { text: 'ok', onPress: () => navigation.pop(1) },
             ]);
           } else {
-            Alert.alert('असफलता !', 'फेरी प्रयास गर्नु होला', [{text: 'ok'}]);
+            Alert.alert('असफलता !', 'फेरी प्रयास गर्नु होला', [{ text: 'ok' }]);
           }
         }),
       );
     } else {
       Alert.alert('अलर्ट !', ' कृपया टिप्पणीहरू प्रविष्ट गर्नुहोस्', [
-        {text: 'ok'},
+        { text: 'ok' },
       ]);
     }
   };
@@ -221,91 +222,97 @@ const ReceiptInfoScreenForCamera = ({route}) => {
   return (
     <View style={GlobalStyles.mainContainer}>
       {ReceiptDetails === undefined && <LoadingContainer />}
+      <ScrollView>
 
-      <ViewShot
-        ref={ref}
-        options={{fileName: 'Your-File-Name', format: 'jpg', quality: 0.9}}
-        style={{backgroundColor: '#fefefe'}}>
-        <View style={styles.PrintScreenContainer}>
-          <View style={styles.contenHeadContainer}>
-            <Text style={styles.CTitle}>{ToSendData.CompanyName}</Text>
-            <Text style={styles.CAddress}>
-              {ToSendData.CompanyAddress}, {ToSendData.CompanyPhoneNumber}
-            </Text>
-          </View>
-
-          <View style={styles.spaceBetween}>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>रसिद नं:</Text>
-              <Text style={styles.subContent}>{id}</Text>
-            </View>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>मिति:</Text>
-              <Text style={styles.subContent}>
-                {ToSendData.EntryNepaliDate}
+        <ViewShot
+          ref={ref}
+          options={{ fileName: 'Your-File-Name', format: 'jpg', quality: 0.9 }}
+          style={{ backgroundColor: '#fefefe' }}>
+          <View style={styles.PrintScreenContainer}>
+            <View style={styles.contenHeadContainer}>
+              <Text style={styles.CTitle}>{ToSendData.CompanyName}</Text>
+              <Text style={styles.CAddress}>
+                {ToSendData.CompanyAddress}, {ToSendData.CompanyPhoneNumber}
               </Text>
             </View>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>समय:</Text>
-              <Text style={styles.subContent}>{ToSendData.EntryDate[1]}</Text>
 
-              {/* <Text style={styles.subTitle}>रकम:</Text>
-              <Text style={styles.subContent}>{ToSendData.Amount}</Text> */}
+            <View style={styles.spaceBetween}>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>रसिद नं:</Text>
+                <Text style={styles.subContent}>{id}</Text>
+              </View>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>मिति:</Text>
+                <Text style={styles.subContent}>
+                  {ToSendData.EntryNepaliDate}
+                </Text>
+              </View>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>समय:</Text>
+                <Text style={styles.subContent}>{ToSendData.EntryDate[1]}</Text>
+
+              </View>
+              <View style={styles.contentCol}>
+
+                <Text style={styles.subTitle}>रकम:</Text>
+                <Text style={styles.subContent}>{ToSendData.Amount}</Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>मालिक:</Text>
-            <Text style={styles.subContent}>{ToSendData.OwnerName}</Text>
-          </View>
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>सवारी नं:</Text>
-            <Text style={styles.subContent}>{ToSendData.VehicleNumber}</Text>
-          </View>
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>रुट:</Text>
-            <Text style={styles.subContent}>{ToSendData.route}</Text>
-          </View>
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>चालक:</Text>
-            <Text style={styles.subContent}>{ToSendData.Driver}</Text>
-          </View>
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>फोन नं:</Text>
-            <Text style={styles.subContent}>{ToSendData.StaffContact}</Text>
-          </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>मालिक:</Text>
+              <Text style={styles.subContent}>{ToSendData.OwnerName}</Text>
+            </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>सवारी नं:</Text>
+              <Text style={styles.subContent}>{ToSendData.VehicleNumber}</Text>
+            </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>रुट:</Text>
+              <Text style={styles.subContent}>{ToSendData.route}</Text>
+            </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>चालक:</Text>
+              <Text style={styles.subContent}>{ToSendData.Driver}</Text>
+            </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>फोन नं:</Text>
+              <Text style={styles.subContent}>{ToSendData.StaffContact}</Text>
+            </View>
 
-          {/*           
+            {/*           
           <View style={styles.contentRow}>
             <Text style={styles.subTitle}>मिति:</Text>
             <Text style={styles.subContent}>{ToSendData.EntryNepaliDate}</Text>
             </View> */}
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>टिप्पणीहरू:</Text>
-            <Text style={styles.subContent}>{ToSendData.remarks}</Text>
-          </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>टिप्पणीहरू:</Text>
+              <Text style={styles.subContent}>{ToSendData.remarks}</Text>
+            </View>
 
-          <View class={styles.contentContainer} style={styles.spaceBetween}>
-            <Image style={styles.tinyLogo} source={Logo} />
-            <QRCode
-              value={htmlData}
-              size={120}
-              getRef={e => {
-                svg = e;
-              }}
-            />
-          </View>
-          <View style={styles.spaceBetween}>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>काउन्टरको नाम:</Text>
-              <Text style={styles.subContent}>{ToSendData.CounterName}</Text>
+            <View class={styles.contentContainer} style={styles.spaceBetween}>
+              <Image style={styles.tinyLogo} source={Logo} />
+              <QRCode
+                value={htmlData}
+                size={120}
+                getRef={e => {
+                  svg = e;
+                }}
+              />
             </View>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>टिकट वितरणकर्ता:</Text>
-              <Text style={styles.subContent}>{user.UserName}</Text>
+            <View style={styles.spaceBetween}>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>काउन्टरको नाम:</Text>
+                <Text style={styles.subContent}>{ToSendData.CounterName}</Text>
+              </View>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>टिकट वितरणकर्ता:</Text>
+                <Text style={styles.subContent}>{user.UserName}</Text>
+              </View>
             </View>
           </View>
-        </View>
-      </ViewShot>
+        </ViewShot>
+      </ScrollView>
+
     </View>
   );
 };
@@ -314,21 +321,26 @@ export default ReceiptInfoScreenForCamera;
 
 const styles = StyleSheet.create({
   PrintScreenContainer: {
-    padding: 10,
-    marginTop: 30,
+    padding: 12,
+    paddingTop: 0,
+    marginTop: 10,
     width: windowWidth - 15,
     flexDirection: 'column',
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
+    color: 'black'
   },
   contenHeadContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
+    color: 'black'
+
   },
   contentCol: {
     flexDirection: 'column',
+
   },
   contentRow: {
     width: '100%',
@@ -341,20 +353,28 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   CTitle: {
-    fontSize: 20,
+    fontSize: 28,
     fontWeight: 'bold',
+    color: 'black'
+
   },
   CAddress: {
-    fontSize: 14,
+    fontSize: 16,
+    color: 'black'
+
   },
   subTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     marginRight: 4,
+    color: 'black'
+
   },
   subContent: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'normal',
+    color: 'black'
+
   },
   centeredView: {
     flex: 1,
@@ -380,6 +400,7 @@ const styles = StyleSheet.create({
     color: '#5c5656',
     borderRadius: 4,
     marginVertical: 8,
+
   },
 
   BtnContainerStyle: {
@@ -393,5 +414,7 @@ const styles = StyleSheet.create({
   tinyLogo: {
     width: 120,
     height: 120,
+    color: 'black'
+
   },
 });

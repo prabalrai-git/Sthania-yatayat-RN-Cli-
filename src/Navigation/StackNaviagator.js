@@ -1,19 +1,20 @@
-import {StyleSheet} from 'react-native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
+import { StyleSheet } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useEffect } from 'react';
 import DashboardScreen from '../Screens/Dashboard/DashboardScreen';
 import AssignRouteScreen from '../Screens/AssignRoute/AssignRouteScreen';
 import ReceiptInfoScreen from '../Screens/ReceiptInfo.js/ReceiptInfoScreen';
 import ReceiptInfoScreenForCamera from '../Screens/ReceiptInfo.js/ReceiptInfoScreenForCamera';
 import LoginScreen from '../Screens/LoginScreen/LoginScreen';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchVehicle from '../Screens/Search.js/SearchVehicle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QrScanner from '../Screens/CameraScreen.js/QrScanner';
-import {storeUserData} from '../Services/store/slices/profileSlice';
+import { storeUserData } from '../Services/store/slices/profileSlice';
 import ReservationScreen from '../Screens/Reservation/ReservationScreen';
 import AddEditReservationScreen from '../Screens/Reservation/AddEditReservationScreen';
 import EditReservation from '../Screens/Reservation/EditReservation';
+import ReservationQrInfoCamera from '../Screens/ReceiptInfo.js/ReservationQrInfoCamera';
 const StackNaviagator = () => {
   const Stack = createNativeStackNavigator();
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const StackNaviagator = () => {
         dispatch(storeUserData(JSON.parse(jsonValue)));
       } else {
       }
-    } catch (e) {}
+    } catch (e) { }
   };
   useEffect(() => {
     getData();
@@ -78,6 +79,14 @@ const StackNaviagator = () => {
           <Stack.Screen
             name="ReceiptInfoScreenForCamera"
             component={ReceiptInfoScreenForCamera}
+            options={{
+              // headerShown: false
+              title: 'रसिद जानकारी',
+            }}
+          />
+          <Stack.Screen
+            name="ReservationQrInfoCamera"
+            component={ReservationQrInfoCamera}
             options={{
               // headerShown: false
               title: 'रसिद जानकारी',

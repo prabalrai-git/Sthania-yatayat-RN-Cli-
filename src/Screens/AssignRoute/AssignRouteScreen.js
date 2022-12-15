@@ -8,23 +8,21 @@ import {
   View,
   ScrollView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {GlobalStyles} from '../../../GlobalStyle';
-import {Dimensions} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { GlobalStyles } from '../../../GlobalStyle';
+import { Dimensions } from 'react-native';
 import AppButton from '../../Components/UI/AppButton';
-import {Input} from 'react-native-elements/dist/input/Input';
+import { Input } from 'react-native-elements/dist/input/Input';
 import Filter from '../../Components/UI/Filter';
 import {
   GetCompanyDetail,
   InsertUpdateDayWiseVehicleRoutes,
 } from '../../Services/appServices/VehicleManagementService';
 import NepaliDate from 'nepali-date-converter';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
-import {storeprintOnceData} from '../../Services/store/slices/printOnce';
-import {Chip} from 'react-native-paper';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { storeprintOnceData } from '../../Services/store/slices/printOnce';
 import Chips from '../../Components/UI/Chips';
-import {TextInput} from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
@@ -56,8 +54,15 @@ const AssignRouteScreen = () => {
   const user = useSelector(state => state.storeUserData.userData);
   const [CID, setCID] = useState();
 
+
+  useEffect(() => {
+    console.log('vehiclevehicle', vehicle);
+  }, [])
+
+
+
   const handleError = (error, input) => {
-    setErrors(prevState => ({...prevState, [input]: error}));
+    setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
   const validate = () => {
@@ -81,7 +86,7 @@ const AssignRouteScreen = () => {
     //   id: 2
     // })
     // return
-    console.log(vehicle, 'vehiclehjkhhhhhhhhhhh');
+    // console.log(vehicle, 'vehiclehjkhhhhhhhhhhh');
     dispatch(storeprintOnceData(true));
 
     let isValidated = validate();
@@ -100,7 +105,7 @@ const AssignRouteScreen = () => {
       NepaliDate: NepDate,
     };
 
-    console.log(data);
+    // console.log(data);
     // return
     if (isValidated) {
       dispatch(
@@ -135,7 +140,7 @@ const AssignRouteScreen = () => {
       );
     } else {
       Alert.alert('सतर्कता !', 'कृपया आवश्यक डाटा भर्नुहोस्।', [
-        {text: 'ठिक छ'},
+        { text: 'ठिक छ' },
       ]);
     }
   };
@@ -210,6 +215,7 @@ const AssignRouteScreen = () => {
   };
 
   const handleSelect = (vId, NumberPlate) => {
+    console.log(vId,);
     setVehicleId(vId);
     setVehicleNumberPlate(NumberPlate);
     setIsVisible(!IsVisible);
@@ -225,171 +231,180 @@ const AssignRouteScreen = () => {
 
   const onChipClick = e => {
     // console.log(e._dispatchInstances.memoizedProps.children, 'hellohello');
-    const num = e._dispatchInstances.memoizedProps.children[1];
-    setReceiptAmount(num.toString());
+
+    setReceiptAmount(e._dispatchInstances.memoizedProps.children[1].toString());
   };
 
   return (
-    <View style={GlobalStyles.mainContainer}>
-      <View style={styles.container}>
-        <View style={styles.dummyInputContainer}>
-          <Text style={[styles.dummyTitle]}>सवारी नं:</Text>
-          <Pressable
-            onPress={() => {
-              setIsVisible(!IsVisible);
-              setIsInputDisable(!IsInputDisable);
-              handleError(null, 'VehicleNumberPlate');
+    <ScrollView>
+
+      <View style={GlobalStyles.mainContainer}>
+        <View style={styles.container}>
+          <View style={styles.dummyInputContainer}>
+            <Text style={[styles.dummyTitle]}>सवारी नं:</Text>
+            <Pressable
+              onPress={() => {
+                setIsVisible(!IsVisible);
+                setIsInputDisable(!IsInputDisable);
+                handleError(null, 'VehicleNumberPlate');
+              }}
+              disabled={IsInputDisable}>
+              <Text style={styles.dummyInput}>{VehicleNumberPlate}</Text>
+            </Pressable>
+            {errors.VehicleNumberPlate && (
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: 'red',
+                }}>
+                {errors.VehicleNumberPlate}
+              </Text>
+            )}
+          </View>
+          <View style={styles.dummyInputContainer}>
+            <Text style={styles.dummyTitle}>रुट:</Text>
+            {/* <BottomSheet hasDraggableIcon ref={bottomSheet} height={300} >
+              <Filter data={data} returnData={handleChange} selectTestFilter />
+            </BottomSheet> */}
+            <Pressable
+              onPress={() => {
+                setIsRouteVisible(!IsRouteVisible);
+                setIsInputDisable(!IsInputDisable);
+                handleError(null, 'RouteName');
+              }}
+              disabled={IsInputDisable}>
+              <Text style={styles.dummyInput}>{RouteName}</Text>
+            </Pressable>
+            {errors.RouteName && (
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: 'red',
+                }}>
+                {errors.RouteName}
+              </Text>
+            )}
+          </View>
+          <Input
+
+            value={Remarks}
+            placeholder="टिप्पणीहरू"
+            placeholderTextColor={'grey'}
+            labelStyle={{ color: 'black' }}
+            onChangeText={e => setRemarks(e)}
+            label="टिप्पणीहरू:"
+            inputStyle={{
+              fontSize: 14,
+              color: 'black',
             }}
-            disabled={IsInputDisable}>
-            <Text style={styles.dummyInput}>{VehicleNumberPlate}</Text>
-          </Pressable>
-          {errors.VehicleNumberPlate && (
-            <Text
-              style={{
-                fontSize: 12,
-                color: 'red',
-              }}>
-              {errors.VehicleNumberPlate}
-            </Text>
-          )}
-        </View>
-        <View style={styles.dummyInputContainer}>
-          <Text style={styles.dummyTitle}>रुट:</Text>
-          {/* <BottomSheet hasDraggableIcon ref={bottomSheet} height={300} >
-            <Filter data={data} returnData={handleChange} selectTestFilter />
-          </BottomSheet> */}
-          <Pressable
-            onPress={() => {
-              setIsRouteVisible(!IsRouteVisible);
-              setIsInputDisable(!IsInputDisable);
-              handleError(null, 'RouteName');
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: '#dad8d8',
+              paddingHorizontal: 3,
+              borderRadius: 4,
+              backgroundColor: '#dad8d8',
+              color: 'black',
+              marginBottom: -12,
             }}
-            disabled={IsInputDisable}>
-            <Text style={styles.dummyInput}>{RouteName}</Text>
-          </Pressable>
-          {errors.RouteName && (
-            <Text
-              style={{
-                fontSize: 12,
-                color: 'red',
+          />
+          <View style={styles.dummyInputContainer}>
+            <Text style={styles.dummyTitle}>रकम:</Text>
+            {/* <Text style={styles.dummyInput}>{ReceiptAmount}</Text> */}
+          </View>
+          <Input
+            onChangeText={e => setReceiptAmount(e)}
+            inputStyle={{
+              fontSize: 14,
+              color: '#5c5656',
+            }}
+            inputContainerStyle={{
+              borderWidth: 1,
+              borderColor: '#dad8d8',
+              paddingHorizontal: 3,
+              borderRadius: 4,
+              backgroundColor: '#dad8d8',
+              // color: 'red';
+              marginBottom: -12,
+            }}
+            keyboardType="numeric"
+            value={ReceiptAmount}
+          />
+          <Chips onChipClick={onChipClick} />
+          <View style={styles.dummyInputContainer}>
+            <Text style={styles.dummyTitle}>मिति:</Text>
+            <Text style={styles.dummyInput}>{NepDate}</Text>
+          </View>
+          <AppButton title="पेश" onPress={() => handleProceed()} />
+          <View style={styles.centeredView}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={IsVisible}
+              onRequestClose={() => {
+                setIsVisible(!IsVisible);
+                setIsInputDisable(!IsInputDisable);
               }}>
-              {errors.RouteName}
-            </Text>
-          )}
-        </View>
-        <Input
-          value={Remarks}
-          placeholder="टिप्पणीहरू"
-          onChangeText={e => setRemarks(e)}
-          label="टिप्पणीहरू:"
-          inputStyle={{
-            fontSize: 14,
-            color: 'black',
-          }}
-          inputContainerStyle={{
-            borderWidth: 1,
-            borderColor: '#dad8d8',
-            paddingHorizontal: 3,
-            borderRadius: 4,
-            backgroundColor: '#dad8d8',
-            color: 'black',
-            marginBottom: -12,
-          }}
-        />
-        <View style={styles.dummyInputContainer}>
-          <Text style={styles.dummyTitle}>रकम:</Text>
-          {/* <Text style={styles.dummyInput}>{ReceiptAmount}</Text> */}
-        </View>
-        <Input
-          onChangeText={e => setReceiptAmount(e)}
-          inputStyle={{
-            fontSize: 14,
-            color: '#5c5656',
-          }}
-          inputContainerStyle={{
-            borderWidth: 1,
-            borderColor: '#dad8d8',
-            paddingHorizontal: 3,
-            borderRadius: 4,
-            backgroundColor: '#dad8d8',
-            // color: 'red';
-            marginBottom: -12,
-          }}
-          keyboardType="numeric"
-          value={ReceiptAmount}
-        />
-        <Chips onChipClick={onChipClick} />
-        <View style={styles.dummyInputContainer}>
-          <Text style={styles.dummyTitle}>मिति:</Text>
-          <Text style={styles.dummyInput}>{NepDate}</Text>
-        </View>
-        <AppButton title="पेश" onPress={() => handleProceed()} />
-        <View style={styles.centeredView}>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={IsVisible}
-            onRequestClose={() => {
-              setIsVisible(!IsVisible);
-              setIsInputDisable(!IsInputDisable);
-            }}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Filter
-                  data={vehicle.vehicleData}
-                  returnData={handleChangeVehicle}
-                  forVehicleList
-                  forSearch
-                />
-                <ScrollView>
-                  {NewVehicleList !== undefined &&
-                    NewVehicleList.map(e => (
-                      <Pressable
-                        style={styles.selectCard}
-                        onPress={() => handleSelect(e.VId, e.VehicleNumber)}
-                        key={e.VId}>
-                        <Text style={{color: 'black'}}>{e.VehicleNumber}</Text>
-                      </Pressable>
-                    ))}
-                </ScrollView>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Filter
+                    data={vehicle.vehicleData}
+                    returnData={handleChangeVehicle}
+                    forVehicleList
+                    forSearch
+                    vehicleList={true}
+                  />
+                  <ScrollView>
+                    {NewVehicleList !== undefined &&
+                      NewVehicleList.map(e => (
+                        <Pressable
+                          style={styles.selectCard}
+                          onPress={() => handleSelect(e.VId, e.VehicleNumber)}
+                          key={e.VId}>
+                          <Text style={{ color: 'black' }}>{e.VehicleNumber}</Text>
+                        </Pressable>
+                      ))}
+                  </ScrollView>
+                </View>
               </View>
-            </View>
-          </Modal>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={IsRouteVisible}
-            onRequestClose={() => {
-              setIsRouteVisible(!IsRouteVisible);
-              setIsInputDisable(!IsInputDisable);
-            }}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Filter
-                  data={vehicle.vehicleRoute}
-                  returnData={handleChangeRoute}
-                  forRouteList
-                  forSearch
-                />
-                <ScrollView>
-                  {NewRouteList !== undefined &&
-                    NewRouteList.map(e => (
-                      <Pressable
-                        style={styles.selectCard}
-                        onPress={() =>
-                          handleSelectRoute(e.RId, e.RouteName, e.Charge)
-                        }
-                        key={e.RId}>
-                        <Text style={{color: 'black'}}>{e.RouteName}</Text>
-                      </Pressable>
-                    ))}
-                </ScrollView>
+            </Modal>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={IsRouteVisible}
+              onRequestClose={() => {
+                setIsRouteVisible(!IsRouteVisible);
+                setIsInputDisable(!IsInputDisable);
+              }}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Filter
+                    data={vehicle.vehicleRoute}
+                    returnData={handleChangeRoute}
+                    forRouteList
+                    forSearch
+                    vehicleList={true}
+
+                  />
+                  <ScrollView>
+                    {NewRouteList !== undefined &&
+                      NewRouteList.map(e => (
+                        <Pressable
+                          style={styles.selectCard}
+                          onPress={() =>
+                            handleSelectRoute(e.RId, e.RouteName, e.Charge)
+                          }
+                          key={e.RId}>
+                          <Text style={{ color: 'black' }}>{e.RouteName}</Text>
+                        </Pressable>
+                      ))}
+                  </ScrollView>
+                </View>
               </View>
-            </View>
-          </Modal>
+            </Modal>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -418,7 +433,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingHorizontal: 4,
     paddingVertical: 12,
-    color: '#5c5656',
+    color: 'black',
     borderRadius: 4,
   },
   centeredView: {
@@ -447,10 +462,11 @@ const styles = StyleSheet.create({
     height: windowheight * 0.5,
   },
   selectCard: {
-    width: windowWidth - 40,
+    width: windowWidth - 50,
     borderWidth: 1,
-    marginLeft: 10,
-    paddingHorizontal: 8,
+    marginLeft: "auto",
+    marginRight: 'auto',
+    paddingHorizontal: 10,
     paddingVertical: 16,
     marginBottom: 4,
     borderRadius: 4,

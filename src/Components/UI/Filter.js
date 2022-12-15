@@ -5,11 +5,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {Icon} from 'react-native-elements';
+import React, { useState } from 'react';
+import { Icon } from 'react-native-elements';
 import SearchButton from './SearchButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -23,11 +24,12 @@ const Filter = ({
   retDate,
   forSearch,
   forReservation,
+  vehicleList
 }) => {
   // const [search, setSearch] = useState('');
   const [SearchKeyWord, setSearchKeyWord] = useState('');
   const navigation = useNavigation();
-
+  const [selectedRange, setRange] = useState({});
   // console.log("data to filetr", data);
 
   const handlSearch = val => {
@@ -85,7 +87,7 @@ const Filter = ({
   };
 
   return (
-    <View style={styles.filterContainer}>
+    <View style={[styles.filterContainer, { justifyContent: vehicleList ? 'space-around' : 'space-between' }]}>
       {datePicker && (
         <TouchableOpacity onPress={() => showDatepicker()}>
           <Icon
@@ -100,13 +102,14 @@ const Filter = ({
         <>
           <TextInput
             value={SearchKeyWord}
-            placeholder="search"
+            placeholder="खोज्नुहोस्"
+            placeholderTextColor="black"
             onChangeText={e => setSearchKeyWord(e)}
             style={styles.inputContainerStylse}></TextInput>
           <SearchButton
-            title={'खोज'}
+            title={'खोज्नुहोस्'}
             onPress={() => handlSearch(SearchKeyWord)}
-            width={windowWidth * 0.3}></SearchButton>
+            width={windowWidth * 0.32}></SearchButton>
         </>
       )}
       {forReservation && (
@@ -138,6 +141,7 @@ const Filter = ({
             onChange={onChangeData}
             maximumDate={new Date()}
           />
+
         )
 
         // <Text>Potato</Text>
@@ -174,4 +178,5 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: '#184581',
   },
+
 });

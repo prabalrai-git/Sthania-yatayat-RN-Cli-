@@ -11,16 +11,16 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Icon, Input} from 'react-native-elements';
-import {GlobalStyles} from '../../../GlobalStyle';
-import {Dimensions} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {storeUserData} from '../../Services/store/slices/profileSlice';
+import React, { useState, useEffect } from 'react';
+import { Icon, Input } from 'react-native-elements';
+import { GlobalStyles } from '../../../GlobalStyle';
+import { Dimensions } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { storeUserData } from '../../Services/store/slices/profileSlice';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
-import {GetCounterDetail} from '../../Services/appServices/VehicleManagementService';
-import {LoginBtn} from '../../Components/UI/cButtons';
-import {getLoginApi} from '../../Services/appServices/loginService';
+import { GetCounterDetail } from '../../Services/appServices/VehicleManagementService';
+import { LoginBtn } from '../../Components/UI/cButtons';
+import { getLoginApi } from '../../Services/appServices/loginService';
 
 const windowWidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
@@ -58,7 +58,7 @@ const LoginScreen = () => {
   };
 
   const handleError = (error, input) => {
-    setErrors(prevState => ({...prevState, [input]: error}));
+    setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
   const handleProceed = () => {
@@ -120,6 +120,7 @@ const LoginScreen = () => {
     setIsVisible(!IsVisible);
     setCompanyId(CompId);
     // setIsInputDisable(!IsInputDisable)
+
   };
 
   useEffect(() => {
@@ -148,7 +149,7 @@ const LoginScreen = () => {
           alignItems: 'center',
         }}>
         <Image
-          source={require('../../Assets/images/logo2.png')}
+          source={require('../../Assets/images/logo.png')}
           style={styles.logo}></Image>
       </View>
       <View style={styles.dummyInputContainer}>
@@ -165,7 +166,7 @@ const LoginScreen = () => {
             type={'fontisto'}
             style={styles.icon}
             size={20}></Icon>
-          <Text style={styles.dummyInputTxt}>{CounterName}</Text>
+          <Text style={[styles.dummyInputTxt, { color: 'black' }]}>{CounterName}</Text>
         </Pressable>
         <Text
           style={{
@@ -269,11 +270,12 @@ const LoginScreen = () => {
                 CounteList.map(e => (
                   <Pressable
                     style={styles.selectCard}
-                    onPress={() =>
+                    onPress={() => {
                       handleSelect(e.CId, e.CounterName, e.CompanyId)
                     }
+                    }
                     key={e.CId}>
-                    <Text>{e.CounterName}</Text>
+                    <Text style={{ color: 'black' }}>{e.CounterName}</Text>
                   </Pressable>
                 ))}
             </ScrollView>
@@ -329,7 +331,7 @@ const styles = StyleSheet.create({
   },
   dummyInputTxt: {
     fontSize: 14,
-    color: '#8d8686',
+    color: '#8d868s',
     marginLeft: 4,
   },
   centeredView: {

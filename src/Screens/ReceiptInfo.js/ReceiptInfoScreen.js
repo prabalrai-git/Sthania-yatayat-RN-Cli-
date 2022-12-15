@@ -5,36 +5,39 @@ import {
   Image,
   Keyboard,
   Modal,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import QRCode from 'react-native-qrcode-svg';
-import {useNavigation} from '@react-navigation/native';
-import {SecondaryBtn, PrimaryBtn} from '../../Components/UI/cButtons';
+import { useNavigation } from '@react-navigation/native';
+import { SecondaryBtn, PrimaryBtn } from '../../Components/UI/cButtons';
 import {
   CancelAssignedRouteOfVehicle,
   GetVehicleRouteDetailsByyReceiptId,
 } from '../../Services/appServices/VehicleManagementService';
-import {GlobalStyles} from '../../../GlobalStyle';
+import { GlobalStyles } from '../../../GlobalStyle';
 import {
   BluetoothManager,
   BluetoothEscposPrinter,
 } from 'react-native-bluetooth-escpos-printer';
 import ImgToBase64 from 'react-native-image-base64';
 import ViewShot from 'react-native-view-shot';
-import Logo from '../../Assets/images/logo2.png';
+import Logo from '../../Assets/images/logo.png';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
-import {storeprintOnceData} from '../../Services/store/slices/printOnce';
+import { storeprintOnceData } from '../../Services/store/slices/printOnce';
+import AppButton from '../../Components/UI/AppButton'
+import { Platform } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 
-const ReceiptInfoScreen = ({route}) => {
+const ReceiptInfoScreen = ({ route }) => {
   const user = useSelector(state => state.storeUserData.userData);
-  const {id, isActive, VId} = route.params;
+  const { id, isActive, VId } = route.params;
   const dispatch = useDispatch();
   const [ReceiptDetails, setReceiptDetails] = useState();
   const [Qr, setQr] = useState();
@@ -46,6 +49,21 @@ const ReceiptInfoScreen = ({route}) => {
   const ref = useRef();
   const [CaptureImage, setCaptureImage] = useState('');
   const AutoPrint = useSelector(state => state.storePrintOnce.printOnce);
+
+  // console.log(AutoPrint,'alllllllllllllllllllllllllllllllllllllllllllllllllll');
+
+  // route params for reservation
+
+  const { data, ReservationPrint } = route.params;
+
+  console.log('datadtaasdta', data);
+
+
+
+
+
+
+
   // console.log(AutoPrint, 'dfksdlfjsdklfjsdlkfjsdlkfjsdlfkdjsfkldsf');
   // console.log(route, 'hello world');
 
@@ -70,9 +88,10 @@ const ReceiptInfoScreen = ({route}) => {
     route: ReceiptDetails !== undefined ? ReceiptDetails.Route : '',
     IsActive: ReceiptDetails !== undefined && ReceiptDetails.Isactive,
     CounterName: ReceiptDetails !== undefined ? ReceiptDetails.CounterName : '',
+
   };
 
-  // console.log("to send data", ReceiptDetails)
+  // console.log("to send data", ToSendData)
 
   // popup
 
@@ -87,15 +106,17 @@ const ReceiptInfoScreen = ({route}) => {
         }
       }),
     );
+    handleCapture();
   }, []);
 
   useEffect(() => {
     if (Platform.OS === 'android') {
+      // console.log('Platform',Platform);
       DeviceEventEmitter.addListener(
         BluetoothManager.EVENT_DEVICE_ALREADY_PAIRED,
         rsp => {
           // deviceAlreadPaired(rsp);
-          // console.log("resp", rsp)
+          // console.log("respd", rsp)
           if (rsp !== undefined) {
             setDeviceAddress(rsp);
           }
@@ -108,6 +129,7 @@ const ReceiptInfoScreen = ({route}) => {
   const scanDevices = useCallback(() => {
     // setLoading(true);
     // console.log("scannded")
+
     BluetoothManager.scanDevices().then(
       s => {
         // const pairedDevices = s.paired;
@@ -138,38 +160,60 @@ const ReceiptInfoScreen = ({route}) => {
     });
   };
 
+  // Alert function if bluetooth device not connected
+
+  const noBluetoothAlert = () =>
+    Alert.alert(
+      "प्रिन्टर फेला परेन",
+      "कृपया ब्लुटुथ मार्फत प्रिन्टरमा जडान गर्नुहोस्।",
+      [
+
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
+
+
+
   const print = () => {
     // console.log('inseide the function', DeviceAddress);
     if (DeviceAddress !== undefined) {
-      let address = JSON.parse(DeviceAddress.devices)[0].address;
-      // console.log(address)
-      // console.log('CaptureImage', CaptureImage);
 
-      // console.log(JSON.parse(DeviceAddress))
-      if (CaptureImage !== '') {
-        BluetoothManager.connect(address).then(
-          s => {
-            BluetoothEscposPrinter.printerAlign(
-              BluetoothEscposPrinter.ALIGN.CENTER,
-            );
-            BluetoothEscposPrinter.setBlob(0);
-            BluetoothEscposPrinter.printText('\n\r', {
-              encoding: 'utf-8',
-              codepage: 0,
-              widthtimes: 3,
-              heigthtimes: 2,
-              fonttype: 1,
-            });
-            BluetoothEscposPrinter.printPic(CaptureImage, {
-              height: 550,
-              width: 375,
-            });
-          },
-          e => {
-            // setLoading(false);
-            alert(e);
-          },
-        );
+
+
+      try {
+
+        let address = JSON.parse(DeviceAddress.devices)[0].address;
+        // console.log('CaptureImage', CaptureImage);
+
+
+        // console.log(JSON.parse(DeviceAddress))
+        if (CaptureImage !== '') {
+          BluetoothManager.connect(address).then(
+            s => {
+              BluetoothEscposPrinter.printerAlign(
+                BluetoothEscposPrinter.ALIGN.CENTER,
+              );
+              BluetoothEscposPrinter.setBlob(0);
+              BluetoothEscposPrinter.printText('\n\r', {
+                encoding: 'utf-8',
+                codepage: 0,
+                widthtimes: 3,
+                heigthtimes: 2,
+                fonttype: 1,
+              });
+              BluetoothEscposPrinter.printPic(CaptureImage, {
+                height: 550,
+                width: 375,
+              });
+            },
+            e => {
+              // setLoading(false);
+              alert(e);
+            },
+          );
+        }
+      } catch (error) {
+        noBluetoothAlert()
       }
     }
   };
@@ -194,7 +238,7 @@ const ReceiptInfoScreen = ({route}) => {
   }, []);
 
   const handleError = (error, input) => {
-    setErrors(prevState => ({...prevState, [input]: error}));
+    setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
   const validate = () => {
@@ -216,6 +260,11 @@ const ReceiptInfoScreen = ({route}) => {
     setQr(dataURL);
   }
   const htmlData = `${id}`;
+  // console.log(htmlData, 'htmlhtlhtnl');
+
+
+  const htmlDataReserve = `${data.RId}`
+  // console.log(htmlDataReserve, "reserve data");
 
   const handleCancel = () => {
     let isValidate = validate();
@@ -231,145 +280,259 @@ const ReceiptInfoScreen = ({route}) => {
         CancelAssignedRouteOfVehicle(data, res => {
           if (res?.SuccessMsg === true) {
             Alert.alert('सफलता !', 'रसिद सफलतापूर्वक रद्द गरियो', [
-              {text: 'ok', onPress: () => navigation.pop(1)},
+              { text: 'ok', onPress: () => navigation.pop(1) },
             ]);
           } else {
-            Alert.alert('असफलता !', 'फेरी प्रयास गर्नु होला', [{text: 'ok'}]);
+            Alert.alert('असफलता !', 'फेरी प्रयास गर्नु होला', [{ text: 'ok' }]);
           }
         }),
       );
     } else {
       Alert.alert('अलर्ट !', ' कृपया टिप्पणीहरू प्रविष्ट गर्नुहोस्', [
-        {text: 'ok'},
+        { text: 'ok' },
       ]);
     }
   };
 
   return (
-    <View style={GlobalStyles.mainContainer}>
-      {ReceiptDetails === undefined && <LoadingContainer />}
+    ReservationPrint ? (
 
-      <ViewShot
-        ref={ref}
-        options={{fileName: 'Your-File-Name', format: 'jpg', quality: 0.9}}
-        style={{backgroundColor: '#fefefe'}}>
-        <View style={styles.PrintScreenContainer}>
-          <View style={styles.contenHeadContainer}>
-            <Text style={styles.CTitle}>{ToSendData.CompanyName}</Text>
-            <Text style={styles.CAddress}>
-              {ToSendData.CompanyAddress}, {ToSendData.CompanyPhoneNumber}
-            </Text>
-          </View>
+      <View style={GlobalStyles.mainContainer}>
+        {/* {ReceiptDetails === undefined && <LoadingContainer />} */}
+        <ScrollView>
 
-          <View style={styles.spaceBetween}>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>रसिद नं:</Text>
-              <Text style={styles.subContent}>{id}</Text>
-            </View>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>मिति:</Text>
-              <Text style={styles.subContent}>
-                {ToSendData.EntryNepaliDate}
-              </Text>
-            </View>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>समय:</Text>
-              <Text style={styles.subContent}>{ToSendData.EntryDate[1]}</Text>
+          <ViewShot
+            ref={ref}
+            options={{ fileName: 'Your-File-Name', format: 'jpg', quality: 0.9 }}
+            style={{ backgroundColor: '#fefefe' }}>
+            <View style={[styles.PrintScreenContainer, { marginTop: 0 }]}>
+              <View style={styles.contenHeadContainer}>
+                <Text style={styles.CTitle}>
 
-              {/* <Text style={styles.subTitle}>रकम:</Text>
-              <Text style={styles.subContent}>{ToSendData.Amount}</Text> */}
-            </View>
-          </View>
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>मालिक:</Text>
-            <Text style={styles.subContent}>{ToSendData.OwnerName}</Text>
-          </View>
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>सवारी नं:</Text>
-            <Text style={styles.subContent}>{ToSendData.VehicleNumber}</Text>
-          </View>
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>रुट:</Text>
-            <Text style={styles.subContent}>{ToSendData.route}</Text>
-          </View>
-          <View style={styles.contentRow}>
+                  श्री स्थानिया
+                  यातायात
+                  प्रा.ली
+                </Text>
+                <Text style={styles.CAddress}>
+
+
+                  पोखरा, 01-5909085
+                </Text>
+              </View>
+
+              <View style={styles.spaceBetween}>
+                <View style={styles.contentCol}>
+                  <Text style={styles.subTitle}>रसिद नं:</Text>
+                  <Text style={styles.subContent}>{data.RId}</Text>
+                </View>
+                <View style={styles.contentCol}>
+                  <Text style={styles.subTitle}>मिति:</Text>
+                  <Text style={styles.subContent}>
+                    {data.ReserveNepalidate}
+                  </Text>
+                </View>
+                <View style={styles.contentCol}>
+                  <Text style={styles.subTitle}>रिजर्व दिनहरू:</Text>
+                  <Text style={styles.subContent}>{data.ReserveDays}</Text>
+
+                </View>
+                <View style={styles.contentCol}>
+                  <Text style={styles.subTitle}>रकम:</Text>
+                  <Text style={styles.subContent}>{data.Charge}</Text>
+                </View>
+              </View>
+
+              <View style={styles.contentRow}>
+                <Text style={styles.subTitle}>सवारी नं:</Text>
+                <Text style={styles.subContent}>{data.VehicleNumber}</Text>
+              </View>
+              <View style={styles.contentRow}>
+                <Text style={styles.subTitle}>रिजर्व स्थान:</Text>
+                <Text style={styles.subContent}>{data.ReserverLocation}</Text>
+              </View>
+              {/* <View style={styles.contentRow}>
             <Text style={styles.subTitle}>चालक:</Text>
             <Text style={styles.subContent}>{ToSendData.Driver}</Text>
           </View>
           <View style={styles.contentRow}>
             <Text style={styles.subTitle}>फोन नं:</Text>
             <Text style={styles.subContent}>{ToSendData.StaffContact}</Text>
-          </View>
+          </View> */}
 
-          {/*           
+              {/*           
           <View style={styles.contentRow}>
             <Text style={styles.subTitle}>मिति:</Text>
             <Text style={styles.subContent}>{ToSendData.EntryNepaliDate}</Text>
             </View> */}
-          <View style={styles.contentRow}>
-            <Text style={styles.subTitle}>टिप्पणीहरू:</Text>
-            <Text style={styles.subContent}>{ToSendData.remarks}</Text>
+              <View style={styles.contentRow}>
+                <Text style={styles.subTitle}>टिप्पणीहरू:</Text>
+                <Text style={styles.subContent}>{data.ReserveRemarks}</Text>
+              </View>
+
+              <View class={styles.contentContainer} style={styles.spaceBetween}>
+                <Image style={styles.tinyLogo} source={Logo} />
+                <QRCode
+                  value={htmlDataReserve}
+                  size={120}
+                  getRef={e => {
+                    svg = e;
+                  }}
+                />
+              </View>
+              <View style={styles.spaceBetween}>
+                <View style={styles.contentCol}>
+                  <Text style={styles.subTitle}>काउन्टरको नाम:</Text>
+                  <Text style={styles.subContent}>{data.UserName}</Text>
+                </View>
+                <View style={styles.contentCol}>
+                  <Text style={styles.subTitle}>टिकट वितरणकर्ता:</Text>
+                  <Text style={styles.subContent}>{user.UserName}</Text>
+                </View>
+              </View>
+            </View>
+          </ViewShot>
+
+          <View
+            style={[
+              styles.BtnContainerStyle,
+              {
+                width: windowWidth - 16,
+              },
+            ]}>
+            <PrimaryBtn title="पुन-प्रिन्ट" onPress={print} />
           </View>
 
-          <View class={styles.contentContainer} style={styles.spaceBetween}>
-            <Image style={styles.tinyLogo} source={Logo} />
-            <QRCode
-              value={htmlData}
-              size={120}
-              getRef={e => {
-                svg = e;
-              }}
-            />
-          </View>
-          <View style={styles.spaceBetween}>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>काउन्टरको नाम:</Text>
-              <Text style={styles.subContent}>{ToSendData.CounterName}</Text>
-            </View>
-            <View style={styles.contentCol}>
-              <Text style={styles.subTitle}>टिकट वितरणकर्ता:</Text>
-              <Text style={styles.subContent}>{user.UserName}</Text>
-            </View>
-          </View>
-        </View>
-      </ViewShot>
+        </ScrollView>
 
-      <View
-        style={[
-          styles.BtnContainerStyle,
-          {
-            width: windowWidth - 16,
-          },
-        ]}>
-        {ToSendData.route !== '' && (
-          <>
-            {ToSendData.IsActive ? (
-              <>
-                {user.RoleId === 1 || user.RoleId === 2 ? (
-                  <>
-                    <SecondaryBtn
-                      title="रद्द गर्नुहोस्"
-                      onPress={() => setIsModalVisible(!IsModalVisible)}
-                    />
-                    <PrimaryBtn title="पुन-प्रिन्ट" onPress={print} />
-                  </>
-                ) : (
-                  <AppButton title="पुन-प्रिन्ट" onPress={print}></AppButton>
-                )}
-              </>
-            ) : (
-              <Text
-                style={{
-                  color: '#e78a8a',
-                  fontSize: 24,
-                  fontWeight: 'bold',
-                }}>
-                रसिद रद्द गरिएको छ।
-              </Text>
-            )}
-          </>
-        )}
       </View>
+    ) : (<View style={GlobalStyles.mainContainer}>
+      {ReceiptDetails === undefined && <LoadingContainer />}
+
+      <ScrollView>
+        <ViewShot
+          ref={ref}
+          options={{ fileName: 'Your-File-Name', format: 'jpg', quality: 0.9 }}
+          style={{ backgroundColor: '#fefefe' }}>
+          <View style={styles.PrintScreenContainer}>
+            <View style={styles.contenHeadContainer}>
+              <Text style={styles.CTitle}>{ToSendData.CompanyName}</Text>
+              <Text style={styles.CAddress}>
+                {ToSendData.CompanyAddress}, {ToSendData.CompanyPhoneNumber}
+              </Text>
+            </View>
+
+            <View style={styles.spaceBetween}>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>रसिद नं:</Text>
+                <Text style={styles.subContent}>{id}</Text>
+              </View>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>मिति:</Text>
+                <Text style={styles.subContent}>
+                  {ToSendData.EntryNepaliDate}
+                </Text>
+              </View>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>समय:</Text>
+                <Text style={styles.subContent}>{ToSendData.EntryDate[1]}</Text>
+
+              </View>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>रकम:</Text>
+                <Text style={styles.subContent}>{ToSendData.Amount}</Text>
+              </View>
+            </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>मालिक:</Text>
+              <Text style={styles.subContent}>{ToSendData.OwnerName}</Text>
+            </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>सवारी नं:</Text>
+              <Text style={styles.subContent}>{ToSendData.VehicleNumber}</Text>
+            </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>रुट:</Text>
+              <Text style={styles.subContent}>{ToSendData.route}</Text>
+            </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>चालक:</Text>
+              <Text style={styles.subContent}>{ToSendData.Driver}</Text>
+            </View>
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>फोन नं:</Text>
+              <Text style={styles.subContent}>{ToSendData.StaffContact}</Text>
+            </View>
+
+            {/*           
+          <View style={styles.contentRow}>
+            <Text style={styles.subTitle}>मिति:</Text>
+            <Text style={styles.subContent}>{ToSendData.EntryNepaliDate}</Text>
+            </View> */}
+            <View style={styles.contentRow}>
+              <Text style={styles.subTitle}>टिप्पणीहरू:</Text>
+              <Text style={styles.subContent}>{ToSendData.remarks}</Text>
+            </View>
+
+            <View class={styles.contentContainer} style={styles.spaceBetween}>
+              <Image style={styles.tinyLogo} source={Logo} />
+              <QRCode
+                value={htmlData}
+                size={120}
+                getRef={e => {
+                  svg = e;
+                }}
+              />
+            </View>
+            <View style={styles.spaceBetween}>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>काउन्टरको नाम:</Text>
+                <Text style={styles.subContent}>{ToSendData.CounterName}</Text>
+              </View>
+              <View style={styles.contentCol}>
+                <Text style={styles.subTitle}>टिकट वितरणकर्ता:</Text>
+                <Text style={styles.subContent}>{user.UserName}</Text>
+              </View>
+            </View>
+          </View>
+        </ViewShot>
+
+        <View
+          style={[
+            styles.BtnContainerStyle,
+            {
+              width: windowWidth - 16,
+            },
+          ]}>
+          {ToSendData.route !== '' && (
+            <>
+              {ToSendData.IsActive ? (
+                <>
+                  {user.RoleId === 1 || user.RoleId === 2 ? (
+                    <>
+                      <SecondaryBtn
+                        title="रद्द गर्नुहोस्"
+                        onPress={() => setIsModalVisible(!IsModalVisible)}
+                      />
+                      <PrimaryBtn title="पुन-प्रिन्ट" onPress={print} />
+                    </>
+                  ) : (
+                    <AppButton title="पुन-प्रिन्ट" onPress={print}></AppButton>
+                  )}
+                </>
+              ) : (
+                <Text
+                  style={{
+                    color: '#e78a8a',
+                    fontSize: 24,
+                    fontWeight: 'bold',
+                  }}>
+                  रसिद रद्द गरिएको छ।
+                </Text>
+              )}
+            </>
+          )}
+        </View>
+      </ScrollView>
 
       <Modal
         animationType="slide"
@@ -411,7 +574,7 @@ const ReceiptInfoScreen = ({route}) => {
           </View>
         </View>
       </Modal>
-    </View>
+    </View>)
   );
 };
 
@@ -419,16 +582,21 @@ export default ReceiptInfoScreen;
 
 const styles = StyleSheet.create({
   PrintScreenContainer: {
+    padding: 12,
+    paddingTop: 0,
     width: windowWidth - 20,
     flexDirection: 'column',
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
+
   },
   contenHeadContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
+    color: 'black'
+
   },
   contentCol: {
     flexDirection: 'column',
@@ -444,20 +612,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   CTitle: {
-    fontSize: 20,
+    fontSize: 28,
     fontWeight: 'bold',
+    color: 'black'
   },
   CAddress: {
-    fontSize: 14,
+    fontSize: 16,
+    color: 'black'
+
   },
   subTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     marginRight: 4,
+    color: 'black'
+
   },
   subContent: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'normal',
+    color: 'black'
+
   },
   centeredView: {
     flex: 1,

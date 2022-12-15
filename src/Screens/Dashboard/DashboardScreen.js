@@ -1,17 +1,17 @@
-import {StyleSheet, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import GreatingCard from '../../Components/UI/GreatingCard';
 import DashboardButton from '../../Components/UI/DashboardButton';
-import {Dimensions} from 'react-native';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { Dimensions } from 'react-native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import DisplayCard from '../../Components/UI/DisplayCard';
 import {
   GetActiveVehicleList,
   GetActiveVehicleRoute,
   GetRouteDetailsByDateWisee,
 } from '../../Services/appServices/VehicleManagementService';
-import {useDispatch} from 'react-redux';
-import {useSelector} from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   storeVehicleData,
   storeVehicleRoute,
@@ -89,7 +89,7 @@ const DashboardScreen = () => {
 
   useEffect(() => {
     getData();
-    console.log(data, 'data');
+    // console.log('daaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',data);
   }, []);
 
   const getData = () => {
@@ -102,7 +102,8 @@ const DashboardScreen = () => {
       }),
     );
     dispatch(
-      GetActiveVehicleRoute(res => {
+      GetActiveVehicleRoute(data.storeUserData.userData.companyId, res => {
+        // console.log('hellohello', res);
         if (res?.RouteDetails.length > 0) {
           dispatch(storeVehicleRoute(res?.RouteDetails));
         }
