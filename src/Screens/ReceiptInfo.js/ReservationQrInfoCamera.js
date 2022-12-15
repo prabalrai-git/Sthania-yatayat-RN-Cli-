@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import QRCode from 'react-native-qrcode-svg';
 import { useNavigation } from '@react-navigation/native';
 import {
+    GetReservationDetailsByRId,
     GetVehicleRouteDetailsByyReceiptId,
 } from '../../Services/appServices/VehicleManagementService';
 import { GlobalStyles } from '../../../GlobalStyle';
@@ -41,6 +42,7 @@ const ReservationQrInfoCamera = ({ route }) => {
     const [DeviceAddress, setDeviceAddress] = useState();
     const ref = useRef();
     const [CaptureImage, setCaptureImage] = useState('');
+    const [reservationData, setReservationData] = useState();
 
     const ToSendData = {
         CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',
@@ -66,11 +68,14 @@ const ReservationQrInfoCamera = ({ route }) => {
     };
 
     // console.log("to send data", ReceiptDetails)
-
     useEffect(() => {
-
-        handleCapture();
+        dispatch(GetReservationDetailsByRId(id, res => {
+            console.log(res, 'newres'); setReservationData(res.GetReservationDetailsByRId[0]);
+        }));
     }, []);
+
+
+
 
     useEffect(() => {
         if (Platform.OS === 'android') {
@@ -86,6 +91,7 @@ const ReservationQrInfoCamera = ({ route }) => {
             );
         }
         scanDevices();
+
     }, []);
 
     const scanDevices = useCallback(() => {
@@ -153,9 +159,9 @@ const ReservationQrInfoCamera = ({ route }) => {
     //     }
     //   }
 
-    useEffect(() => {
-        getDataURL();
-    }, []);
+    // useEffect(() => {
+    //     getDataURL();
+    // }, []);
 
     const handleError = (error, input) => {
         setErrors(prevState => ({ ...prevState, [input]: error }));
@@ -171,75 +177,85 @@ const ReservationQrInfoCamera = ({ route }) => {
     //   return isOpValid;
     // };
 
-    let svg = useRef(null);
-    const getDataURL = () => {
-        svg?.toDataURL(callback);
-    };
+    // let svg = useRef(null);
+    // const getDataURL = () => {
+    //     svg?.toDataURL(callback);
+    // };
 
-    function callback(dataURL) {
-        setQr(dataURL);
-    }
+    // function callback(dataURL) {
+    //     setQr(dataURL);
+    // }
     const htmlData = `${id}`;
 
 
 
     return (
 
+        reservationData && (
 
-        <View style={GlobalStyles.mainContainer}>
-            {/* {ReceiptDetails === undefined && <LoadingContainer />} */}
-            <ScrollView>
+            < View style={GlobalStyles.mainContainer} >
+                {/* {ReceiptDetails === undefined && <LoadingContainer />} */}
+                < ScrollView >
 
-                <ViewShot
-                    ref={ref}
-                    options={{ fileName: 'Your-File-Name', format: 'jpg', quality: 0.9 }}
-                    style={{ backgroundColor: '#fefefe' }}>
-                    <View style={[styles.PrintScreenContainer, { marginTop: 0 }]}>
-                        <View style={styles.contenHeadContainer}>
-                            <Text style={styles.CTitle}>
+                    <ViewShot
+                        ref={ref}
+                        options={{ fileName: 'Your-File-Name', format: 'jpg', quality: 0.9 }}
+                        style={{ backgroundColor: '#fefefe' }}>
+                        <View style={[styles.PrintScreenContainer, { marginTop: 0 }]}>
+                            <View style={styles.contenHeadContainer}>
+                                <Text style={styles.CTitle}>
 
-                                श्री स्थानिया
-                                यातायात
-                                प्रा.ली
-                            </Text>
-                            <Text style={styles.CAddress}>
+                                    श्री स्थानिया
+                                    यातायात
+                                    प्रा.ली
+                                </Text>
+                                <Text style={styles.CAddress}>
 
 
-                                पोखरा, 01-5909085
-                            </Text>
-                        </View>
-
-                        <View style={styles.spaceBetween}>
-                            <View style={styles.contentCol}>
-                                <Text style={styles.subTitle}>रसिद नं:</Text>
-                                <Text style={styles.subContent}></Text>
-                            </View>
-                            <View style={styles.contentCol}>
-                                <Text style={styles.subTitle}>मिति:</Text>
-                                <Text style={styles.subContent}>
-
+                                    पोखरा, 01-5909085
                                 </Text>
                             </View>
-                            <View style={styles.contentCol}>
-                                <Text style={styles.subTitle}>रिजर्व दिनहरू:</Text>
-                                <Text style={styles.subContent}></Text>
 
-                            </View>
-                            <View style={styles.contentCol}>
-                                <Text style={styles.subTitle}>रकम:</Text>
-                                <Text style={styles.subContent}></Text>
-                            </View>
-                        </View>
+                            <View style={styles.spaceBetween}>
+                                <View style={styles.contentCol}>
+                                    <Text style={styles.subTitle}>रसिद नं:</Text>
+                                    <Text style={styles.subContent}>{reservationData.RId}</Text>
+                                </View>
+                                <View style={styles.contentCol}>
+                                    <Text style={styles.subTitle}>मिति:</Text>
+                                    <Text style={styles.subContent}>
+                                        {reservationData.ReserveNepalidate}
+                                    </Text>
+                                </View>
+                                <View style={styles.contentCol}>
+                                    <Text style={styles.subTitle}>रिजर्व दिनहरू:</Text>
+                                    <Text style={styles.subContent}>
+                                        {reservationData.ReserveDays}
+                                    </Text>
 
-                        <View style={styles.contentRow}>
-                            <Text style={styles.subTitle}>सवारी नं:</Text>
-                            <Text style={styles.subContent}></Text>
-                        </View>
-                        <View style={styles.contentRow}>
-                            <Text style={styles.subTitle}>रिजर्व स्थान:</Text>
-                            <Text style={styles.subContent}></Text>
-                        </View>
-                        {/* <View style={styles.contentRow}>
+                                </View>
+                                <View style={styles.contentCol}>
+                                    <Text style={styles.subTitle}>रकम:</Text>
+                                    <Text style={styles.subContent}>
+                                        {reservationData.Charge}
+
+                                    </Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.contentRow}>
+                                <Text style={styles.subTitle}>सवारी नं:</Text>
+                                <Text style={styles.subContent}>
+                                    {reservationData.VehicleNumber}
+                                </Text>
+                            </View>
+                            <View style={styles.contentRow}>
+                                <Text style={styles.subTitle}>रिजर्व स्थान:</Text>
+                                <Text style={styles.subContent}>
+                                    {reservationData.ReserverLocation}
+                                </Text>
+                            </View>
+                            {/* <View style={styles.contentRow}>
               <Text style={styles.subTitle}>चालक:</Text>
               <Text style={styles.subContent}>{ToSendData.Driver}</Text>
             </View>
@@ -248,40 +264,40 @@ const ReservationQrInfoCamera = ({ route }) => {
               <Text style={styles.subContent}>{ToSendData.StaffContact}</Text>
             </View> */}
 
-                        {/*           
+                            {/*           
             <View style={styles.contentRow}>
               <Text style={styles.subTitle}>मिति:</Text>
               <Text style={styles.subContent}>{ToSendData.EntryNepaliDate}</Text>
               </View> */}
-                        <View style={styles.contentRow}>
-                            <Text style={styles.subTitle}>टिप्पणीहरू:</Text>
-                            <Text style={styles.subContent}></Text>
-                        </View>
-
-                        <View class={styles.contentContainer} style={styles.spaceBetween}>
-                            <Image style={styles.tinyLogo} source={Logo} />
-                            <QRCode
-                                value={htmlData}
-                                size={120}
-                                getRef={e => {
-                                    svg = e;
-                                }}
-                            />
-                        </View>
-                        <View style={styles.spaceBetween}>
-                            <View style={styles.contentCol}>
-                                <Text style={styles.subTitle}>काउन्टरको नाम:</Text>
-                                <Text style={styles.subContent}></Text>
+                            <View style={styles.contentRow}>
+                                <Text style={styles.subTitle}>टिप्पणीहरू:</Text>
+                                <Text style={styles.subContent}>{reservationData.ReserveRemarks}</Text>
                             </View>
-                            <View style={styles.contentCol}>
-                                <Text style={styles.subTitle}>टिकट वितरणकर्ता:</Text>
-                                <Text style={styles.subContent}></Text>
+
+                            <View class={styles.contentContainer} style={styles.spaceBetween}>
+                                <Image style={styles.tinyLogo} source={Logo} />
+                                <QRCode
+                                    value={htmlData}
+                                    size={120}
+                                // getRef={e => {
+                                //     svg = e;
+                                // }}
+                                />
+                            </View>
+                            <View style={styles.spaceBetween}>
+                                <View style={styles.contentCol}>
+                                    <Text style={styles.subTitle}>काउन्टरको नाम:</Text>
+                                    <Text style={styles.subContent}>{reservationData.UserName}</Text>
+                                </View>
+                                <View style={styles.contentCol}>
+                                    <Text style={styles.subTitle}>टिकट वितरणकर्ता:</Text>
+                                    <Text style={styles.subContent}>{reservationData.UserName}</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                </ViewShot>
+                    </ViewShot>
 
-                {/* <View
+                    {/* <View
               style={[
                 styles.BtnContainerStyle,
                 {
@@ -291,9 +307,10 @@ const ReservationQrInfoCamera = ({ route }) => {
               <PrimaryBtn title="पुन-प्रिन्ट" onPress={print} />
             </View> */}
 
-            </ScrollView>
+                </ScrollView >
 
-        </View>
+            </View >
+        )
 
 
 

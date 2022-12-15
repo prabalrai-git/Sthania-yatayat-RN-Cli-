@@ -255,3 +255,7 @@ export const InsertUpdateReserveDetails = `InsertUpdateReserveDetails`;
           "IsActive": true
         }
 */
+
+export const GetReservationDetailsByRIds = `GetReservationDetailsByRId`;
+
+// @desc: GetReservationDetailsByRId

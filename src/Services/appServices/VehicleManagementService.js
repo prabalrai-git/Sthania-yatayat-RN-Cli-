@@ -4,6 +4,7 @@ import {
   GetCompanyDetails,
   GetCounterDetails,
   GetReservationDetailsByDate,
+  GetReservationDetailsByRIds,
   GetRouteDetailsByCompanyIds,
   GetRouteDetailsByDateWise,
   GetStaffDetailsByVehicleId,
@@ -183,3 +184,18 @@ export const InsertUpdateReserveDetail = (data, successCallback) => {
     } catch (error) { }
   };
 };
+
+export const GetReservationDetailsByRId = (data, successCallback) => {
+  return async dispatch => {
+    try {
+      const response = await fetch(`${GetReservationDetailsByRIds}?rId=${data}`)
+      if (response?.status === 200) {
+        successCallback(response?.data);
+      } else {
+        successCallback([]);
+      }
+    } catch (error) {
+
+    }
+  }
+}
