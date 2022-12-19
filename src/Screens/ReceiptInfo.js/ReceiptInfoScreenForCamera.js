@@ -189,7 +189,7 @@ const ReceiptInfoScreenForCamera = ({ route }) => {
   function callback(dataURL) {
     setQr(dataURL);
   }
-  const htmlData = `${id}`;
+  const htmlData = `${"C" + id}`;
 
   const handleCancel = () => {
     let isValidate = validate();
@@ -351,6 +351,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+
   },
   CTitle: {
     fontSize: 28,

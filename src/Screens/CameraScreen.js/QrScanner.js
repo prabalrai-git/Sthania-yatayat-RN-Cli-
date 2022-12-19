@@ -9,15 +9,19 @@ const QrScanner = () => {
 
   const onBarcodeScan = data => {
     console.log('bar code', data.data);
-    if (data.data > 1000) {
+    const encryptedId = data.data;
+    // console.log(split.split("T")[1], 'split value');
+
+    if (encryptedId.split("T")[0] === "R") {
       navigation.navigate('ReservationQrInfoCamera', {
-        id: data.data
+        id: encryptedId.split("T")[1]
       })
     }
-    if (data.data < 1000) {
+    if (encryptedId.split("T")[0] === "C") {
+
 
       navigation.navigate('ReceiptInfoScreenForCamera', {
-        id: data.data,
+        id: encryptedId.split("T")[1],
         // RId: data.data
         // id: 68,
       });
@@ -25,14 +29,14 @@ const QrScanner = () => {
 
   };
 
-    return (
-      <View
-        style={{
-          flex: 1,
-        }}>
-        <RNCamera style={styles.rnCamer} onBarCodeRead={e => onBarcodeScan(e)} />
-      </View>
-    );
+  return (
+    <View
+      style={{
+        flex: 1,
+      }}>
+      <RNCamera style={styles.rnCamer} onBarCodeRead={e => onBarcodeScan(e)} />
+    </View>
+  );
 }
 
 export default QrScanner;

@@ -69,6 +69,7 @@ const ReservationQrInfoCamera = ({ route }) => {
 
     // console.log("to send data", ReceiptDetails)
     useEffect(() => {
+        console.log(id, 'this is id')
         dispatch(GetReservationDetailsByRId(id, res => {
             console.log(res, 'newres'); setReservationData(res.GetReservationDetailsByRId[0]);
         }));
@@ -185,7 +186,7 @@ const ReservationQrInfoCamera = ({ route }) => {
     // function callback(dataURL) {
     //     setQr(dataURL);
     // }
-    const htmlData = `${id}`;
+    const htmlData = `${"R" + id}`;
 
 
 
@@ -228,19 +229,24 @@ const ReservationQrInfoCamera = ({ route }) => {
                                     </Text>
                                 </View>
                                 <View style={styles.contentCol}>
+                                    <Text style={styles.subTitle}>समय:</Text>
+                                    <Text style={styles.subContent}>{reservationData.ReservationDate.split("T")[1]}</Text>
+
+                                </View>
+                                <View style={styles.contentCol}>
                                     <Text style={styles.subTitle}>रिजर्व दिनहरू:</Text>
                                     <Text style={styles.subContent}>
                                         {reservationData.ReserveDays}
                                     </Text>
 
                                 </View>
-                                <View style={styles.contentCol}>
-                                    <Text style={styles.subTitle}>रकम:</Text>
-                                    <Text style={styles.subContent}>
-                                        {reservationData.Charge}
+                            </View>
+                            <View style={{ marginRight: 280 }} >
+                                <Text style={styles.subTitle}>रकम:</Text>
+                                <Text style={styles.subContent}>
+                                    {reservationData.Charge}
 
-                                    </Text>
-                                </View>
+                                </Text>
                             </View>
 
                             <View style={styles.contentRow}>
@@ -325,12 +331,12 @@ const styles = StyleSheet.create({
         padding: 12,
         paddingTop: 0,
         marginTop: 10,
-        width: windowWidth - 15,
+        width: windowWidth - 10,
         flexDirection: 'column',
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
-        color: 'black'
+        color: 'black',
     },
     contenHeadContainer: {
         alignItems: 'center',
@@ -349,9 +355,10 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     spaceBetween: {
-        width: '100%',
+        width: windowWidth - 10,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
+        flexWrap: 'wrap'
     },
     CTitle: {
         fontSize: 28,

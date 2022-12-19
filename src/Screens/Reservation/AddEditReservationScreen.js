@@ -9,7 +9,7 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GlobalStyles } from '../../../GlobalStyle';
 import Filter from '../../Components/UI/Filter';
 import { useSelector } from 'react-redux';
@@ -19,7 +19,7 @@ import NepaliDate from 'nepali-date-converter';
 import AppButton from '../../Components/UI/AppButton';
 import { InsertUpdateReserveDetail } from '../../Services/appServices/VehicleManagementService';
 import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowheight = Dimensions.get('window').height;
@@ -45,7 +45,12 @@ const AddEditReservation = () => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [nowTime, setNowTime] = useState()
   const navigation = useNavigation();
+  const [dateFocused, setDateFocused] = useState(false)
+
+
+
 
   const onChangeData = (event, selectedValue) => {
     setShow(false);
@@ -110,6 +115,7 @@ const AddEditReservation = () => {
       isOpValid = false;
     }
 
+
     return isOpValid;
   };
 
@@ -128,6 +134,21 @@ const AddEditReservation = () => {
     setIsInputDisable(!IsInputDisable);
   };
 
+
+
+  useEffect(() => {
+    let today = new Date();
+
+    const newTime = today.toLocaleTimeString();
+    console.log(newTime, 'newtime');
+
+    setNowTime(newTime)
+
+
+
+  }, [dateFocused]);
+
+
   const handleProceed = () => {
     // console.log("user", user)
     let isValidated = validate();
@@ -135,7 +156,7 @@ const AddEditReservation = () => {
       RId: 0,
       VehicleId: VehicleId !== undefined ? VehicleId : 'n/a',
       ReserverLocation: Loocation !== undefined ? Loocation : 'n/a',
-      ReservationDate: NDate !== undefined ? NDate : 'n/a',
+      ReservationDate: NDate !== undefined ? NDate + 'T' + nowTime : 'n/a',
       ReserveNepaliDate: NepDate !== undefined ? NepDate : 'n/a',
       Charge: Price !== undefined ? Price : 'n/a',
       UserId: user.UId,
@@ -143,7 +164,7 @@ const AddEditReservation = () => {
       ReserveDays: ReserveDays !== undefined ? ReserveDays : 'n/a',
       ReserveRemarks: reserveRemarks !== undefined || null ? reserveRemarks : 'n/a'
     };
-    // console.log("data", data);
+    console.log("data", data);
     if (isValidated) {
       dispatch(
         InsertUpdateReserveDetail(data, res => {
@@ -196,6 +217,7 @@ const AddEditReservation = () => {
               onPress={() => {
                 setShow(!show);
                 handleError(null, 'NDate');
+                setDateFocused(!dateFocused)
               }}>
               <Text style={styles.dummyInput}>{`${NDate !== undefined ? NDate : 'मिति'
                 }`}</Text>
@@ -216,6 +238,28 @@ const AddEditReservation = () => {
             <Text style={styles.dummyInput}>{`${NepDate !== undefined ? NepDate : 'मिति'
               }`}</Text>
           </View>
+
+
+          {/* <View style={styles.dummyInputContainer}>
+            <Text style={styles.dummyTitle}>समय:</Text>
+            <Pressable
+              onPress={() => {
+                setShowTime(!show);
+                handleError(null, 'time');
+              }}>
+              <Text style={styles.dummyInput}>{`${time !== undefined ? time : 'समय'
+                }`}</Text>
+            </Pressable>
+            {errors.time && (
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: 'red',
+                }}>
+                {errors.time}
+              </Text>
+            )}
+          </View> */}
 
           <Input
             value={Loocation}
@@ -389,20 +433,25 @@ const AddEditReservation = () => {
 
           {
             show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                // timeZoneOffsetInMinutes={0}
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display="default"
-                onChange={onChangeData}
-                maximumDate={new Date()}
-              />
+              <>
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  // timeZoneOffsetInMinutes={0}
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeData}
+                  maximumDate={new Date()}
+                />
+
+              </>
             )
 
             // <Text>Potato</Text>
           }
+
+
         </View>
       </View>
     </ScrollView>

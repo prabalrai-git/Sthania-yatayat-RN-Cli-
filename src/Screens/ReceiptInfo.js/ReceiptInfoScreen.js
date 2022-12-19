@@ -56,7 +56,7 @@ const ReceiptInfoScreen = ({ route }) => {
 
   const { data, ReservationPrint } = route.params;
 
-  console.log('datadtaasdta', data);
+  // console.log('datadtaasdta', data);
 
 
 
@@ -91,7 +91,7 @@ const ReceiptInfoScreen = ({ route }) => {
 
   };
 
-  // console.log("to send data", ToSendData)
+  console.log("to send data", ToSendData)
 
   // popup
 
@@ -259,11 +259,15 @@ const ReceiptInfoScreen = ({ route }) => {
   function callback(dataURL) {
     setQr(dataURL);
   }
-  const htmlData = `${id}`;
+  const htmlData = `${"C" + "T" + id}`;
+  // const htmlData = `This is string`;
   // console.log(htmlData, 'htmlhtlhtnl');
 
+  if (data) {
 
-  const htmlDataReserve = `${data.RId}`
+    var htmlDataReserve = `${"R" + "T" + data.RId}`
+    // var htmlDataReserve = `R12`
+  }
   // console.log(htmlDataReserve, "reserve data");
 
   const handleCancel = () => {
@@ -340,6 +344,11 @@ const ReceiptInfoScreen = ({ route }) => {
                   <Text style={styles.subTitle}>रकम:</Text>
                   <Text style={styles.subContent}>{data.Charge}</Text>
                 </View>
+              </View>
+              <View style={{ marginRight: 240 }}>
+                <Text style={styles.subTitle}>समय:</Text>
+                <Text style={styles.subContent}>{data.ReservationDate.split("T")[1]}</Text>
+
               </View>
 
               <View style={styles.contentRow}>
