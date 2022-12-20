@@ -22,7 +22,6 @@ export default function GreetingType() {
 
   useEffect(() => {
     returnGreeting(Hour);
-    // console.log(Hour);
   }, [Hour]);
 
   return (

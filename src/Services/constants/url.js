@@ -3,10 +3,10 @@
  */
 
 //sthania yatayat
-const API_URL = `http://lunivacare.ddns.net/LunivaRouteAPI/`;
+// const API_URL = `http://lunivacare.ddns.net/LunivaRouteAPI/`;
 
 // pokhara yatayat
-// const API_URL = `http://lunivacare.ddns.net/LunivaRouteAPIUAT/`;
+const API_URL = `http://lunivacare.ddns.net/LunivaRouteAPIUAT/`;
 
 /**
  * @desc: api base url with route

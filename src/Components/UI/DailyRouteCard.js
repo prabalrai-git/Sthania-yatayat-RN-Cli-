@@ -9,7 +9,6 @@ import {useNavigation} from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 
 const DailyRouteCard = ({data}) => {
-  // console.log('data', data)
   const dispatch = useDispatch();
   const [VehicleNumber, setVehicleNumber] = useState();
   const navigation = useNavigation();
@@ -17,7 +16,6 @@ const DailyRouteCard = ({data}) => {
   useEffect(() => {
     dispatch(
       GetVehicleRouteDetailsByyReceiptId(data.DId, res => {
-        // console.log('res', res?.VechileRouteByReceiptId[0]);
         if (res?.VechileRouteByReceiptId.length > 0) {
           setVehicleNumber(res?.VechileRouteByReceiptId[0]);
         }

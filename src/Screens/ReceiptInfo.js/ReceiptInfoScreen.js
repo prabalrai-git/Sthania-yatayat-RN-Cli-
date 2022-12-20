@@ -27,7 +27,7 @@ import {
 } from 'react-native-bluetooth-escpos-printer';
 import ImgToBase64 from 'react-native-image-base64';
 import ViewShot from 'react-native-view-shot';
-import Logo from '../../Assets/images/logo.png';
+import Logo from '../../Assets/images/logo2.png';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
 import { storeprintOnceData } from '../../Services/store/slices/printOnce';
 import AppButton from '../../Components/UI/AppButton'
@@ -56,7 +56,21 @@ const ReceiptInfoScreen = ({ route }) => {
 
   const { data, ReservationPrint } = route.params;
 
-  // console.log('datadtaasdta', data);
+
+  // Pokhara Header Data
+
+  const printHeader = {
+    title: 'पोखरा यातायात प्रा.ली',
+    addressAndContact: 'शिवटोल -0९, पोखरा, ०६१-५५२२८०/५४४६८० '
+
+  }
+
+  // Sthaniya yatayat Header Data
+
+  // const printHeader = {
+  //   title: "श्री स्थानिया यातायात प्रा.ली",
+  //   addressAndContact: 'पोखरा, 01-5909085'
+  // }
 
 
 
@@ -91,7 +105,6 @@ const ReceiptInfoScreen = ({ route }) => {
 
   };
 
-  console.log("to send data", ToSendData)
 
   // popup
 
@@ -312,15 +325,12 @@ const ReceiptInfoScreen = ({ route }) => {
             <View style={[styles.PrintScreenContainer, { marginTop: 0 }]}>
               <View style={styles.contenHeadContainer}>
                 <Text style={styles.CTitle}>
-
-                  श्री स्थानिया
-                  यातायात
-                  प्रा.ली
+                  {printHeader.title}
                 </Text>
                 <Text style={styles.CAddress}>
 
 
-                  पोखरा, 01-5909085
+                  {printHeader.addressAndContact}
                 </Text>
               </View>
 
@@ -424,9 +434,9 @@ const ReceiptInfoScreen = ({ route }) => {
           style={{ backgroundColor: '#fefefe' }}>
           <View style={styles.PrintScreenContainer}>
             <View style={styles.contenHeadContainer}>
-              <Text style={styles.CTitle}>{ToSendData.CompanyName}</Text>
+              <Text style={styles.CTitle}>{printHeader.title}</Text>
               <Text style={styles.CAddress}>
-                {ToSendData.CompanyAddress}, {ToSendData.CompanyPhoneNumber}
+                {printHeader.addressAndContact}
               </Text>
             </View>
 

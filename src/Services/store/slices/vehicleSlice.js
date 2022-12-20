@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   vehicleData: undefined,
@@ -19,6 +19,6 @@ const vehicle = createSlice({
   },
 });
 
-export const {storeVehicleData, storeVehicleRoute} = vehicle.actions;
+export const { storeVehicleData, storeVehicleRoute } = vehicle.actions;
 
 export default vehicle.reducer;

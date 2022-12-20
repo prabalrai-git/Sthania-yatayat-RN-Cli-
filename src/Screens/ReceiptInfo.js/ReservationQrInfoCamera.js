@@ -22,7 +22,7 @@ import {
 } from 'react-native-bluetooth-escpos-printer';
 import ImgToBase64 from 'react-native-image-base64';
 import ViewShot from 'react-native-view-shot';
-import Logo from '../../Assets/images/logo.png';
+import Logo from '../../Assets/images/logo2.png';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
 import { ScrollView } from 'react-native';
 
@@ -43,6 +43,39 @@ const ReservationQrInfoCamera = ({ route }) => {
     const ref = useRef();
     const [CaptureImage, setCaptureImage] = useState('');
     const [reservationData, setReservationData] = useState();
+
+
+
+
+
+
+
+
+
+
+    // Pokhara Header Data
+
+    const printHeader = {
+        title: 'पोखरा यातायात प्रा.ली',
+        addressAndContact: 'शिवटोल -0९, पोखरा, ०६१-५५२२८०/५४४६८० '
+
+    }
+
+    // Sthaniya yatayat Header Data
+
+    // const printHeader = {
+    //   title: "श्री स्थानिया यातायात प्रा.ली",
+    //   addressAndContact: 'पोखरा, 01-5909085'
+    // }
+
+
+
+
+
+
+
+
+
 
     const ToSendData = {
         CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',
@@ -69,9 +102,10 @@ const ReservationQrInfoCamera = ({ route }) => {
 
     // console.log("to send data", ReceiptDetails)
     useEffect(() => {
-        console.log(id, 'this is id')
+        // console.log(id, 'this is id')
         dispatch(GetReservationDetailsByRId(id, res => {
-            console.log(res, 'newres'); setReservationData(res.GetReservationDetailsByRId[0]);
+            // console.log(res, 'newres');
+            setReservationData(res.GetReservationDetailsByRId[0]);
         }));
     }, []);
 
@@ -206,14 +240,12 @@ const ReservationQrInfoCamera = ({ route }) => {
                             <View style={styles.contenHeadContainer}>
                                 <Text style={styles.CTitle}>
 
-                                    श्री स्थानिया
-                                    यातायात
-                                    प्रा.ली
+                                    {printHeader.title}
                                 </Text>
                                 <Text style={styles.CAddress}>
 
 
-                                    पोखरा, 01-5909085
+                                    {printHeader.addressAndContact}
                                 </Text>
                             </View>
 

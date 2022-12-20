@@ -26,11 +26,9 @@ const Filter = ({
   forReservation,
   vehicleList
 }) => {
-  // const [search, setSearch] = useState('');
   const [SearchKeyWord, setSearchKeyWord] = useState('');
   const navigation = useNavigation();
   const [selectedRange, setRange] = useState({});
-  // console.log("data to filetr", data);
 
   const handlSearch = val => {
     const pushArr = [];
@@ -82,7 +80,6 @@ const Filter = ({
     setShow(true);
   };
   const handleNavigation = () => {
-    // console.log('pressed');
     navigation.navigate('AddEditReservationScreen');
   };
 

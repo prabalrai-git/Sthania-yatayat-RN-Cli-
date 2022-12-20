@@ -89,7 +89,6 @@ const DashboardScreen = () => {
 
   useEffect(() => {
     getData();
-    // console.log('daaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',data);
   }, []);
 
   const getData = () => {
@@ -103,7 +102,6 @@ const DashboardScreen = () => {
     );
     dispatch(
       GetActiveVehicleRoute(data.storeUserData.userData.companyId, res => {
-        // console.log('hellohello', res);
         if (res?.RouteDetails.length > 0) {
           dispatch(storeVehicleRoute(res?.RouteDetails));
         }

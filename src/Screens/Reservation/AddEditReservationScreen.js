@@ -140,7 +140,7 @@ const AddEditReservation = () => {
     let today = new Date();
 
     const newTime = today.toLocaleTimeString();
-    console.log(newTime, 'newtime');
+    // console.log(newTime, 'newtime');
 
     setNowTime(newTime)
 
@@ -164,7 +164,7 @@ const AddEditReservation = () => {
       ReserveDays: ReserveDays !== undefined ? ReserveDays : 'n/a',
       ReserveRemarks: reserveRemarks !== undefined || null ? reserveRemarks : 'n/a'
     };
-    console.log("data", data);
+    // console.log("data", data);
     if (isValidated) {
       dispatch(
         InsertUpdateReserveDetail(data, res => {

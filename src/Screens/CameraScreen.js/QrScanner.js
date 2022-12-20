@@ -8,9 +8,7 @@ const QrScanner = () => {
   useEffect(() => { }, []);
 
   const onBarcodeScan = data => {
-    console.log('bar code', data.data);
     const encryptedId = data.data;
-    // console.log(split.split("T")[1], 'split value');
 
     if (encryptedId.split("T")[0] === "R") {
       navigation.navigate('ReservationQrInfoCamera', {

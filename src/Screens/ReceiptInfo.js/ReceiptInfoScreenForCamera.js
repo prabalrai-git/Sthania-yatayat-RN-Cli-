@@ -23,7 +23,7 @@ import {
 } from 'react-native-bluetooth-escpos-printer';
 import ImgToBase64 from 'react-native-image-base64';
 import ViewShot from 'react-native-view-shot';
-import Logo from '../../Assets/images/logo.png';
+import Logo from '../../Assets/images/logo2.png';
 import LoadingContainer from '../../Components/UI/LoadingContainer';
 import { ScrollView } from 'react-native';
 
@@ -43,6 +43,30 @@ const ReceiptInfoScreenForCamera = ({ route }) => {
   const [DeviceAddress, setDeviceAddress] = useState();
   const ref = useRef();
   const [CaptureImage, setCaptureImage] = useState('');
+
+
+
+  // Pokhara Header Data
+
+  const printHeader = {
+    title: 'पोखरा यातायात प्रा.ली',
+    addressAndContact: 'शिवटोल -0९, पोखरा, ०६१-५५२२८०/५४४६८० '
+
+  }
+
+  // Sthaniya yatayat Header Data
+
+  // const printHeader = {
+  //   title: "श्री स्थानिया यातायात प्रा.ली",
+  //   addressAndContact: 'पोखरा, 01-5909085'
+  // }
+
+
+
+
+
+
+
 
   const ToSendData = {
     CompanyName: ReceiptDetails !== undefined ? ReceiptDetails.CompanyName : '',
@@ -230,9 +254,9 @@ const ReceiptInfoScreenForCamera = ({ route }) => {
           style={{ backgroundColor: '#fefefe' }}>
           <View style={styles.PrintScreenContainer}>
             <View style={styles.contenHeadContainer}>
-              <Text style={styles.CTitle}>{ToSendData.CompanyName}</Text>
+              <Text style={styles.CTitle}>{printHeader.title}</Text>
               <Text style={styles.CAddress}>
-                {ToSendData.CompanyAddress}, {ToSendData.CompanyPhoneNumber}
+                {printHeader.addressAndContact}
               </Text>
             </View>
 

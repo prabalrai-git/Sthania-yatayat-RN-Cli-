@@ -7,11 +7,11 @@ const WIDTH = Dimensions.get('window').width;
 
 // 325 / 525 / 725 / 825 / 1025;
 // data for sthaniya yatayat
-const data = [325, 525, 725, 825, 1025];
+// const data = [325, 525, 725, 825, 1025];
 
 // data for pokhara yatatat
 
-// const data = [1000];
+const data = [1000];
 
 const Chips = ({ onChipClick }) => {
   return (

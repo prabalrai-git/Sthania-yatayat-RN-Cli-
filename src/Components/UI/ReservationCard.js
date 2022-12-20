@@ -25,7 +25,6 @@ const windowWidth = Dimensions.get('window').width;
 const ReservationCard = ({ data }) => {
   const dispatch = useDispatch();
   data.isReservation = true;
-  console.log('data', data);
   const navigation = useNavigation();
 
   const user = useSelector(state => state.storeUserData.userData);

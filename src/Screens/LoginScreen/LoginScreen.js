@@ -149,7 +149,7 @@ const LoginScreen = () => {
           alignItems: 'center',
         }}>
         <Image
-          source={require('../../Assets/images/logo.png')}
+          source={require('../../Assets/images/logo2.png')}
           style={styles.logo}></Image>
       </View>
       <View style={styles.dummyInputContainer}>

@@ -55,9 +55,6 @@ const AssignRouteScreen = () => {
   const [CID, setCID] = useState();
 
 
-  useEffect(() => {
-    console.log('vehiclevehicle', vehicle);
-  }, [])
 
 
 
@@ -82,11 +79,7 @@ const AssignRouteScreen = () => {
   };
 
   const handleProceed = () => {
-    // navigation.navigate('ReceiptInfoScreen', {
-    //   id: 2
-    // })
-    // return
-    // console.log(vehicle, 'vehiclehjkhhhhhhhhhhh');
+
     dispatch(storeprintOnceData(true));
 
     let isValidated = validate();
@@ -105,8 +98,6 @@ const AssignRouteScreen = () => {
       NepaliDate: NepDate,
     };
 
-    // console.log(data);
-    // return
     if (isValidated) {
       dispatch(
         InsertUpdateDayWiseVehicleRoutes(data, res => {
@@ -118,7 +109,6 @@ const AssignRouteScreen = () => {
               id: res?.CreatedId,
               VId: VehicleId,
             });
-            // console.log('gog go potaota')
           } else {
             Alert.alert(
               'सतर्कता !',
@@ -177,7 +167,6 @@ const AssignRouteScreen = () => {
   useEffect(() => {
     // dispatch(GetActiveVehicleList(user.companyId, (res) => {
     //   if (res?.ActiveVehicleList !== []) {
-    //     // console.log('vehicle list', res?.ActiveVehicleList)
     //     setVehicleList(res?.ActiveVehicleList);
     //     setNewVehicleList(res?.ActiveVehicleList)
     //   }
@@ -215,7 +204,6 @@ const AssignRouteScreen = () => {
   };
 
   const handleSelect = (vId, NumberPlate) => {
-    console.log(vId,);
     setVehicleId(vId);
     setVehicleNumberPlate(NumberPlate);
     setIsVisible(!IsVisible);
@@ -230,7 +218,6 @@ const AssignRouteScreen = () => {
   };
 
   const onChipClick = e => {
-    // console.log(e._dispatchInstances.memoizedProps.children, 'hellohello');
 
     setReceiptAmount(e._dispatchInstances.memoizedProps.children[1].toString());
   };
